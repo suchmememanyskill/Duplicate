@@ -7,21 +7,24 @@ namespace LegendaryMapper
 {
     public class LegendaryActionBuilder
     {
-        private Legendary wrapper;
+        public Legendary Legendary { get; private set; }
+        public Terminal Terminal { get; private set; }
         private string fileName;
         private string arguments;
         private Terminal.TerminalCallback newLineOutCallback;
         private Terminal.TerminalCallback newLineErrCallback;
         private List<LegendaryCallback> callbacks = new List<LegendaryCallback>();
         private bool blocking = false;
+        private bool done = false;
+        
 
-        public delegate void LegendaryCallback(Legendary legendary);
+        public delegate void LegendaryCallback(LegendaryActionBuilder action);
 
         public int ExitCode { get; private set; }
 
-        public LegendaryActionBuilder(Legendary wrapper, string fileName, string arguments, Terminal.TerminalCallback newLineOutCallback = null, Terminal.TerminalCallback newLineErrCallback = null)
+        public LegendaryActionBuilder(Legendary legendary, string fileName, string arguments, Terminal.TerminalCallback newLineOutCallback = null, Terminal.TerminalCallback newLineErrCallback = null)
         {
-            this.wrapper = wrapper;
+            Legendary = legendary;
             this.fileName = fileName;
             this.arguments = arguments;
             this.newLineErrCallback = newLineErrCallback;
@@ -43,22 +46,27 @@ namespace LegendaryMapper
         private void Callback(Terminal t)
         {
             if (t.ExitCode == 0)
-                callbacks.ForEach(x => x.Invoke(wrapper));
-            blocking = false;
+                callbacks.ForEach(x => x.Invoke(this));
             ExitCode = t.ExitCode;
+            done = true;
+        }
+
+        public void WaitUntilCompletion()
+        {
+            while (!done) ;
         }
 
         public LegendaryState Start()
         {
-            Terminal t = Terminal.GetInstance();
-            if (t.IsActive)
+            Terminal = new Terminal();
+            if (Terminal.IsActive)
                 return LegendaryState.AlreadyActive;
 
-            if (t.Exec(fileName, arguments, Callback, newLineOutCallback, newLineErrCallback) < 0)
+            if (Terminal.Exec(fileName, arguments, Callback, newLineOutCallback, newLineErrCallback) < 0)
                 return LegendaryState.StartError;
 
             if (blocking)
-                while (t.IsActive || blocking) ;
+                while (!done) ;
 
             return LegendaryState.Started;
         }

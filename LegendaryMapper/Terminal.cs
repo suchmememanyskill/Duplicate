@@ -16,19 +16,9 @@ namespace LegendaryMapper
         public delegate void TerminalCallback(Terminal ret);
         private Process proc;
 
-        private Terminal()
+        public Terminal()
         {
             IsActive = false;
-        }
-
-        private static Terminal instance = null;
-
-        public static Terminal GetInstance()
-        {
-            if (instance == null)
-                instance = new Terminal();
-
-            return instance;
         }
 
         private TerminalCallback callback;

@@ -39,11 +39,10 @@ namespace SteamShortcutsParser
             //terminal.Exec("legendary", "list-installed --csv");
             //Console.WriteLine("sup");
 
-            LegendaryWrapper wrapper = new LegendaryWrapper();
+            Legendary wrapper = new Legendary();
             //wrapper.Reload();
 
-            //wrapper.InstallGame(wrapper.NotInstalledGames.Find(x => x.AppTitle == "Fez"));
-            //wrapper.LaunchGame(wrapper.InstalledGames.Find(x => x.AppTitle == "Fez"));
+            //wrapper.InstallGame(wrapper.NotInstalledGames.Find(x => x.AppTitle == "Fez")).Block().Start();
             wrapper.LaunchGame(wrapper.InstalledGames.Find(x => x.AppTitle == "Fez")).Block().Start();
 
             return;
