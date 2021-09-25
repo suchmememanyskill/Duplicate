@@ -43,7 +43,8 @@ namespace SteamShortcutsParser
             //wrapper.Reload();
 
             //wrapper.InstallGame(wrapper.NotInstalledGames.Find(x => x.AppTitle == "Fez"));
-            wrapper.LaunchGame(wrapper.InstalledGames.Find(x => x.AppTitle == "Fez"));
+            //wrapper.LaunchGame(wrapper.InstalledGames.Find(x => x.AppTitle == "Fez"));
+            wrapper.LaunchGame(wrapper.InstalledGames.Find(x => x.AppTitle == "Fez")).Block().Start();
 
             return;
 

@@ -6,10 +6,8 @@ namespace LegendaryMapper
 {
     public enum LegendaryState
     {
-        Active,
-        NotInstalled,
+        AlreadyActive,
         Started,
-        NotAuthenticated,
-        InvalidInput,
+        StartError,
     }
 }
