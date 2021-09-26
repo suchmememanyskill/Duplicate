@@ -59,7 +59,7 @@ namespace LegendaryMapper
             }
                 
 
-            LegendaryActionBuilder actionBuilder = new LegendaryActionBuilder(this, "legendary", $"-y install {game.AppName} {extra}", Terminal.PrintNewLineStdOut, Terminal.PrintNewLineStdErr);
+            LegendaryActionBuilder actionBuilder = new LegendaryActionBuilder(this, "legendary", $"-y install {game.AppName} {extra}").OnNewLine(LegendaryActionBuilder.PrintNewLineStdOut).OnErrLine(LegendaryActionBuilder.PrintNewLineStdErr);
             actionBuilder.Then(x => x.Legendary.BlockingReload());
 
             if (InstalledGames.Any(x => x.AppName == game.AppName))
@@ -73,7 +73,7 @@ namespace LegendaryMapper
             if (!InstalledGames.Any(x => x.AppName == game.AppName))
                 throw new Exception("App is not installed");
 
-            return new LegendaryActionBuilder(this, "legendary", $"launch {game.AppName}", Terminal.PrintNewLineStdOut, Terminal.PrintNewLineStdErr);
+            return new LegendaryActionBuilder(this, "legendary", $"launch {game.AppName}").OnNewLine(LegendaryActionBuilder.PrintNewLineStdOut).OnErrLine(LegendaryActionBuilder.PrintNewLineStdErr);
         }
     }
 }

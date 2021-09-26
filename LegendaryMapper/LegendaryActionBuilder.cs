@@ -11,9 +11,9 @@ namespace LegendaryMapper
         public Terminal Terminal { get; private set; }
         private string fileName;
         private string arguments;
-        private Terminal.TerminalCallback newLineOutCallback;
-        private Terminal.TerminalCallback newLineErrCallback;
         private List<LegendaryCallback> callbacks = new List<LegendaryCallback>();
+        private List<LegendaryCallback> stdOutCallbacks = new List<LegendaryCallback>();
+        private List<LegendaryCallback> stdErrCallbacks = new List<LegendaryCallback>();
         private bool blocking = false;
         private bool done = false;
         
@@ -22,13 +22,11 @@ namespace LegendaryMapper
 
         public int ExitCode { get; private set; }
 
-        public LegendaryActionBuilder(Legendary legendary, string fileName, string arguments, Terminal.TerminalCallback newLineOutCallback = null, Terminal.TerminalCallback newLineErrCallback = null)
+        public LegendaryActionBuilder(Legendary legendary, string fileName, string arguments)
         {
             Legendary = legendary;
             this.fileName = fileName;
             this.arguments = arguments;
-            this.newLineErrCallback = newLineErrCallback;
-            this.newLineOutCallback = newLineOutCallback;
         }
 
         public LegendaryActionBuilder Block()
@@ -43,6 +41,18 @@ namespace LegendaryMapper
             return this;
         }
 
+        public LegendaryActionBuilder OnNewLine(LegendaryCallback callback)
+        {
+            stdOutCallbacks.Add(callback);
+            return this;
+        }
+
+        public LegendaryActionBuilder OnErrLine(LegendaryCallback callback)
+        {
+            stdErrCallbacks.Add(callback);
+            return this;
+        }
+
         private void Callback(Terminal t)
         {
             if (t.ExitCode == 0)
@@ -50,6 +60,9 @@ namespace LegendaryMapper
             ExitCode = t.ExitCode;
             done = true;
         }
+
+        private void StdOutCallback(Terminal t) => stdOutCallbacks.ForEach(x => x.Invoke(this));
+        private void StdErrCallback(Terminal t) => stdErrCallbacks.ForEach(x => x.Invoke(this));
 
         public void WaitUntilCompletion()
         {
@@ -62,7 +75,7 @@ namespace LegendaryMapper
             if (Terminal.IsActive)
                 return LegendaryState.AlreadyActive;
 
-            if (Terminal.Exec(fileName, arguments, Callback, newLineOutCallback, newLineErrCallback) < 0)
+            if (Terminal.Exec(fileName, arguments, Callback, StdOutCallback, StdErrCallback) < 0)
                 return LegendaryState.StartError;
 
             if (blocking)
@@ -70,5 +83,8 @@ namespace LegendaryMapper
 
             return LegendaryState.Started;
         }
+
+        public static void PrintNewLineStdOut(LegendaryActionBuilder t) => Console.WriteLine(t.Terminal.StdOut.Last());
+        public static void PrintNewLineStdErr(LegendaryActionBuilder t) => Console.WriteLine(t.Terminal.StdErr.Last());
     }
 }
