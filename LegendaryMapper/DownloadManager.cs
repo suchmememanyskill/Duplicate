@@ -33,6 +33,8 @@ namespace LegendaryMapper
             }
         }
 
+        public void StopDownloads() => activeDownloads.Where(x => x.IsDownloading).ToList().ForEach(x => x.Stop());
+
         public void QueueDownload(LegendaryGame game)
         {
             if (game == null)

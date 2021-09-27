@@ -125,7 +125,7 @@ namespace LegendaryMapper
             if (IsActive)
             {
                 killed = true;
-                proc.Kill();
+                proc.Kill(true);
             }
         }
 

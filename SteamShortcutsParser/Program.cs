@@ -45,11 +45,24 @@ namespace SteamShortcutsParser
             DownloadManager man = new DownloadManager(wrapper);
             int i = 0;
 
+            if (wrapper.InstalledGames.Find(x => x.AppName == "cacao") != null)
+                wrapper.RemoveGame(wrapper.InstalledGames.Find(x => x.AppName == "cacao")).Block().Start();
+
+            if (wrapper.InstalledGames.Find(x => x.AppTitle == "Fez") != null)
+                wrapper.RemoveGame(wrapper.InstalledGames.Find(x => x.AppTitle == "Fez")).Block().Start();
+
             man.QueueDownload(wrapper.NotInstalledGames.Find(x => x.AppName == "cacao"));
             man.QueueDownload(wrapper.NotInstalledGames.Find(x => x.AppTitle == "Fez"));
 
             //wrapper.InstallGame(wrapper.NotInstalledGames.Find(x => x.AppTitle == "Fez")).Block().Start();
             //wrapper.LaunchGame(wrapper.InstalledGames.Find(x => x.AppTitle == "Fez")).Block().Start();
+
+            System.Threading.Thread.Sleep(5000);
+            man.StopDownloads();
+            Console.WriteLine("Freeze!!!!!!!!");
+            System.Threading.Thread.Sleep(5000);
+            man.StartDownloads();
+            Console.WriteLine("Unfreeze!!!!!!!");
 
             return;
 
