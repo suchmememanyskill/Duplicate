@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using System.IO;
+using System.Collections.ObjectModel;
 
 namespace LegendaryMapper
 {
@@ -13,10 +14,16 @@ namespace LegendaryMapper
 
         private Legendary legendary;
         private List<LegendaryDownload> activeDownloads = new List<LegendaryDownload>();
+        public ReadOnlyCollection<LegendaryDownload> ActiveDownloads { get { return activeDownloads.AsReadOnly(); } }
 
         public DownloadManager(Legendary legendary)
         {
             this.legendary = legendary;
+        }
+
+        public void WaitUntilCompletion()
+        {
+            while (activeDownloads.Count > 0) ;
         }
 
         public void NotifyCompletion(LegendaryDownload download)
@@ -32,6 +39,41 @@ namespace LegendaryMapper
                 activeDownloads.First().Start();
             }
         }
+
+        private void MoveGame(LegendaryGame game, int offset)
+        {
+            if (game == null)
+                throw new Exception("Game is null");
+
+            if (!activeDownloads.Any(x => x.Game.AppName == game.AppName))
+                throw new Exception("Game is not being downloaded");
+
+            int idx = activeDownloads.FindIndex(x => x.Game.AppName == game.AppName);
+
+            if (idx + offset < 0 || idx + offset > activeDownloads.Count)
+                throw new Exception("Index out of range");
+
+            LegendaryDownload swapFrom = activeDownloads[idx];
+            LegendaryDownload swapTo = activeDownloads[idx + offset];
+
+            activeDownloads[idx + offset] = swapFrom;
+            activeDownloads[idx] = swapTo;
+
+            if (offset < 0 && swapTo.IsDownloading)
+            {
+                swapTo.Stop();
+                swapFrom.Start();
+            }
+            else if (offset > 0 && swapFrom.IsDownloading)
+            {
+                swapFrom.Stop();
+                swapTo.Start();
+            }
+        }
+
+        public void MoveGameUp(LegendaryGame game) => MoveGame(game, -1);
+
+        public void MoveGameDown(LegendaryGame game) => MoveGame(game, 1);
 
         public void StopDownloads() => activeDownloads.Where(x => x.IsDownloading).ToList().ForEach(x => x.Stop());
 
@@ -51,7 +93,6 @@ namespace LegendaryMapper
 
                 extra += $"--game-folder {InstallPath}";
             }
-
 
             LegendaryActionBuilder actionBuilder = new LegendaryActionBuilder(legendary, "legendary", $"-y install {game.AppName} {extra}").OnNewLine(LegendaryActionBuilder.PrintNewLineStdOut).OnErrLine(LegendaryActionBuilder.PrintNewLineStdErr);
             actionBuilder.Then(x => x.Legendary.BlockingReload());

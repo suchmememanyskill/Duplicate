@@ -55,5 +55,8 @@ namespace LegendaryMapper
 
         public void Start() => Action.Start();
         public void Stop() => Action.Stop();
+
+        public void MoveUp() => downloadMan.MoveGameUp(Game);
+        public void MoveDown() => downloadMan.MoveGameDown(Game);
     }
 }

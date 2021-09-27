@@ -38,12 +38,16 @@ namespace SteamShortcutsParser
             //Terminal terminal = Terminal.GetInstance();
             //terminal.Exec("legendary", "list-installed --csv");
             //Console.WriteLine("sup");
-
+            /*
             Legendary wrapper = new Legendary();
             //wrapper.Reload();
 
             DownloadManager man = new DownloadManager(wrapper);
             int i = 0;
+
+
+
+            
 
             if (wrapper.InstalledGames.Find(x => x.AppName == "cacao") != null)
                 wrapper.RemoveGame(wrapper.InstalledGames.Find(x => x.AppName == "cacao")).Block().Start();
@@ -58,11 +62,14 @@ namespace SteamShortcutsParser
             //wrapper.LaunchGame(wrapper.InstalledGames.Find(x => x.AppTitle == "Fez")).Block().Start();
 
             System.Threading.Thread.Sleep(5000);
-            man.StopDownloads();
-            Console.WriteLine("Freeze!!!!!!!!");
-            System.Threading.Thread.Sleep(5000);
-            man.StartDownloads();
-            Console.WriteLine("Unfreeze!!!!!!!");
+            man.ActiveDownloads.Last().MoveUp();
+
+            */
+
+            Legendary legendary = new Legendary();
+            legendary.DownloadManager.QueueDownload(legendary.NotInstalledGames.Find(x => x.AppTitle == "Fez"));
+            legendary.DownloadManager.WaitUntilCompletion();
+            legendary.LaunchGame(legendary.InstalledGames.Find(x => x.AppTitle == "Fez")).Start();
 
             return;
 
