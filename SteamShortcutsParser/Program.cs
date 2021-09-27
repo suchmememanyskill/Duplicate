@@ -42,8 +42,14 @@ namespace SteamShortcutsParser
             Legendary wrapper = new Legendary();
             //wrapper.Reload();
 
+            DownloadManager man = new DownloadManager(wrapper);
+            int i = 0;
+
+            man.QueueDownload(wrapper.NotInstalledGames.Find(x => x.AppName == "cacao"));
+            man.QueueDownload(wrapper.NotInstalledGames.Find(x => x.AppTitle == "Fez"));
+
             //wrapper.InstallGame(wrapper.NotInstalledGames.Find(x => x.AppTitle == "Fez")).Block().Start();
-            wrapper.LaunchGame(wrapper.InstalledGames.Find(x => x.AppTitle == "Fez")).Block().Start();
+            //wrapper.LaunchGame(wrapper.InstalledGames.Find(x => x.AppTitle == "Fez")).Block().Start();
 
             return;
 

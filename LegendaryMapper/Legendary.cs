@@ -16,9 +16,12 @@ namespace LegendaryMapper
             }
         }
 
+        public DownloadManager DownloadManager { get; private set; }
+
         public Legendary()
         {
             BlockingReload();
+            DownloadManager = new DownloadManager(this);
         }
 
         private void ParseInstalled(LegendaryActionBuilder action) => 
@@ -47,25 +50,12 @@ namespace LegendaryMapper
             actionGetAvailable.WaitUntilCompletion();
         }
 
-        public LegendaryActionBuilder InstallGame(LegendaryGame game, string installLocation = null)
+        public LegendaryActionBuilder RemoveGame(LegendaryGame game)
         {
-            string extra = "";
-            if (installLocation != null)
-            {
-                if (!Directory.Exists(installLocation))
-                    throw new Exception("Install location is not valid");
+            if (!InstalledGames.Any(x => x.AppName == game.AppName))
+                throw new Exception("Game is not installed");
 
-                extra += $"--game-folder {installLocation}";
-            }
-                
-
-            LegendaryActionBuilder actionBuilder = new LegendaryActionBuilder(this, "legendary", $"-y install {game.AppName} {extra}").OnNewLine(LegendaryActionBuilder.PrintNewLineStdOut).OnErrLine(LegendaryActionBuilder.PrintNewLineStdErr);
-            actionBuilder.Then(x => x.Legendary.BlockingReload());
-
-            if (InstalledGames.Any(x => x.AppName == game.AppName))
-                throw new Exception("Appname is already present");
-
-            return actionBuilder;
+            return new LegendaryActionBuilder(this, "legendary", $"-y uninstall {game.AppName}").Then(x => x.Legendary.BlockingReload());
         }
 
         public LegendaryActionBuilder LaunchGame(LegendaryGame game)

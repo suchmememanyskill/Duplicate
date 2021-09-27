@@ -84,6 +84,8 @@ namespace LegendaryMapper
             return LegendaryState.Started;
         }
 
+        public void Stop() => Terminal.Kill();
+
         public static void PrintNewLineStdOut(LegendaryActionBuilder t) => Console.WriteLine(t.Terminal.StdOut.Last());
         public static void PrintNewLineStdErr(LegendaryActionBuilder t) => Console.WriteLine(t.Terminal.StdErr.Last());
     }

@@ -15,6 +15,7 @@ namespace LegendaryMapper
         public bool IsActive { get; private set; }
         public delegate void TerminalCallback(Terminal ret);
         private Process proc;
+        private bool killed = false;
 
         public Terminal()
         {
@@ -30,6 +31,8 @@ namespace LegendaryMapper
             if (IsActive)
                 return 0;
 
+            killed = false;
+
             IsActive = true;
 
             StdOut = new List<string>();
@@ -44,6 +47,7 @@ namespace LegendaryMapper
             start.FileName = fileName;
             start.RedirectStandardOutput = true;
             start.RedirectStandardError = true;
+            start.RedirectStandardInput = true;
             start.WindowStyle = ProcessWindowStyle.Hidden;
             start.CreateNoWindow = true;
             start.UseShellExecute = false;
@@ -111,7 +115,18 @@ namespace LegendaryMapper
 
             ExitCode = proc.ExitCode;
             IsActive = false;
-            callback?.Invoke(this);
+            proc.Close();
+            if (!killed)
+                callback?.Invoke(this);
+        }
+
+        public void Kill()
+        {
+            if (IsActive)
+            {
+                killed = true;
+                proc.Kill();
+            }
         }
 
         public void PrintStdOut() =>
