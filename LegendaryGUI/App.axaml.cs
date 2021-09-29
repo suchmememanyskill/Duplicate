@@ -1,7 +1,6 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using LegendaryGUI.Services;
 using LegendaryGUI.ViewModels;
 using LegendaryGUI.Views;
 
@@ -18,10 +17,9 @@ namespace LegendaryGUI
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                var db = new FakeDB();
                 desktop.MainWindow = new MainWindow
                 {
-                    DataContext = new MainWindowViewModel(db),
+                    DataContext = new MainWindowViewModel(),
                 };
             }
 

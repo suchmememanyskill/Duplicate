@@ -15,6 +15,7 @@ namespace LegendaryMapper
         public LegendaryGame Game { get; private set; }
         public string GameSize { get; private set; } = "0 MiB";
         public bool IsDownloading { get { return (Action.Terminal == null) ? false : Action.Terminal.IsActive; } }
+        public int DownloadIndex { get => downloadMan.ActiveDownloads.IndexOf(this); }
 
         public void DownloadTracker(LegendaryActionBuilder action)
         {
@@ -33,7 +34,6 @@ namespace LegendaryMapper
                 SecondsElapsed = (int)dt.TimeOfDay.TotalSeconds;
                 dt = DateTime.ParseExact(temp[2].Substring(6), "hh:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
                 SecondsETA = (int)dt.TimeOfDay.TotalSeconds;
-
                 //Console.WriteLine($"Dumped: E:{SecondsElapsed} A:{SecondsETA} P:{Progress}% S:{GameSize:0.00}");
             }
 

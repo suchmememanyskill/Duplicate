@@ -4,28 +4,35 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="LegendaryGUI.Views.GameItem">
-	<StackPanel Margin="0,10,0,0" Spacing="10">
-		<Border BorderBrush="Gray" Background="LightGray" BorderThickness="1" Margin="15,0,15,0" CornerRadius="4" Padding="2">
+
+		<Border BorderBrush="Gray" Background="LightGray" BorderThickness="1" Margin="15,5,15,5" CornerRadius="4" Padding="2">
 			<Grid>
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="Auto" SharedSizeGroup="A" />
 					<ColumnDefinition Width="*" />
 					<ColumnDefinition Width="Auto" />
 				</Grid.ColumnDefinitions>
-				<Label Padding="2,0,0,2" Grid.Column="0" VerticalAlignment="Center" FontWeight="Bold" Content="{Binding AppTitle}"/>
-				<!--
-						<DockPanel Grid.Column="1" Margin="15, 0, 15, 0">
-							<Label Padding="0,0,10,2" VerticalAlignment="Center" DockPanel.Dock="Left">aaaaaa</Label>
-							<ProgressBar DockPanel.Dock="Right" Value="50" Height="25"></ProgressBar>
-						</DockPanel>
-						-->
+				
+				<Label Padding="2,0,0,2" Grid.Column="0" VerticalAlignment="Center" FontWeight="Bold" Content="{Binding AppName}"/>
+				<Label IsVisible="{Binding IsInstalled}" Padding="10,0,0,2" Grid.Column="1" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Content="{Binding GameSize}" />
+				<Label IsVisible="{Binding IsQueued}" Padding="10,0,0,2" Grid.Column="1" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Content="{Binding DlIndex}" />
 
-				<StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="5">
-					<Button Command="{Binding $parent[ItemsControl].DataContext.Incr}">Info</Button>
-					<Button CommandParameter="{Binding AppName}" Command="{Binding $parent[ItemsControl].DataContext.Test}" Content="Play"/>
+				<DockPanel IsVisible="{Binding IsDownloading}" Grid.Column="1" Margin="15, 0, 15, 0">
+					<Label Padding="0,0,10,2" VerticalAlignment="Center" DockPanel.Dock="Left" Content="{Binding ProgressBarText}"/>
+					<ProgressBar DockPanel.Dock="Right" Value="{Binding ProgressBarPercent}" Height="25" />
+				</DockPanel>
+						
+
+				<StackPanel IsVisible="{Binding IsInstalled}" Grid.Column="2" Orientation="Horizontal" Spacing="5">
+					<Button>Info</Button>
+					<Button Content="Play"/>
+				</StackPanel>
+
+				<StackPanel IsVisible="{Binding IsNotInstalled}" Grid.Column="2" Orientation="Horizontal" Spacing="5">
+					<Button Content="Install"/>
 				</StackPanel>
 
 			</Grid>
 		</Border>
-	</StackPanel>
+
 </UserControl>

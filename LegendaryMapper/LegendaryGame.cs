@@ -35,7 +35,7 @@ namespace LegendaryMapper
                 InstalledVersion = items[2];
                 AvailableVersion = items[3];
                 UpdateAvailable = InstalledVersion != AvailableVersion;
-                InstallSize = Math.Round(long.Parse(items[5]) / 1024 / 1024 / 1024 * 100f) / 100;
+                InstallSize = long.Parse(items[5], System.Globalization.NumberStyles.Any) / 1024f / 1024f / 1024f;
                 InstallPath = items[6];
             }
             else

@@ -12,17 +12,107 @@
 			<Button Margin="5" DockPanel.Dock="Right">Add an item</Button>
 			<Button Margin="5" DockPanel.Dock="Right">Add an item</Button>
 		</StackPanel>
-		<ScrollViewer Background="Black">
-			<ItemsControl Items="{Binding Items}">
-				<ItemsControl.ItemTemplate>
-					<DataTemplate>
-						<views:GameItem/>
-					</DataTemplate>
-				</ItemsControl.ItemTemplate>
-			</ItemsControl>
+
+		<Grid Background="Black">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"></ColumnDefinition>
+				<ColumnDefinition Width="*"></ColumnDefinition>
+			</Grid.ColumnDefinitions>
+
+			<ScrollViewer Grid.Column="0">
+				<StackPanel>
+					<Border Width="150" Background="White" Margin="10,20,10,10" CornerRadius="10" IsVisible="{Binding Queued.Count}">
+						<Label HorizontalAlignment="Center" FontSize="20" FontWeight="Bold">Queued</Label>
+					</Border>
+
+					<ItemsControl Items="{Binding Queued}">
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<views:GameItem/>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
 
 
-		</ScrollViewer>
+					<Border Width="150" Background="White" Margin="10,20,10,10" CornerRadius="10" IsVisible="{Binding Installed.Count}">
+						<Label HorizontalAlignment="Center" FontSize="20" FontWeight="Bold">Installed</Label>
+					</Border>
 
+					<ScrollViewer>
+						<ItemsControl Items="{Binding Installed}">
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<views:GameItem/>
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+					</ScrollViewer>
+				</StackPanel>
+			</ScrollViewer>
+
+			<ScrollViewer Grid.Column="1">
+				<StackPanel>
+					<Border Width="150" Background="White" Margin="10,20,10,10" CornerRadius="10" IsVisible="{Binding NotInstalled.Count}">
+						<Label HorizontalAlignment="Center" FontSize="20" FontWeight="Bold">Not Installed</Label>
+					</Border>
+
+					<ItemsControl Items="{Binding NotInstalled}">
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<views:GameItem/>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+				</StackPanel>
+			</ScrollViewer>
+			
+		</Grid>
+		<!--
+			<ScrollViewer Background="Black">
+				<StackPanel>
+					<Border Width="150" Background="White" Margin="10,20,10,10" CornerRadius="10" IsVisible="{Binding Queued.Count}">
+						<Label HorizontalAlignment="Center" FontSize="20" FontWeight="Bold">Queued</Label>
+					</Border>
+
+					<ItemsControl Items="{Binding Queued}">
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<views:GameItem/>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+
+
+					<Border Width="150" Background="White" Margin="10,20,10,10" CornerRadius="10" IsVisible="{Binding Installed.Count}">
+						<Label HorizontalAlignment="Center" FontSize="20" FontWeight="Bold">Installed</Label>
+					</Border>
+
+					<ScrollViewer>
+						<ItemsControl Items="{Binding Installed}">
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<views:GameItem/>
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+					</ScrollViewer>
+
+
+					<Border Width="150" Background="White" Margin="10,20,10,10" CornerRadius="10" IsVisible="{Binding NotInstalled.Count}">
+						<Label HorizontalAlignment="Center" FontSize="20" FontWeight="Bold">Not Installed</Label>
+					</Border>
+
+					<ItemsControl Items="{Binding NotInstalled}">
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<views:GameItem/>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+					
+				</StackPanel>
+			</ScrollViewer>
+-->
+		
 	</DockPanel>
 </UserControl>
