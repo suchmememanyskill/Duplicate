@@ -1,0 +1,31 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="LegendaryGUI.Views.GameItem">
+	<StackPanel Margin="0,10,0,0" Spacing="10">
+		<Border BorderBrush="Gray" Background="LightGray" BorderThickness="1" Margin="15,0,15,0" CornerRadius="4" Padding="2">
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
+				<Label Padding="2,0,0,2" Grid.Column="0" VerticalAlignment="Center" FontWeight="Bold" Content="{Binding AppTitle}"/>
+				<!--
+						<DockPanel Grid.Column="1" Margin="15, 0, 15, 0">
+							<Label Padding="0,0,10,2" VerticalAlignment="Center" DockPanel.Dock="Left">aaaaaa</Label>
+							<ProgressBar DockPanel.Dock="Right" Value="50" Height="25"></ProgressBar>
+						</DockPanel>
+						-->
+
+				<StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="5">
+					<Button Command="{Binding $parent[ItemsControl].DataContext.Incr}">Info</Button>
+					<Button CommandParameter="{Binding AppName}" Command="{Binding $parent[ItemsControl].DataContext.Test}" Content="Play"/>
+				</StackPanel>
+
+			</Grid>
+		</Border>
+	</StackPanel>
+</UserControl>
