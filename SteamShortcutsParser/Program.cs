@@ -35,6 +35,11 @@ namespace SteamShortcutsParser
         {
             Console.WriteLine("Hello World!" + GetSteamShortcutPath.GetShortcutsPath());
 
+            Legendary l = new Legendary();
+            Console.WriteLine(l.InstalledGames[0].ExtendedJson.Images[0].Url);
+            l.InstalledGames[0].ExtendedJson.Images[0].SaveUrlAs("./test");
+            return;
+
             //Terminal terminal = Terminal.GetInstance();
             //terminal.Exec("legendary", "list-installed --csv");
             //Console.WriteLine("sup");
@@ -65,20 +70,34 @@ namespace SteamShortcutsParser
             man.ActiveDownloads.Last().MoveUp();
 
             */
-
+            /*
             Legendary legendary = new Legendary();
             legendary.DownloadManager.QueueDownload(legendary.NotInstalledGames.Find(x => x.AppTitle == "Fez"));
             legendary.DownloadManager.WaitUntilCompletion();
             legendary.LaunchGame(legendary.InstalledGames.Find(x => x.AppTitle == "Fez")).Start();
 
             return;
-
+            */
+            /*
             VDFStream stream = new VDFStream(GetSteamShortcutPath.GetShortcutsPath());
             //stream.ReadByte();
             //Console.WriteLine(stream.ReadString());
-
+            
             VDFMap map = new VDFMap(stream);
+
             ShortcutRoot shortcutRoot = new ShortcutRoot(map);
+
+            for (int i = 0; i < shortcutRoot.GetSize(); i++)
+            {
+                if (shortcutRoot.GetEntry(i).AppName.StartsWith("Fez"))
+                {
+                    Console.WriteLine(shortcutRoot.GetEntry(i).AppId);
+                }
+            }
+
+            stream.Close();
+            */
+            /*
             ShortcutEntry entry = shortcutRoot.GetEntry(8);
             entry.AppName = "Celeste 2";
             entry.SetTag(0, "Humble");
@@ -90,6 +109,7 @@ namespace SteamShortcutsParser
             BinaryWriter writer = new BinaryWriter(new FileStream("./test.vdf", FileMode.OpenOrCreate));
             map.Write(writer, null);
             writer.Close();
+            */
         }
     }
 }

@@ -14,6 +14,17 @@ namespace LegendaryMapper
         public double InstallSize { get; private set; } // In GiB
         public string InstallPath { get; private set; }
         public bool ExtendedInfo { get; private set; }
+        public LegendaryGameJson ExtendedJson { get => GetJson(); }
+
+        private LegendaryGameJson GetJson()
+        {
+            if (json == null)
+                json = new LegendaryGameJson(this);
+
+            return json;
+        }
+
+        private LegendaryGameJson json;
 
         public LegendaryGame(string[] items)
         {
