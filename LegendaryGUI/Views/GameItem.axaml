@@ -19,7 +19,7 @@
 
 				<DockPanel IsVisible="{Binding IsDownloading}" Grid.Column="1" Margin="15, 0, 15, 0">
 					<Label Padding="0,0,10,2" VerticalAlignment="Center" DockPanel.Dock="Left" Content="{Binding ProgressBarText}"/>
-					<ProgressBar DockPanel.Dock="Right" Value="{Binding ProgressBarPercent}" Height="25" />
+					<ProgressBar DockPanel.Dock="Right" Value="{Binding ProgressBarPercent}" Height="25" MinWidth="0" />
 				</DockPanel>
 						
 

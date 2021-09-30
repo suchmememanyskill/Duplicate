@@ -67,7 +67,7 @@ namespace LegendaryGUI.Models
             if (download.IsDownloading)
             {
                 TimeSpan t = TimeSpan.FromSeconds(download.SecondsETA);
-                ProgressBarText = $"Size: {download.GameSize}, Remaining: {t:hh\\:mm\\:ss}";
+                ProgressBarText = $"Unpacked: {download.GameSize}, Dl: {download.DownloadSize}, R: {t:hh\\:mm\\:ss}";
                 ProgressBarPercent = download.Progress;
                 IsDownloading = true;
             }

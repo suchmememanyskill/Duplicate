@@ -63,7 +63,7 @@ namespace LegendaryMapper
             if (!InstalledGames.Any(x => x.AppName == game.AppName))
                 throw new Exception("App is not installed");
 
-            return new LegendaryActionBuilder(this, "legendary", $"launch {game.AppName}").OnNewLine(LegendaryActionBuilder.PrintNewLineStdOut).OnErrLine(LegendaryActionBuilder.PrintNewLineStdErr);
+            return new LegendaryActionBuilder(this, "legendary", $"launch {game.AppName}");
         }
     }
 }

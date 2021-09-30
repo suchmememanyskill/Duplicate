@@ -14,6 +14,7 @@ namespace LegendaryMapper
         public LegendaryActionBuilder Action { get; private set; }
         public LegendaryGame Game { get; private set; }
         public string GameSize { get; private set; } = "0 MiB";
+        public string DownloadSize { get; private set; } = "0 MiB";
         public bool IsDownloading { get { return (Action.Terminal == null) ? false : Action.Terminal.IsActive; } }
         public int DownloadIndex { get => downloadMan.ActiveDownloads.IndexOf(this); }
 
@@ -23,6 +24,9 @@ namespace LegendaryMapper
 
             if (last.StartsWith("[cli] INFO: Install size: "))
                 GameSize = last.Substring(26);
+
+            else if (last.StartsWith("[cli] INFO: Download size: "))
+                DownloadSize = last.Substring(27).Split('(')[0].Trim();
 
             else if (last.StartsWith("[DLManager] INFO: = Progress: "))
             {
@@ -53,7 +57,10 @@ namespace LegendaryMapper
             Game = game;
         }
 
-        public void Start() => Action.Start();
+        public void Start() {
+            if (!IsDownloading)
+                Action.Start();
+        } 
         public void Stop() => Action.Stop();
 
         public void MoveUp() => downloadMan.MoveGameUp(Game);

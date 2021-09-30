@@ -100,7 +100,7 @@ namespace LegendaryMapper
                 extra += $"--game-folder {InstallPath}";
             }
 
-            LegendaryActionBuilder actionBuilder = new LegendaryActionBuilder(legendary, "legendary", $"-y install {game.AppName} {extra}").OnNewLine(LegendaryActionBuilder.PrintNewLineStdOut).OnErrLine(LegendaryActionBuilder.PrintNewLineStdErr);
+            LegendaryActionBuilder actionBuilder = new LegendaryActionBuilder(legendary, "legendary", $"-y install {game.AppName} {extra}");
             actionBuilder.Then(x => x.Legendary.BlockingReload());
 
             if (legendary.InstalledGames.Any(x => x.AppName == game.AppName))
