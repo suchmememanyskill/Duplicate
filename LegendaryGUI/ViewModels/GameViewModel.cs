@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ReactiveUI;
 using System.Timers;
+using System.Diagnostics;
 
 namespace LegendaryGUI.ViewModels
 {
@@ -18,6 +19,8 @@ namespace LegendaryGUI.ViewModels
 
         public void Update()
         {
+            List<string> a = new List<string>();
+
             Queued
                 .Where(x => !legendary.DownloadManager.ActiveDownloads.Any(y => y.Game.AppName == x.LaunchName))
                 .ToList()
@@ -29,22 +32,24 @@ namespace LegendaryGUI.ViewModels
                 .ForEach(x => Queued.Add(new GameModel(x)));
 
             Installed
-                .Where(x => !(legendary.InstalledGames.Any(y => y.AppName == x.LaunchName) && !legendary.DownloadManager.ActiveDownloads.Any(y => y.Game.AppName == x.LaunchName)))
+                .Where(x => !legendary.InstalledGames.Any(y => y.AppName == x.LaunchName) || legendary.DownloadManager.ActiveDownloads.Any(y => y.Game.AppName == x.LaunchName))
                 .ToList()
                 .ForEach(x => Installed.Remove(x));
 
             legendary.InstalledGames
-                .Where(y => !(Installed.Any(x => y.AppName == x.LaunchName) && !legendary.DownloadManager.ActiveDownloads.Any(x => x.Game.AppName == y.AppName)))
+                .Where(y => !Installed.Any(x => y.AppName == x.LaunchName))
+                .Where(y => !legendary.DownloadManager.ActiveDownloads.Any(x => x.Game.AppName == y.AppName))
                 .ToList()
                 .ForEach(x => Installed.Add(new GameModel(x)));
 
             NotInstalled
-                .Where(x => !(legendary.NotInstalledGames.Any(y => y.AppName == x.LaunchName) && !legendary.DownloadManager.ActiveDownloads.Any(y => y.Game.AppName == x.LaunchName)))
+                .Where(x => !legendary.NotInstalledGames.Any(y => y.AppName == x.LaunchName) || legendary.DownloadManager.ActiveDownloads.Any(y => y.Game.AppName == x.LaunchName))
                 .ToList()
                 .ForEach(x => NotInstalled.Remove(x));
 
             legendary.NotInstalledGames
-                .Where(y => !(NotInstalled.Any(x => y.AppName == x.LaunchName) && !legendary.DownloadManager.ActiveDownloads.Any(x => x.Game.AppName == y.AppName)))
+                .Where(y => !NotInstalled.Any(x => y.AppName == x.LaunchName))
+                .Where(y => !legendary.DownloadManager.ActiveDownloads.Any(x => x.Game.AppName == y.AppName))
                 .ToList()
                 .ForEach(x => NotInstalled.Add(new GameModel(x)));
         }
@@ -66,31 +71,24 @@ namespace LegendaryGUI.ViewModels
         {
             timer.Enabled = false;
             Update();
-            /*
+            
             foreach (LegendaryDownload dl in legendary.DownloadManager.ActiveDownloads)
             {
-                if (!Queued.Any(x => x.LaunchName == dl.Game.AppName))
-                {
-                    if (Installed.Any(x => x.LaunchName == dl.Game.AppName))
-                    {
-                        GameModel m = Installed.First(x => x.LaunchName == dl.Game.AppName);
-                        Installed.Remove(m);
-                        Queued.Add(m);
-                    }
-                    else
-                    {
-                        GameModel m = NotInstalled.First(x => x.LaunchName == dl.Game.AppName);
-                        NotInstalled.Remove(m);
-                        Queued.Add(m);
-                    }
-                }
-
-
+                GameModel q = Queued.First(x => x.LaunchName == dl.Game.AppName);
+                q.UpdateDownload(dl);
             }
-            */
 
             timer.Enabled = true;
         }
+
+        public void BtnRemove(string launchName) => legendary.RemoveGame(legendary.InstalledGames.Find(x => x.AppName == launchName)).Block().Start();
+        public void BtnStart(string launchName) => legendary.LaunchGame(legendary.InstalledGames.Find(x => x.AppName == launchName)).Block().Start();
+        public void BtnInstall(string launchName) => legendary.DownloadManager.QueueDownload(legendary.NotInstalledGames.Find(x => x.AppName == launchName));
+        public void BtnStopDl(string launchName) => legendary.DownloadManager.RemoveDownload(legendary.DownloadManager.ActiveDownloads.First(x => x.Game.AppName == launchName));
+        public void BtnPauseDl(string launchName) => legendary.DownloadManager.ActiveDownloads.First(x => x.Game.AppName == launchName).Stop();
+        public void BtnStartDl(string launchName) => legendary.DownloadManager.ActiveDownloads.First(x => x.Game.AppName == launchName).Start();
+        
+
 
         public ObservableCollection<GameModel> Queued { get; }
         public ObservableCollection<GameModel> Installed { get; }

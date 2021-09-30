@@ -40,6 +40,12 @@ namespace LegendaryMapper
             }
         }
 
+        public void RemoveDownload(LegendaryDownload game)
+        {
+            game.Stop();
+            activeDownloads.Remove(game);
+        }
+
         private void MoveGame(LegendaryGame game, int offset)
         {
             if (game == null)

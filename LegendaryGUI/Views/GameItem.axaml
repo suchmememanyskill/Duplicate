@@ -24,13 +24,25 @@
 						
 
 				<StackPanel IsVisible="{Binding IsInstalled}" Grid.Column="2" Orientation="Horizontal" Spacing="5">
-					<Button>Info</Button>
-					<Button Content="Play"/>
+					<Button Content="Uninstall" Command="{Binding $parent[ItemsControl].DataContext.BtnRemove}" CommandParameter="{Binding LaunchName}"/>
+					<Button Content="Info"/>
+					<Button Content="Play" Command="{Binding $parent[ItemsControl].DataContext.BtnStart}" CommandParameter="{Binding LaunchName}"/>
 				</StackPanel>
 
 				<StackPanel IsVisible="{Binding IsNotInstalled}" Grid.Column="2" Orientation="Horizontal" Spacing="5">
-					<Button Content="Install"/>
+					<Button Content="Install" Command="{Binding $parent[ItemsControl].DataContext.BtnInstall}" CommandParameter="{Binding LaunchName}"/>
 				</StackPanel>
+
+				<StackPanel IsVisible="{Binding IsDownloading}" Grid.Column="2" Orientation="Horizontal" Spacing="5">
+					<Button Content="Stop" Command="{Binding $parent[ItemsControl].DataContext.BtnStopDl}" CommandParameter="{Binding LaunchName}"/>
+					<Button Content="Pause" Command="{Binding $parent[ItemsControl].DataContext.BtnPauseDl}" CommandParameter="{Binding LaunchName}"/>
+				</StackPanel>
+
+				<StackPanel IsVisible="{Binding IsQueued}" Grid.Column="2" Orientation="Horizontal" Spacing="5">
+					<Button Content="Stop" Command="{Binding $parent[ItemsControl].DataContext.BtnStopDl}" CommandParameter="{Binding LaunchName}"/>
+					<Button Content="Start" Command="{Binding $parent[ItemsControl].DataContext.BtnStartDl}" CommandParameter="{Binding LaunchName}"/>
+				</StackPanel>
+
 
 			</Grid>
 		</Border>

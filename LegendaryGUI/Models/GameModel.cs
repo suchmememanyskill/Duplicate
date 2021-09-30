@@ -60,8 +60,10 @@ namespace LegendaryGUI.Models
         public void UpdateDownload(LegendaryDownload download)
         {
             DlIndex = $"Download index: {download.DownloadIndex}";
-            IsNotInstalled = false;
+            IsQueued = false;
+            IsDownloading = false;
             IsInstalled = false;
+            IsNotInstalled = false;
             if (download.IsDownloading)
             {
                 TimeSpan t = TimeSpan.FromSeconds(download.SecondsETA);
@@ -72,7 +74,6 @@ namespace LegendaryGUI.Models
             else
             {
                 IsQueued = true;
-                IsDownloading = false;
             }
         }
 
