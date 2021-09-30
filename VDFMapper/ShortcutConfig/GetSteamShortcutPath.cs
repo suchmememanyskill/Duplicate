@@ -37,5 +37,10 @@ namespace VDFMapper
         {
             return Path.Combine(GetUserDataPath(), GetCurrentlyLoggedInUser().ToString(), "config", "shortcuts.vdf");
         }
+
+        public static string GetGridPath()
+        {
+            return Path.Combine(GetUserDataPath(), GetCurrentlyLoggedInUser().ToString(), "config", "grid");
+        }
     }
 }

@@ -36,8 +36,17 @@ namespace SteamShortcutsParser
             Console.WriteLine("Hello World!" + GetSteamShortcutPath.GetShortcutsPath());
 
             Legendary l = new Legendary();
-            Console.WriteLine(l.InstalledGames[0].ExtendedJson.Images[0].Url);
-            l.InstalledGames[0].ExtendedJson.Images[0].SaveUrlAs("./test");
+            SteamManager m = new SteamManager();
+            m.Read();
+            /*
+            for (int i = 0; i < m.ShortcutRoot.GetSize(); i++)
+                if (m.ShortcutRoot.GetEntry(i).AppName == "Fez")
+                    Console.WriteLine(m.ShortcutRoot.GetEntry(i).AppId);
+
+            return;
+            */
+            m.UpdateWithLegendaryGameList(l.InstalledGames, "EpicGames");
+            m.Write();
             return;
 
             //Terminal terminal = Terminal.GetInstance();

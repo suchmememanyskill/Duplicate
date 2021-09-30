@@ -23,7 +23,7 @@ namespace LegendaryMapper
 
         public LegendaryGameJson(LegendaryGame game)
         {
-            string path = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".config", "legendary", "metadata", $"{game.AppName}.json");
+            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".config", "legendary", "metadata", $"{game.AppName}.json");
             if (File.Exists(path))
             {
                 JSON = JObject.Parse(File.ReadAllText(path));
