@@ -24,7 +24,13 @@ namespace LegendaryMapper
         public string Type { get => (string)JSON["type"]; }
         public string UploadDate { get => (string)JSON["uploadedDate"]; }
         public string Url { get => (string)JSON["url"]; }
-        public string UrlExt { get => Url.Split('.').Last(); }
+        public string UrlExt { get {
+                string a = Url.Split('.').Last();
+                if (a.Length > 5)
+                    return "jpg";
+
+                return a;
+            }}
 
         public void SaveUrlAs(string path)
         {

@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using ReactiveUI;
 using System.Timers;
 using System.Diagnostics;
+using MessageBox.Avalonia;
+using MessageBox.Avalonia.Enums;
 
 namespace LegendaryGUI.ViewModels
 {
@@ -77,14 +79,86 @@ namespace LegendaryGUI.ViewModels
             timer.Enabled = true;
         }
 
-        public void BtnRemove(string launchName) => legendary.RemoveGame(legendary.InstalledGames.Find(x => x.AppName == launchName)).Start(); // I cannot block this for some reason
+        public void BtnRemove(string launchName)
+        {
+            LegendaryGame gam = legendary.InstalledGames.Find(x => x.AppName == launchName);
+
+            var messageBoxOkToRemove = MessageBoxManager.GetMessageBoxStandardWindow(new MessageBox.Avalonia.DTO.MessageBoxStandardParams
+            {
+                ButtonDefinitions = ButtonEnum.OkCancel,
+                ContentTitle = "Remove Game?",
+                ContentMessage = $"Are you sure you want to remove {gam.AppTitle}?",
+                Style = Style.DarkMode
+            });
+
+            Task<ButtonResult> btnTask = messageBoxOkToRemove.Show();
+            btnTask.ContinueWith(x =>
+            {
+                if (x.Result == ButtonResult.Ok)
+                    legendary.RemoveGame(gam).Start(); // I cannot block this for some reason
+            });
+        }
         public void BtnStart(string launchName) => legendary.LaunchGame(legendary.InstalledGames.Find(x => x.AppName == launchName)).Block().Start();
         public void BtnInstall(string launchName) => legendary.DownloadManager.QueueDownload(legendary.NotInstalledGames.Find(x => x.AppName == launchName));
         public void BtnStopDl(string launchName) => legendary.DownloadManager.RemoveDownload(legendary.DownloadManager.ActiveDownloads.First(x => x.Game.AppName == launchName));
         public void BtnPauseDl(string launchName) => legendary.DownloadManager.ActiveDownloads.First(x => x.Game.AppName == launchName).Stop();
         public void BtnStartDl(string launchName) => legendary.DownloadManager.ActiveDownloads.First(x => x.Game.AppName == launchName).Start();
         
+        public void BtnInfo(string launchName)
+        {
+            LegendaryGame gam = legendary.InstalledGames.Find(x => x.AppName == launchName);
 
+            var messageBox = MessageBoxManager.GetMessageBoxStandardWindow(new MessageBox.Avalonia.DTO.MessageBoxStandardParams
+            {
+                ButtonDefinitions = ButtonEnum.Ok,
+                ContentTitle = "Game info",
+                ContentMessage = $"Game: {gam.AppTitle}\nLaunch Name: {gam.AppName}\nInstalled version: {gam.InstalledVersion}\nPath: {gam.InstallPath}",
+                Style = Style.DarkMode,
+                SizeToContent = Avalonia.Controls.SizeToContent.WidthAndHeight
+            });
+
+            messageBox.Show();
+        }
+
+        public void BtnUpdateSteamGames()
+        {
+            SteamManager m = new SteamManager();
+            m.Read();
+            Tuple<int, int> res = m.UpdateWithLegendaryGameList(legendary.InstalledGames, "EpicGames");
+
+            if (res.Item1 != 0 || res.Item2 != 0)
+                m.Write();
+
+            var messageBox = MessageBoxManager.GetMessageBoxStandardWindow(new MessageBox.Avalonia.DTO.MessageBoxStandardParams
+            {
+                ButtonDefinitions = ButtonEnum.Ok,
+                ContentTitle = "Steam games updated",
+                ContentMessage = $"Removed {res.Item1}, Added {res.Item2} on Steam with tag 'EpicGames'\nPlease restart steam for changes to take effect",
+                Style = Style.DarkMode,
+            });
+
+            messageBox.Show();
+        }
+
+        public void BtnRemoveSteamGames()
+        {
+            SteamManager m = new SteamManager();
+            m.Read();
+            int count = m.RemoveAllGamesWithTag("EpicGames");
+
+            if (count != 0)
+                m.Write();
+
+            var messageBox = MessageBoxManager.GetMessageBoxStandardWindow(new MessageBox.Avalonia.DTO.MessageBoxStandardParams
+            {
+                ButtonDefinitions = ButtonEnum.Ok,
+                ContentTitle = "Steam games removed",
+                ContentMessage = $"Removed {count} on Steam with tag 'EpicGames'\nPlease restart steam for changes to take effect",
+                Style = Style.DarkMode,
+            });
+
+            messageBox.Show();
+        }
 
         public ObservableCollection<GameModel> Queued { get; }
         public ObservableCollection<GameModel> Installed { get; }

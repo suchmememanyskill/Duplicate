@@ -39,7 +39,7 @@ namespace LegendaryGUI.Models
             {
                 IsInstalled = true;
                 GameSize = $"{game.InstallSize:0.00} GiB";
-                InfoText = $"[TODO]";
+                InfoText = "";
                 HasUpdate = game.UpdateAvailable;
             }
             else

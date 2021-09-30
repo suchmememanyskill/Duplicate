@@ -25,7 +25,7 @@
 
 				<StackPanel IsVisible="{Binding IsInstalled}" Grid.Column="2" Orientation="Horizontal" Spacing="5">
 					<Button Content="Uninstall" Command="{Binding $parent[ItemsControl].DataContext.BtnRemove}" CommandParameter="{Binding LaunchName}"/>
-					<Button Content="Info"/>
+					<Button Content="Info" Command="{Binding $parent[ItemsControl].DataContext.BtnInfo}" CommandParameter="{Binding LaunchName}"/>
 					<Button Content="Play" Command="{Binding $parent[ItemsControl].DataContext.BtnStart}" CommandParameter="{Binding LaunchName}"/>
 				</StackPanel>
 

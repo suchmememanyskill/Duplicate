@@ -43,7 +43,7 @@ namespace LegendaryMapper
             return true;
         }
 
-        public void RemoveAllGamesWithTag(string tag)
+        public int RemoveAllGamesWithTag(string tag)
         {
             int count = 0;
 
@@ -56,6 +56,8 @@ namespace LegendaryMapper
                     count++;
                 }
             }
+
+            return count;
         }
 
         // TODO: implement in lib
@@ -68,10 +70,13 @@ namespace LegendaryMapper
             return gameId;
         }
 
-        public void UpdateWithLegendaryGameList(List<LegendaryGame> legendaryGames, string tag)
+        public Tuple<int, int> UpdateWithLegendaryGameList(List<LegendaryGame> legendaryGames, string tag)
         {
             List<LegendaryGame> copy = new List<LegendaryGame>(legendaryGames);
             List<int> unknownIndexes = new List<int>();
+
+            int removedCount = 0;
+            int addedCount = 0;
 
             for (int i = 0; i < ShortcutRoot.GetSize(); i++)
             {
@@ -86,6 +91,7 @@ namespace LegendaryMapper
                     else // Game that doesn't seem to be in the list. lets remove it
                     {
                         ShortcutRoot.RemoveEntry(i);
+                        removedCount++;
                         i--;
                     }
                 }
@@ -115,14 +121,16 @@ namespace LegendaryMapper
                     }
                 }
                     
-                
                 if (box != null)
                 {
                     if (!File.Exists(Path.Combine(gridPath, $"{entry.AppId}_hero.{boxTall.UrlExt}")))
                         box.SaveUrlAs(Path.Combine(gridPath, $"{entry.AppId}_hero"));
                 }
-                    
+
+                addedCount++;
             });
+
+            return new Tuple<int, int>(removedCount, addedCount);
         }
     }
 }

@@ -7,10 +7,9 @@
              x:Class="LegendaryGUI.Views.GameView">
 	<DockPanel>
 		<StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="White">
-			<Button Margin="5">Add an item</Button>
-			<Button Margin="5">Add an item</Button>
-			<Button Margin="5" DockPanel.Dock="Right">Add an item</Button>
-			<Button Margin="5" DockPanel.Dock="Right">Add an item</Button>
+			<Button Margin="5" Command="{Binding BtnUpdateSteamGames}">Update Steam games</Button>
+			<Button Margin="5" Command="{Binding BtnRemoveSteamGames}">Remove Steam games</Button>
+			<Button Margin="5">Set install path</Button>
 		</StackPanel>
 
 		<Grid Background="Black">
