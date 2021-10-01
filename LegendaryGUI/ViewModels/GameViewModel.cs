@@ -88,7 +88,11 @@ namespace LegendaryGUI.ViewModels
                 ButtonDefinitions = ButtonEnum.OkCancel,
                 ContentTitle = "Remove Game?",
                 ContentMessage = $"Are you sure you want to remove {gam.AppTitle}?",
-                Style = Style.DarkMode
+                Style = Style.DarkMode,
+                WindowStartupLocation = Avalonia.Controls.WindowStartupLocation.CenterOwner,
+                SizeToContent = Avalonia.Controls.SizeToContent.Width,
+                Height = 125,
+                CanResize = true,
             });
 
             Task<ButtonResult> btnTask = messageBoxOkToRemove.Show();
@@ -114,7 +118,9 @@ namespace LegendaryGUI.ViewModels
                 ContentTitle = "Game info",
                 ContentMessage = $"Game: {gam.AppTitle}\nLaunch Name: {gam.AppName}\nInstalled version: {gam.InstalledVersion}\nPath: {gam.InstallPath}",
                 Style = Style.DarkMode,
-                SizeToContent = Avalonia.Controls.SizeToContent.WidthAndHeight
+                SizeToContent = Avalonia.Controls.SizeToContent.WidthAndHeight,
+                WindowStartupLocation = Avalonia.Controls.WindowStartupLocation.CenterOwner,
+                CanResize = true,
             });
 
             messageBox.Show();
@@ -135,6 +141,8 @@ namespace LegendaryGUI.ViewModels
                 ContentTitle = "Steam games updated",
                 ContentMessage = $"Removed {res.Item1}, Added {res.Item2} on Steam with tag 'EpicGames'\nPlease restart steam for changes to take effect",
                 Style = Style.DarkMode,
+                WindowStartupLocation = Avalonia.Controls.WindowStartupLocation.CenterOwner,
+                CanResize = true,
             });
 
             messageBox.Show();
@@ -155,6 +163,8 @@ namespace LegendaryGUI.ViewModels
                 ContentTitle = "Steam games removed",
                 ContentMessage = $"Removed {count} on Steam with tag 'EpicGames'\nPlease restart steam for changes to take effect",
                 Style = Style.DarkMode,
+                WindowStartupLocation = Avalonia.Controls.WindowStartupLocation.CenterOwner,
+                CanResize = true,
             });
 
             messageBox.Show();
