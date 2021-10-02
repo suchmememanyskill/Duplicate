@@ -19,8 +19,11 @@ namespace VDFMapper
                     "userdata"
                     );
             }
-        
-            return null;
+            else if (Environment.OSVersion.Platform == PlatformID.Unix)
+            {
+                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".steam","steam","userdata");
+            }
+            else throw new Exception("Unknown OS");
         }
 
         public static int GetCurrentlyLoggedInUser()
@@ -29,8 +32,11 @@ namespace VDFMapper
             {
                 return (int)Registry.GetValue("HKEY_CURRENT_USER\\SOFTWARE\\Valve\\Steam\\ActiveProcess", "ActiveUser", -1);
             }
-
-            return -1;
+            else if (Environment.OSVersion.Platform == PlatformID.Unix)
+            {
+                return int.Parse(new DirectoryInfo(GetUserDataPath()).GetDirectories().First().Name);
+            }
+            else throw new Exception("Unknown OS");
         }
 
         public static string GetShortcutsPath()
@@ -40,7 +46,10 @@ namespace VDFMapper
 
         public static string GetGridPath()
         {
-            return Path.Combine(GetUserDataPath(), GetCurrentlyLoggedInUser().ToString(), "config", "grid");
+            string path = Path.Combine(GetUserDataPath(), GetCurrentlyLoggedInUser().ToString(), "config", "grid");
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+            return path;
         }
     }
 }

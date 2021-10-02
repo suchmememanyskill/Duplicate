@@ -6,11 +6,21 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="LegendaryGUI.Views.GameView">
 	<DockPanel>
-		<StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="White">
-			<Button Margin="5" Command="{Binding BtnUpdateSteamGames}">Update Steam games</Button>
-			<Button Margin="5" Command="{Binding BtnRemoveSteamGames}">Remove Steam games</Button>
-			<Button Margin="5">Set install path</Button>
-		</StackPanel>
+		<Grid DockPanel.Dock="Top" Background="White">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+
+			<StackPanel Grid.Column="0" Orientation="Horizontal">
+				<Button Margin="5" Command="{Binding BtnUpdateSteamGames}">Update Steam games</Button>
+				<Button Margin="5" Command="{Binding BtnRemoveSteamGames}">Remove Steam games</Button>
+			</StackPanel>
+			
+			<TextBox Grid.Column="1" Watermark="Type Install Path Here" Text="{Binding PathText}" Foreground="{Binding PathTextColor}"  />
+		</Grid>
+
 
 		<Grid Background="Black">
 			<Grid.ColumnDefinitions>

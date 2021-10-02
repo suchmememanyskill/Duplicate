@@ -42,7 +42,7 @@ namespace LegendaryMapper
             this.newLineOutCallback = newLineOutCallback;
             this.newLineErrCallback = newLineErrCallback;
 
-            ProcessStartInfo start = new ProcessStartInfo();
+            ProcessStartInfo start = new();
             start.Arguments = arguments;
             start.FileName = fileName;
             start.RedirectStandardOutput = true;
@@ -52,7 +52,7 @@ namespace LegendaryMapper
             start.CreateNoWindow = true;
             start.UseShellExecute = false;
 
-            proc = new Process();
+            proc = new();
             proc.StartInfo = start;
 
             try

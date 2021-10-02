@@ -79,7 +79,7 @@ namespace LegendaryMapper
                 return LegendaryState.StartError;
 
             if (blocking)
-                while (!done) ;
+                while (!done && !(!Terminal.IsActive && Terminal.ExitCode != 0)) ;
 
             return LegendaryState.Started;
         }

@@ -11,6 +11,11 @@ using System.Timers;
 using System.Diagnostics;
 using MessageBox.Avalonia;
 using MessageBox.Avalonia.Enums;
+using System.IO;
+using Avalonia.Controls;
+using Avalonia.Interactivity;
+using Avalonia.Data;
+using Avalonia.Media;
 
 namespace LegendaryGUI.ViewModels
 {
@@ -50,6 +55,25 @@ namespace LegendaryGUI.ViewModels
                 .Where(y => !NotInstalled.Any(x => y.AppName == x.LaunchName) && !legendary.DownloadManager.ActiveDownloads.Any(x => x.Game.AppName == y.AppName))
                 .ToList()
                 .ForEach(x => { NotInstalled.Add(new GameModel(x)); Debug.WriteLine($"Adding to notInstalled: {x.AppName}"); });
+
+            if (lastCheckedPath != PathText && !string.IsNullOrEmpty(PathText))
+            {
+                if (Directory.Exists(PathText))
+                {
+                    PathTextColor = greenBrush;
+                    lastCheckedPath = PathText;
+                    legendary.DownloadManager.InstallPath = lastCheckedPath;
+                    File.WriteAllText("./DlPath.txt", lastCheckedPath);
+                }
+                else
+                    PathTextColor = redBrush;
+            }
+            else if (lastCheckedPath != PathText)
+            {
+                lastCheckedPath = "";
+                legendary.DownloadManager.InstallPath = null;
+                File.WriteAllText("./DlPath.txt", "");
+            }
         }
 
         public GameViewModel()
@@ -58,6 +82,15 @@ namespace LegendaryGUI.ViewModels
             Queued = new ObservableCollection<GameModel>();
             Installed = new ObservableCollection<GameModel>(legendary.InstalledGames.Select(x => new GameModel(x)));
             NotInstalled = new ObservableCollection<GameModel>(legendary.NotInstalledGames.Select(x => new GameModel(x)));
+
+            if (File.Exists("./DlPath.txt"))
+            {
+                PathTextColor = greenBrush;
+                lastCheckedPath = File.ReadAllText("./DlPath.txt");
+                PathText = lastCheckedPath;
+                if (!string.IsNullOrEmpty(PathText))
+                    legendary.DownloadManager.InstallPath = PathText;
+            }
 
             timer = new Timer(1500);
             timer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
@@ -69,7 +102,7 @@ namespace LegendaryGUI.ViewModels
         {
             timer.Enabled = false;
             Update();
-            
+
             foreach (LegendaryDownload dl in legendary.DownloadManager.ActiveDownloads)
             {
                 GameModel q = Queued.First(x => x.LaunchName == dl.Game.AppName);
@@ -89,8 +122,8 @@ namespace LegendaryGUI.ViewModels
                 ContentTitle = "Remove Game?",
                 ContentMessage = $"Are you sure you want to remove {gam.AppTitle}?",
                 Style = Style.DarkMode,
-                WindowStartupLocation = Avalonia.Controls.WindowStartupLocation.CenterOwner,
-                SizeToContent = Avalonia.Controls.SizeToContent.Width,
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                SizeToContent = SizeToContent.Width,
                 Height = 125,
                 CanResize = true,
             });
@@ -107,7 +140,7 @@ namespace LegendaryGUI.ViewModels
         public void BtnStopDl(string launchName) => legendary.DownloadManager.RemoveDownload(legendary.DownloadManager.ActiveDownloads.First(x => x.Game.AppName == launchName));
         public void BtnPauseDl(string launchName) => legendary.DownloadManager.ActiveDownloads.First(x => x.Game.AppName == launchName).Stop();
         public void BtnStartDl(string launchName) => legendary.DownloadManager.ActiveDownloads.First(x => x.Game.AppName == launchName).Start();
-        
+
         public void BtnInfo(string launchName)
         {
             LegendaryGame gam = legendary.InstalledGames.Find(x => x.AppName == launchName);
@@ -118,8 +151,8 @@ namespace LegendaryGUI.ViewModels
                 ContentTitle = "Game info",
                 ContentMessage = $"Game: {gam.AppTitle}\nLaunch Name: {gam.AppName}\nInstalled version: {gam.InstalledVersion}\nPath: {gam.InstallPath}",
                 Style = Style.DarkMode,
-                SizeToContent = Avalonia.Controls.SizeToContent.WidthAndHeight,
-                WindowStartupLocation = Avalonia.Controls.WindowStartupLocation.CenterOwner,
+                SizeToContent = SizeToContent.WidthAndHeight,
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
                 CanResize = true,
             });
 
@@ -141,7 +174,7 @@ namespace LegendaryGUI.ViewModels
                 ContentTitle = "Steam games updated",
                 ContentMessage = $"Removed {res.Item1}, Added {res.Item2} on Steam with tag 'EpicGames'\nPlease restart steam for changes to take effect",
                 Style = Style.DarkMode,
-                WindowStartupLocation = Avalonia.Controls.WindowStartupLocation.CenterOwner,
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
                 CanResize = true,
             });
 
@@ -163,7 +196,7 @@ namespace LegendaryGUI.ViewModels
                 ContentTitle = "Steam games removed",
                 ContentMessage = $"Removed {count} on Steam with tag 'EpicGames'\nPlease restart steam for changes to take effect",
                 Style = Style.DarkMode,
-                WindowStartupLocation = Avalonia.Controls.WindowStartupLocation.CenterOwner,
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
                 CanResize = true,
             });
 
@@ -173,5 +206,19 @@ namespace LegendaryGUI.ViewModels
         public ObservableCollection<GameModel> Queued { get; }
         public ObservableCollection<GameModel> Installed { get; }
         public ObservableCollection<GameModel> NotInstalled { get; }
+        private string lastCheckedPath = "";
+        public string PathText { get; private set; }
+        private IBrush pathTextColor = new SolidColorBrush(Colors.Black);
+        public IBrush PathTextColor
+        {
+            get { return pathTextColor; }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref pathTextColor, value);
+            }
+        }
+
+        private IBrush greenBrush = new SolidColorBrush(Colors.Green);
+        private IBrush redBrush = new SolidColorBrush(Colors.Red);
     }
 }

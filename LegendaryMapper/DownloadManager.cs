@@ -4,6 +4,7 @@ using System.Text;
 using System.Linq;
 using System.IO;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace LegendaryMapper
 {
@@ -97,7 +98,8 @@ namespace LegendaryMapper
                 if (!Directory.Exists(InstallPath))
                     throw new Exception("Install location is not valid");
 
-                extra += $"--game-folder {InstallPath}";
+                extra += $"--game-folder \"{InstallPath}/{game.AppTitle}\"";
+                Debug.WriteLine(extra);
             }
 
             LegendaryActionBuilder actionBuilder = new LegendaryActionBuilder(legendary, "legendary", $"-y install {game.AppName} {extra}");
