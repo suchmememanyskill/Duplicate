@@ -163,7 +163,7 @@ namespace LegendaryGUI.ViewModels
         {
             SteamManager m = new SteamManager();
             m.Read();
-            Tuple<int, int> res = m.UpdateWithLegendaryGameList(legendary.InstalledGames, "EpicGames");
+            Tuple<int, int> res = m.UpdateWithLegendaryGameList(legendary.InstalledGames);
 
             if (res.Item1 != 0 || res.Item2 != 0)
                 m.Write();
@@ -172,7 +172,7 @@ namespace LegendaryGUI.ViewModels
             {
                 ButtonDefinitions = ButtonEnum.Ok,
                 ContentTitle = "Steam games updated",
-                ContentMessage = $"Removed {res.Item1}, Added {res.Item2} on Steam with tag 'EpicGames'\nPlease restart steam for changes to take effect",
+                ContentMessage = $"Removed {res.Item1}, Added {res.Item2} on Steam with '(Epic)' in name\nPlease restart steam for changes to take effect",
                 Style = Style.DarkMode,
                 WindowStartupLocation = WindowStartupLocation.CenterScreen,
                 CanResize = true,
@@ -185,7 +185,7 @@ namespace LegendaryGUI.ViewModels
         {
             SteamManager m = new SteamManager();
             m.Read();
-            int count = m.RemoveAllGamesWithTag("EpicGames");
+            int count = m.RemoveAllGamesWithTag();
 
             if (count != 0)
                 m.Write();
@@ -194,7 +194,7 @@ namespace LegendaryGUI.ViewModels
             {
                 ButtonDefinitions = ButtonEnum.Ok,
                 ContentTitle = "Steam games removed",
-                ContentMessage = $"Removed {count} on Steam with tag 'EpicGames'\nPlease restart steam for changes to take effect",
+                ContentMessage = $"Removed {count} on Steam with '(Epic)' in name\nPlease restart steam for changes to take effect",
                 Style = Style.DarkMode,
                 WindowStartupLocation = WindowStartupLocation.CenterScreen,
                 CanResize = true,

@@ -43,13 +43,13 @@ namespace LegendaryMapper
             return true;
         }
 
-        public int RemoveAllGamesWithTag(string tag)
+        public int RemoveAllGamesWithTag()
         {
             int count = 0;
 
             for (int i = 0; i < ShortcutRoot.GetSize(); i++)
             {
-                if (ShortcutRoot.GetEntry(i).GetTagIndex(tag) != -1)
+                if (ShortcutRoot.GetEntry(i).AppName.Contains("(Epic)"))
                 {
                     ShortcutRoot.RemoveEntry(i);
                     i--;
@@ -70,7 +70,7 @@ namespace LegendaryMapper
             return gameId;
         }
 
-        public Tuple<int, int> UpdateWithLegendaryGameList(List<LegendaryGame> legendaryGames, string tag)
+        public Tuple<int, int> UpdateWithLegendaryGameList(List<LegendaryGame> legendaryGames)
         {
             List<LegendaryGame> copy = new List<LegendaryGame>(legendaryGames);
             List<int> unknownIndexes = new List<int>();
@@ -81,11 +81,12 @@ namespace LegendaryMapper
             for (int i = 0; i < ShortcutRoot.GetSize(); i++)
             {
                 ShortcutEntry entry = ShortcutRoot.GetEntry(i);
-                if (entry.GetTagIndex(tag) != -1)
+                if (entry.AppName.Contains("(Epic)"))
                 {
-                    if (copy.Any(x => entry.AppName == x.AppTitle)) // Is game already registered?
+                    string temp = entry.AppName.Substring(0, entry.AppName.Length - 7);
+                    if (copy.Any(x => temp == x.AppTitle)) // Is game already registered?
                     {
-                        copy.Remove(copy.Find(x => entry.AppName == x.AppTitle));
+                        copy.Remove(copy.Find(x => temp == x.AppTitle));
                         // TODO
                     }
                     else // Game that doesn't seem to be in the list. lets remove it
@@ -100,7 +101,7 @@ namespace LegendaryMapper
             copy.ForEach(x =>
             {
                 ShortcutEntry entry = ShortcutRoot.AddEntry();
-                entry.AppName = x.AppTitle;
+                entry.AppName = $"{x.AppTitle} (Epic)";
                 entry.AppId = GenerateSteamGridAppId(entry.AppName, entry.Exe);
                 entry.Exe = "legendary";
                 entry.LaunchOptions = $"launch {x.AppName}";
