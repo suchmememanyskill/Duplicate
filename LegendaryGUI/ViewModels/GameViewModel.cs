@@ -77,9 +77,9 @@ namespace LegendaryGUI.ViewModels
             }
         }
 
-        public GameViewModel()
+        public GameViewModel(Legendary legendary)
         {
-            legendary = new Legendary();
+            this.legendary = legendary;
             Queued = new ObservableCollection<GameModel>();
             Installed = new ObservableCollection<GameModel>(legendary.InstalledGames.Select(x => new GameModel(x)));
             NotInstalled = new ObservableCollection<GameModel>(legendary.NotInstalledGames.Select(x => new GameModel(x)));

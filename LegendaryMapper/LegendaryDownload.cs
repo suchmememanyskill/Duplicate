@@ -32,7 +32,9 @@ namespace LegendaryMapper
             {
                 last = last.Substring(30);
                 string[] temp = last.Split('%');
-                Progress = double.Parse(temp[0], System.Globalization.NumberStyles.Any);
+                double a = 0;
+                double.TryParse(temp[0].Replace(",", "."), System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out a);
+                Progress = a;
                 temp = last.Split(',');
                 DateTime dt = DateTime.ParseExact(temp[1].Substring(13), "hh:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
                 SecondsElapsed = (int)dt.TimeOfDay.TotalSeconds;
