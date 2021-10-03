@@ -45,7 +45,7 @@ namespace SteamShortcutsParser
 
             return;
             */
-            m.UpdateWithLegendaryGameList(l.InstalledGames, "EpicGames");
+            //m.UpdateWithLegendaryGameList(l.InstalledGames, "EpicGames");
             m.Write();
             return;
 

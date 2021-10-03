@@ -58,12 +58,12 @@ namespace LegendaryMapper
             return new LegendaryActionBuilder(this, "legendary", $"-y uninstall {game.AppName}").Then(x => x.Legendary.BlockingReload());
         }
 
-        public LegendaryActionBuilder LaunchGame(LegendaryGame game)
+        public LegendaryActionBuilder LaunchGame(LegendaryGame game, string args = "")
         {
             if (!InstalledGames.Any(x => x.AppName == game.AppName))
                 throw new Exception("App is not installed");
 
-            return new LegendaryActionBuilder(this, "legendary", $"launch {game.AppName}");
+            return new LegendaryActionBuilder(this, "legendary", $"launch {game.AppName} {args}");
         }
     }
 }

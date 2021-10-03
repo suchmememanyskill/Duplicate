@@ -21,9 +21,9 @@
 					<Label Padding="0,0,10,2" VerticalAlignment="Center" DockPanel.Dock="Left" Content="{Binding ProgressBarText}"/>
 					<ProgressBar DockPanel.Dock="Right" Value="{Binding ProgressBarPercent}" Height="25" MinWidth="0" />
 				</DockPanel>
-						
 
 				<StackPanel IsVisible="{Binding IsInstalled}" Grid.Column="2" Orientation="Horizontal" Spacing="5">
+					<Button Content="Update"  IsVisible="{Binding HasUpdate}" Command="{Binding $parent[ItemsControl].DataContext.BtnUpdate}" CommandParameter="{Binding LaunchName}"/>
 					<Button Content="Uninstall" Command="{Binding $parent[ItemsControl].DataContext.BtnRemove}" CommandParameter="{Binding LaunchName}"/>
 					<Button Content="Info" Command="{Binding $parent[ItemsControl].DataContext.BtnInfo}" CommandParameter="{Binding LaunchName}"/>
 					<Button Content="Play" Command="{Binding $parent[ItemsControl].DataContext.BtnStart}" CommandParameter="{Binding LaunchName}"/>

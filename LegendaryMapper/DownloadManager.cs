@@ -105,7 +105,7 @@ namespace LegendaryMapper
             LegendaryActionBuilder actionBuilder = new LegendaryActionBuilder(legendary, "legendary", $"-y install {game.AppName} {extra}");
             actionBuilder.Then(x => x.Legendary.BlockingReload());
 
-            if (legendary.InstalledGames.Any(x => x.AppName == game.AppName))
+            if (legendary.InstalledGames.Any(x => x.AppName == game.AppName && !x.UpdateAvailable))
                 throw new Exception("Appname is already present");
 
             activeDownloads.Add(new LegendaryDownload(actionBuilder, this, game));

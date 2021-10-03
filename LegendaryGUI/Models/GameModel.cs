@@ -34,6 +34,7 @@ namespace LegendaryGUI.Models
             IsDownloading = false;
             IsInstalled = false;
             IsNotInstalled = false;
+            hasUpdate = false;
 
             if (game.ExtendedInfo)
             {
