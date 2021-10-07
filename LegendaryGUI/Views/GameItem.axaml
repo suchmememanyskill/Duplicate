@@ -14,13 +14,11 @@
 				</Grid.ColumnDefinitions>
 				
 				<Label Padding="2,0,0,2" Grid.Column="0" VerticalAlignment="Center" FontWeight="Bold" Content="{Binding AppName}"/>
-				<Label IsVisible="{Binding IsInstalled}" Padding="10,0,0,2" Grid.Column="1" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Content="{Binding GameSize}" />
-				<Label IsVisible="{Binding IsQueued}" Padding="10,0,0,2" Grid.Column="1" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Content="{Binding DlIndex}" />
+				<Label Visual.ZIndex="501" IsVisible="{Binding IsInstalled}" Padding="10,0,0,2" Grid.Column="1" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Content="{Binding GameSize}" />
+				<Label Visual.ZIndex="501" IsVisible="{Binding IsQueued}" Padding="10,0,0,2" Grid.Column="1" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Content="{Binding DlIndex}" />
 
-				<DockPanel IsVisible="{Binding IsDownloading}" Grid.Column="1" Margin="15, 0, 15, 0">
-					<Label Padding="0,0,10,2" VerticalAlignment="Center" DockPanel.Dock="Left" Content="{Binding ProgressBarText}"/>
-					<ProgressBar DockPanel.Dock="Right" Value="{Binding ProgressBarPercent}" Height="25" MinWidth="0" />
-				</DockPanel>
+				<Label Visual.ZIndex="500" IsVisible="{Binding IsDownloading}" Grid.Column="1" Padding="0,0,10,2" VerticalAlignment="Center" HorizontalAlignment="Center" DockPanel.Dock="Left" Content="{Binding ProgressBarText}"/>
+				<ProgressBar IsVisible="{Binding IsDownloading}" Grid.Column="1" DockPanel.Dock="Right" Value="{Binding ProgressBarPercent}" Height="25" MinWidth="0" Margin="15,0,15,0" />
 
 				<StackPanel IsVisible="{Binding IsInstalled}" Grid.Column="2" Orientation="Horizontal" Spacing="5">
 					<Button Content="Update"  IsVisible="{Binding HasUpdate}" Command="{Binding $parent[ItemsControl].DataContext.BtnUpdate}" CommandParameter="{Binding LaunchName}"/>

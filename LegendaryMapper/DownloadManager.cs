@@ -43,7 +43,8 @@ namespace LegendaryMapper
 
         public void RemoveDownload(LegendaryDownload game)
         {
-            game.Stop();
+            if (game.IsDownloading)
+                game.Stop();
             activeDownloads.Remove(game);
         }
 
