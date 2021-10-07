@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "LegendaryGUI": {
+      "commandName": "Project",
+      "commandLineArgs": "Corydalis"
+    }
+  }
+}

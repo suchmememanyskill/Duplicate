@@ -13,10 +13,16 @@ namespace LegendaryGUI.ViewModels
         public MainWindowViewModel(Legendary legendary, IClassicDesktopStyleApplicationLifetime desktop)
         {
             this.legendary = legendary;
-            View = _view = new GameLaunchViewModel(legendary, this);
+            GameLaunchViewModel launch = new(legendary, this, desktop.Args);
+            if (launch.LaunchViewRequired)
+            {
+                View = _view = launch;
+            }
+            else
+                EndGameLaunchView();
         }
 
-        private void EndGameLaunchView()
+        public void EndGameLaunchView()
         {
             WindowWidth = 1280;
             WindowHeight = 720;
@@ -24,8 +30,8 @@ namespace LegendaryGUI.ViewModels
         }
 
         private ViewModelBase _view;
-        private int windowWidth = 200;
-        private int windowHeight = 300;
+        private int windowWidth = 300;
+        private int windowHeight = 150;  
         public ViewModelBase View { get => _view; private set => this.RaiseAndSetIfChanged(ref _view, value); }
         public int WindowWidth { get => windowWidth; private set => this.RaiseAndSetIfChanged(ref windowWidth, value); }
         public int WindowHeight { get => windowHeight; private set => this.RaiseAndSetIfChanged(ref windowHeight, value); }
