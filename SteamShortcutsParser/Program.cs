@@ -34,7 +34,7 @@ namespace SteamShortcutsParser
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!" + GetSteamShortcutPath.GetShortcutsPath());
-
+            /*
             Legendary l = new Legendary();
             SteamManager m = new SteamManager();
             m.Read();
@@ -44,9 +44,10 @@ namespace SteamShortcutsParser
                     Console.WriteLine(m.ShortcutRoot.GetEntry(i).AppId);
 
             return;
-            */
             //m.UpdateWithLegendaryGameList(l.InstalledGames, "EpicGames");
             m.Write();
+            */
+            
             return;
 
             //Terminal terminal = Terminal.GetInstance();

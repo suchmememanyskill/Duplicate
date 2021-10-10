@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Force.Crc32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -53,5 +54,14 @@ namespace VDFMapper.ShortcutMap
 
         private string ReadString(string key) => Raw.GetValue(key).Text;
         private void WriteString(string key, string value) => Raw.GetValue(key).Text = value;
+
+        public static uint GenerateSteamGridAppId(string appName, string appTarget)
+        {
+            byte[] nameTargetBytes = Encoding.UTF8.GetBytes(appTarget + appName + "");
+            uint crc = Crc32Algorithm.Compute(nameTargetBytes);
+            uint gameId = crc | 0x80000000;
+
+            return gameId;
+        }
     }
 }

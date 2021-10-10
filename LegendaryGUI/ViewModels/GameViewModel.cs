@@ -17,6 +17,7 @@ using Avalonia.Interactivity;
 using Avalonia.Data;
 using Avalonia.Media;
 using LegendaryGUI.Services;
+using MessageBox.Avalonia.BaseWindows.Base;
 
 namespace LegendaryGUI.ViewModels
 {
@@ -113,6 +114,18 @@ namespace LegendaryGUI.ViewModels
             timer.Enabled = true;
         }
 
+        private IMsBoxWindow<ButtonResult> CreateMessageBox(string title, string message) =>
+            MessageBoxManager.GetMessageBoxStandardWindow(new MessageBox.Avalonia.DTO.MessageBoxStandardParams
+            {
+                ButtonDefinitions = ButtonEnum.Ok,
+                ContentTitle = title,
+                ContentMessage = message,
+                Style = Style.DarkMode,
+                SizeToContent = SizeToContent.WidthAndHeight,
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                CanResize = true,
+            });
+
         public void BtnRemove(string launchName)
         {
             LegendaryGame gam = legendary.InstalledGames.Find(x => x.AppName == launchName);
@@ -146,63 +159,37 @@ namespace LegendaryGUI.ViewModels
         public void BtnInfo(string launchName)
         {
             LegendaryGame gam = legendary.InstalledGames.Find(x => x.AppName == launchName);
-
-            var messageBox = MessageBoxManager.GetMessageBoxStandardWindow(new MessageBox.Avalonia.DTO.MessageBoxStandardParams
-            {
-                ButtonDefinitions = ButtonEnum.Ok,
-                ContentTitle = "Game info",
-                ContentMessage = $"Game: {gam.AppTitle}\nLaunch Name: {gam.AppName}\nInstalled version: {gam.InstalledVersion}\nPath: {gam.InstallPath}",
-                Style = Style.DarkMode,
-                SizeToContent = SizeToContent.WidthAndHeight,
-                WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                CanResize = true,
-            });
-
-            messageBox.Show();
+            CreateMessageBox("Game info", $"Game: {gam.AppTitle}\nLaunch Name: {gam.AppName}\nInstalled version: {gam.InstalledVersion}\nPath: {gam.InstallPath}").Show();
         }
 
         public void BtnUpdateSteamGames()
         {
             SteamManager m = new SteamManager();
-            m.Read();
-            Tuple<int, int> res = m.UpdateWithLegendaryGameList(legendary.InstalledGames);
-
-            if (res.Item1 != 0 || res.Item2 != 0)
-                m.Write();
-
-            var messageBox = MessageBoxManager.GetMessageBoxStandardWindow(new MessageBox.Avalonia.DTO.MessageBoxStandardParams
+            if (!m.Read())
             {
-                ButtonDefinitions = ButtonEnum.Ok,
-                ContentTitle = "Steam games updated",
-                ContentMessage = $"Removed {res.Item1}, Added {res.Item2} on Steam with '(Epic)' in name\nPlease restart steam for changes to take effect",
-                Style = Style.DarkMode,
-                WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                CanResize = true,
-            });
+                CreateMessageBox("Fatal error!", $"Failure reading {m.VdfPath}").Show();
+                return;
+            }
+            Tuple<int, int> res = m.UpdateWithLegendaryGameList(legendary.InstalledGames);
+            m.Write();
 
-            messageBox.Show();
+            CreateMessageBox("Steam games updated", $"Removed {res.Item1}, Added {res.Item2} on Steam with '(Epic)' in name\nPlease restart steam for changes to take effect").Show();
         }
 
         public void BtnRemoveSteamGames()
         {
             SteamManager m = new SteamManager();
-            m.Read();
+            if (!m.Read())
+            {
+                CreateMessageBox("Fatal error!", $"Failure reading {m.VdfPath}").Show();
+                return;
+            }
             int count = m.RemoveAllGamesWithTag();
 
             if (count != 0)
                 m.Write();
 
-            var messageBox = MessageBoxManager.GetMessageBoxStandardWindow(new MessageBox.Avalonia.DTO.MessageBoxStandardParams
-            {
-                ButtonDefinitions = ButtonEnum.Ok,
-                ContentTitle = "Steam games removed",
-                ContentMessage = $"Removed {count} on Steam with '(Epic)' in name\nPlease restart steam for changes to take effect",
-                Style = Style.DarkMode,
-                WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                CanResize = true,
-            });
-
-            messageBox.Show();
+            CreateMessageBox("Steam games removed", $"Removed {count} on Steam with '(Epic)' in name\nPlease restart steam for changes to take effect").Show();
         }
 
         public ObservableCollection<GameModel> Queued { get; }

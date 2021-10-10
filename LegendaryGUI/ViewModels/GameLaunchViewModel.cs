@@ -47,6 +47,7 @@ namespace LegendaryGUI.ViewModels
         {
             GameLauncherSwitcher gameLaunch = new GameLauncherSwitcher(legendary);
             gameLaunch.Launch(game, true);
+            ExitApplication();
         }
 
         private string windowText = "";

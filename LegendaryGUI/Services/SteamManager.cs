@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 using VDFMapper;
 using VDFMapper.ShortcutMap;
 using VDFMapper.VDF;
+using LegendaryMapper;
 
-namespace LegendaryMapper
+namespace LegendaryGUI.Services
 {
     public class SteamManager
     {
@@ -17,6 +18,7 @@ namespace LegendaryMapper
         private string gridPath = GetSteamShortcutPath.GetGridPath();
         private VDFMap root;
         public ShortcutRoot ShortcutRoot { get; private set; }
+        public string VdfPath { get => vdfPath; private set => vdfPath = value; }
 
         public SteamManager()
         {
@@ -60,20 +62,24 @@ namespace LegendaryMapper
             return count;
         }
 
-        // TODO: implement in lib
-        private uint GenerateSteamGridAppId(string appName, string appTarget)
+        private void UpdateExe(ShortcutEntry entry, string appName)
         {
-            byte[] nameTargetBytes = Encoding.UTF8.GetBytes(appTarget + appName + "");
-            uint crc = Crc32Algorithm.Compute(nameTargetBytes);
-            uint gameId = crc | 0x80000000;
 
-            return gameId;
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+            {
+                entry.Exe = Path.GetFullPath("./LegendaryGUI.exe");
+            }
+            else
+            {
+                entry.Exe = Path.GetFullPath("./LegendaryGUI");
+            }
+            entry.LaunchOptions = $"{appName}";
         }
 
         public Tuple<int, int> UpdateWithLegendaryGameList(List<LegendaryGame> legendaryGames)
         {
-            List<LegendaryGame> copy = new List<LegendaryGame>(legendaryGames);
-            List<int> unknownIndexes = new List<int>();
+            List<LegendaryGame> copy = new(legendaryGames);
+            List<int> unknownIndexes = new();
 
             int removedCount = 0;
             int addedCount = 0;
@@ -86,8 +92,9 @@ namespace LegendaryMapper
                     string temp = entry.AppName.Substring(0, entry.AppName.Length - 7);
                     if (copy.Any(x => temp == x.AppTitle)) // Is game already registered?
                     {
-                        copy.Remove(copy.Find(x => temp == x.AppTitle));
-                        // TODO
+                        LegendaryGame game = copy.Find(x => temp == x.AppTitle);
+                        copy.Remove(game);
+                        UpdateExe(entry, game.AppName);
                     }
                     else // Game that doesn't seem to be in the list. lets remove it
                     {
@@ -102,9 +109,8 @@ namespace LegendaryMapper
             {
                 ShortcutEntry entry = ShortcutRoot.AddEntry();
                 entry.AppName = $"{x.AppTitle} (Epic)";
-                entry.AppId = GenerateSteamGridAppId(entry.AppName, entry.Exe);
-                entry.Exe = "legendary";
-                entry.LaunchOptions = $"launch {x.AppName}";
+                entry.AppId = ShortcutEntry.GenerateSteamGridAppId(entry.AppName, entry.Exe);
+                UpdateExe(entry, x.AppName);
                 entry.AddTag("EpicGames");
 
                 LegendaryImage boxTall = x.ExtendedJson.Images.Find(y => y.Type == "DieselGameBoxTall");

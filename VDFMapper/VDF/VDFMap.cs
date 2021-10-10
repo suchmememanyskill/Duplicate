@@ -99,7 +99,18 @@ namespace VDFMapper.VDF
             writer.Write((byte)VDFType.MapEnd);
         }
 
-        public VDFBaseType GetValue(string key) => Map[key];
+        public VDFBaseType GetValue(string key)
+        {
+            if (Map.ContainsKey(key))
+                return Map[key];
+
+            string temp = char.ToUpper(key[0]) + key.Substring(1);
+
+            if (Map.ContainsKey(temp))
+                return Map[temp];
+
+            return null;
+        }
         public int GetSize() => Map.Count;
     }
 }
