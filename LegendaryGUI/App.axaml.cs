@@ -6,6 +6,11 @@ using LegendaryGUI.Views;
 using LegendaryMapper;
 using System.Diagnostics;
 using System;
+using ReactiveUI;
+using System.Reactive;
+using MessageBox.Avalonia;
+using MessageBox.Avalonia.Enums;
+using Avalonia.Controls;
 
 namespace LegendaryGUI
 {
@@ -19,7 +24,6 @@ namespace LegendaryGUI
         public override void OnFrameworkInitializationCompleted()
         {
             Legendary legendary = new Legendary();
-            
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 desktop.MainWindow = new MainWindow

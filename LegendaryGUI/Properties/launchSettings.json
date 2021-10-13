@@ -2,7 +2,7 @@
   "profiles": {
     "LegendaryGUI": {
       "commandName": "Project",
-      "commandLineArgs": "Corydalis"
+      "commandLineArgs": "Petrel"
     }
   }
 }

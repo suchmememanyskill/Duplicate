@@ -10,10 +10,11 @@ namespace LegendaryGUI.ViewModels
     public class MainWindowViewModel : ViewModelBase
     {
         private Legendary legendary;
+        private GameLaunchViewModel launch;
         public MainWindowViewModel(Legendary legendary, IClassicDesktopStyleApplicationLifetime desktop)
         {
             this.legendary = legendary;
-            GameLaunchViewModel launch = new(legendary, this, desktop.Args);
+            launch = new(legendary, this, desktop.Args);
             if (launch.LaunchViewRequired)
             {
                 View = _view = launch;
@@ -27,6 +28,7 @@ namespace LegendaryGUI.ViewModels
             WindowWidth = 1280;
             WindowHeight = 720;
             View = new GameViewModel(legendary);
+            launch.StopTimer();
         }
 
         private ViewModelBase _view;

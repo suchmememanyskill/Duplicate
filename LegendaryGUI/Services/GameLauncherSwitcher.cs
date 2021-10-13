@@ -18,15 +18,21 @@ namespace LegendaryGUI.Services
     public class GameLauncherSwitcher
     {
         private Legendary legendary;
+        public string stdOutput { get; private set; }
+        public string stdError { get; private set; }
+        public LegendaryGame LaunchedGame { get; private set; }
+        
 
         public GameLauncherSwitcher(Legendary legendary)
         {
             this.legendary = legendary;
         }
 
-        public GameState Launch(LegendaryGame game, bool skipUpdateCheck = false)
+        public GameState Launch(string appName, bool skipUpdateCheck = false)
         {
-            LegendaryGame gam = legendary.InstalledGames.FirstOrDefault(x => x.AppName == game.AppName);
+            LegendaryGame gam = legendary.InstalledGames.FirstOrDefault(x => x.AppName == appName);
+            LaunchedGame = gam;
+
             if (gam == null)
                 return GameState.NotInstalled;
 
@@ -51,6 +57,10 @@ namespace LegendaryGUI.Services
 
             LegendaryActionBuilder action = legendary.LaunchGame(gam, args).Block();
             action.Start();
+
+            stdOutput = string.Join("\n", action.Terminal.StdOut);
+            stdError = string.Join("\n", action.Terminal.StdErr);
+
             if (action.ExitCode != 0)
                 return GameState.UnknownError;
 

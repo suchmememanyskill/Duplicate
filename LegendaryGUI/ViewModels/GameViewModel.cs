@@ -149,7 +149,7 @@ namespace LegendaryGUI.ViewModels
                     legendary.RemoveGame(gam).Start(); // I cannot block this for some reason
             });
         }
-        public void BtnStart(string launchName) => new GameLauncherSwitcher(legendary).Launch(legendary.InstalledGames.Find(x => x.AppName == launchName), true);
+        public void BtnStart(string launchName) => new GameLauncherSwitcher(legendary).Launch(launchName, true);
         public void BtnInstall(string launchName) => legendary.DownloadManager.QueueDownload(legendary.NotInstalledGames.Find(x => x.AppName == launchName));
         public void BtnUpdate(string launchName) => legendary.DownloadManager.QueueDownload(legendary.InstalledGames.Find(x => x.AppName == launchName));
         public void BtnStopDl(string launchName) => legendary.DownloadManager.RemoveDownload(legendary.DownloadManager.ActiveDownloads.First(x => x.Game.AppName == launchName));
