@@ -150,11 +150,31 @@ namespace LegendaryGUI.ViewModels
             });
         }
         public void BtnStart(string launchName) => new GameLauncherSwitcher(legendary).Launch(launchName, true);
-        public void BtnInstall(string launchName) => legendary.DownloadManager.QueueDownload(legendary.NotInstalledGames.Find(x => x.AppName == launchName));
-        public void BtnUpdate(string launchName) => legendary.DownloadManager.QueueDownload(legendary.InstalledGames.Find(x => x.AppName == launchName));
-        public void BtnStopDl(string launchName) => legendary.DownloadManager.RemoveDownload(legendary.DownloadManager.ActiveDownloads.First(x => x.Game.AppName == launchName));
-        public void BtnPauseDl(string launchName) => legendary.DownloadManager.ActiveDownloads.First(x => x.Game.AppName == launchName).Stop();
-        public void BtnStartDl(string launchName) => legendary.DownloadManager.ActiveDownloads.First(x => x.Game.AppName == launchName).Start();
+        public void BtnInstall(string launchName)
+        {
+            try
+            {
+                legendary.DownloadManager.QueueDownload(legendary.NotInstalledGames.Find(x => x.AppName == launchName));
+            } catch (Exception e)
+            {
+                CreateMessageBox("Error during install", e.Message).Show();
+            }
+            
+        }
+        public void BtnUpdate(string launchName)
+        {
+            try
+            {
+                legendary.DownloadManager.QueueDownload(legendary.InstalledGames.Find(x => x.AppName == launchName));
+            }
+            catch (Exception e)
+            {
+                CreateMessageBox("Error during install", e.Message).Show();
+            }
+        }
+        public void BtnStopDl(string launchName) => legendary.DownloadManager.ActiveDownloads.FirstOrDefault(x => x.Game.AppName == launchName)?.RemoveDownload(legendary.DownloadManager);
+        public void BtnPauseDl(string launchName) => legendary.DownloadManager.ActiveDownloads.FirstOrDefault(x => x.Game.AppName == launchName)?.Stop();
+        public void BtnStartDl(string launchName) => legendary.DownloadManager.ActiveDownloads.FirstOrDefault(x => x.Game.AppName == launchName)?.Start();
 
         public void BtnInfo(string launchName)
         {

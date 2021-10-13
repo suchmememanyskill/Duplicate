@@ -67,5 +67,6 @@ namespace LegendaryMapper
 
         public void MoveUp() => downloadMan.MoveGameUp(Game);
         public void MoveDown() => downloadMan.MoveGameDown(Game);
+        public void RemoveDownload(DownloadManager manager) => manager.RemoveDownload(this);
     }
 }

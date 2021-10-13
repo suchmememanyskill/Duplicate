@@ -53,7 +53,6 @@ namespace LegendaryMapper
             {
                 throw new Exception("Unimplemented");
             }
-            
         }
     }
 }
