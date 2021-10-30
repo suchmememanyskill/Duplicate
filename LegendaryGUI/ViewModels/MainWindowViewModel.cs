@@ -32,7 +32,7 @@ namespace LegendaryGUI.ViewModels
         }
 
         private ViewModelBase _view;
-        private int windowWidth = 300;
+        private int windowWidth = 400;
         private int windowHeight = 150;  
         public ViewModelBase View { get => _view; private set => this.RaiseAndSetIfChanged(ref _view, value); }
         public int WindowWidth { get => windowWidth; private set => this.RaiseAndSetIfChanged(ref windowWidth, value); }
