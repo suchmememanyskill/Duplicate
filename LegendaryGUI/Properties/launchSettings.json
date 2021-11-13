@@ -1,8 +1,7 @@
 {
   "profiles": {
     "LegendaryGUI": {
-      "commandName": "Project",
-      "commandLineArgs": "Petrel"
+      "commandName": "Project"
     }
   }
 }

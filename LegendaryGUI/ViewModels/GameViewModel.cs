@@ -25,18 +25,23 @@ namespace LegendaryGUI.ViewModels
     {
         private Legendary legendary;
         private Timer timer;
+        private bool noAvailable;
 
         public void Update()
         {
-            Queued
-                .Where(x => !legendary.DownloadManager.ActiveDownloads.Any(y => y.Game.AppName == x.LaunchName))
-                .ToList()
-                .ForEach(x => { Queued.Remove(x); Debug.WriteLine($"Removing from queued: {x.LaunchName}"); });
+            if (!noAvailable)
+            {
+                Queued
+                    .Where(x => !legendary.DownloadManager.ActiveDownloads.Any(y => y.Game.AppName == x.LaunchName))
+                    .ToList()
+                    .ForEach(x => { Queued.Remove(x); Debug.WriteLine($"Removing from queued: {x.LaunchName}"); });
 
-            legendary.DownloadManager.ActiveDownloads
-                .Where(x => !Queued.Any(y => y.LaunchName == x.Game.AppName))
-                .ToList()
-                .ForEach(x => { Queued.Add(new GameModel(x)); Debug.WriteLine($"Adding to queued: {x.Game.AppName}"); });
+                legendary.DownloadManager.ActiveDownloads
+                    .Where(x => !Queued.Any(y => y.LaunchName == x.Game.AppName))
+                    .ToList()
+                    .ForEach(x => { Queued.Add(new GameModel(x)); Debug.WriteLine($"Adding to queued: {x.Game.AppName}"); });
+            }
+
 
             Installed
                 .Where(x => !legendary.InstalledGames.Any(y => y.AppName == x.LaunchName) || legendary.DownloadManager.ActiveDownloads.Any(y => y.Game.AppName == x.LaunchName))
@@ -48,15 +53,20 @@ namespace LegendaryGUI.ViewModels
                 .ToList()
                 .ForEach(x => { Installed.Add(new GameModel(x)); Debug.WriteLine($"Adding to installed: {x.AppName}"); });
 
-            NotInstalled
-                .Where(x => !legendary.NotInstalledGames.Any(y => y.AppName == x.LaunchName) || legendary.DownloadManager.ActiveDownloads.Any(y => y.Game.AppName == x.LaunchName))
-                .ToList()
-                .ForEach(x => { NotInstalled.Remove(x); Debug.WriteLine($"Removing from notInstalled: {x.LaunchName}"); });
 
-            legendary.NotInstalledGames
-                .Where(y => !NotInstalled.Any(x => y.AppName == x.LaunchName) && !legendary.DownloadManager.ActiveDownloads.Any(x => x.Game.AppName == y.AppName))
-                .ToList()
-                .ForEach(x => { NotInstalled.Add(new GameModel(x)); Debug.WriteLine($"Adding to notInstalled: {x.AppName}"); });
+            if (!noAvailable)
+            {
+                NotInstalled
+                    .Where(x => !legendary.NotInstalledGames.Any(y => y.AppName == x.LaunchName) || legendary.DownloadManager.ActiveDownloads.Any(y => y.Game.AppName == x.LaunchName))
+                    .ToList()
+                    .ForEach(x => { NotInstalled.Remove(x); Debug.WriteLine($"Removing from notInstalled: {x.LaunchName}"); });
+
+                legendary.NotInstalledGames
+                    .Where(y => !NotInstalled.Any(x => y.AppName == x.LaunchName) && !legendary.DownloadManager.ActiveDownloads.Any(x => x.Game.AppName == y.AppName))
+                    .ToList()
+                    .ForEach(x => { NotInstalled.Add(new GameModel(x)); Debug.WriteLine($"Adding to notInstalled: {x.AppName}"); });
+            }
+
 
             if (lastCheckedPath != PathText && !string.IsNullOrEmpty(PathText))
             {
@@ -83,7 +93,9 @@ namespace LegendaryGUI.ViewModels
             this.legendary = legendary;
             Queued = new ObservableCollection<GameModel>();
             Installed = new ObservableCollection<GameModel>(legendary.InstalledGames.Select(x => new GameModel(x)));
-            NotInstalled = new ObservableCollection<GameModel>(legendary.NotInstalledGames.Select(x => new GameModel(x)));
+            noAvailable = (legendary.AvailableGames == null);
+            if (!noAvailable)
+                NotInstalled = new ObservableCollection<GameModel>(legendary.NotInstalledGames.Select(x => new GameModel(x)));
 
             if (File.Exists("./DlPath.txt"))
             {

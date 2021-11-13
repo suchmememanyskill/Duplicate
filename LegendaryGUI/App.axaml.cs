@@ -23,7 +23,17 @@ namespace LegendaryGUI
 
         public override void OnFrameworkInitializationCompleted()
         {
-            Legendary legendary = new Legendary();
+            Legendary legendary = null;
+
+            try
+            {
+                legendary = new Legendary();
+            }
+            catch
+            {
+
+            }
+                
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 desktop.MainWindow = new MainWindow

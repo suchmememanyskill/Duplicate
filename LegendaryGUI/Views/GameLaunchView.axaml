@@ -14,9 +14,9 @@
 		<Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding WindowText}" />
 		
 		<StackPanel Orientation="Horizontal" Grid.Row="2" Margin="5" Spacing="5">
-			<Button Content="Open Legendary" Command="{Binding $parent[Window].DataContext.EndGameLaunchView}" />
+			<Button IsVisible="{Binding OpenAvailable}" Content="Open Legendary" Command="{Binding $parent[Window].DataContext.EndGameLaunchView}" />
 			<Button IsVisible="{Binding LaunchAvailable}" Content="Launch Anyway" Command="{Binding ForceLaunch}" />
-			<Button Content="Console" Command="{Binding ViewConsole}" />
+			<Button IsVisible="{Binding ConsoleAvailable}" Content="Console" Command="{Binding ViewConsole}" />
 			<Button Content="Exit" Command="{Binding ExitApplication}" />
 		</StackPanel>
 	</Grid>

@@ -19,6 +19,8 @@ namespace LegendaryGUI.ViewModels
         private MainWindowViewModel model;
         private bool updateAvailable = false;
         private bool launchAvailable = false;
+        private bool consoleAvailable = false;
+        private bool openAvailable = false;
         private string gameName;
         public bool LaunchViewRequired { get; private set; } = false;
         private Timer timer;
@@ -27,6 +29,23 @@ namespace LegendaryGUI.ViewModels
         {
             this.legendary = legendary;
             this.model = model;
+
+            if (legendary.InstalledGames == null)
+            {
+                LaunchViewRequired = true;
+                WindowText = $"[Fatal] Unable to retrieve installed games";
+                return;
+            }
+            else if (legendary.AvailableGames == null)
+            {
+                LaunchViewRequired = true;
+                openAvailable = true;
+                WindowText = $"Unable to retrieve available games.\nAre you offline?";
+                return;
+            }
+
+            consoleAvailable = true;
+            openAvailable = true;
 
             if (args.Length != 1)
                 return;
@@ -101,5 +120,7 @@ namespace LegendaryGUI.ViewModels
         public bool UpdateAvailable { get => updateAvailable; private set => this.RaiseAndSetIfChanged(ref updateAvailable, value); }
         public bool LaunchAvailable { get => launchAvailable; private set => this.RaiseAndSetIfChanged(ref launchAvailable, value); }
         public string Console { get; private set; }
+        public bool ConsoleAvailable { get => consoleAvailable; private set => this.RaiseAndSetIfChanged(ref consoleAvailable, value); }
+        public bool OpenAvailable { get => openAvailable; private set => this.RaiseAndSetIfChanged(ref openAvailable, value); }
     }
 }
