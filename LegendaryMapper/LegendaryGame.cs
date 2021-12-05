@@ -28,7 +28,7 @@ namespace LegendaryMapper
 
         public LegendaryGame(string[] items)
         {
-            // Extended: App name,App title,Installed version,Available version,Update available,Install size,Install path
+            // Extended: App name,App title,Installed version,Available version,Update available,Install size,Install path,Platform
             // Standard: App name,App title,Version,Is DLC
 
             if (items.Length == 4)
@@ -38,7 +38,7 @@ namespace LegendaryMapper
                 AppTitle = items[1];
                 AvailableVersion = items[2];
             }
-            else if (items.Length == 7)
+            else if (items.Length == 8)
             {
                 ExtendedInfo = true;
                 AppName = items[0];

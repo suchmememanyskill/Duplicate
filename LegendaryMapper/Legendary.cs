@@ -25,7 +25,7 @@ namespace LegendaryMapper
         }
 
         private void ParseInstalled(LegendaryActionBuilder action) => 
-            InstalledGames = action.Terminal.StdOut.Skip(action.Terminal.StdOut.IndexOf("App name,App title,Installed version,Available version,Update available,Install size,Install path") + 1)
+            InstalledGames = action.Terminal.StdOut.Skip(action.Terminal.StdOut.IndexOf("App name,App title,Installed version,Available version,Update available,Install size,Install path,Platform") + 1)
                 .Select(x => new LegendaryGame(CSVParser.Parse(x, ','))).ToList();
 
         private void ParseAvailable(LegendaryActionBuilder action) =>
