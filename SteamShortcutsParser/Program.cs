@@ -4,36 +4,78 @@ using VDFMapper.VDF;
 using VDFMapper.ShortcutMap;
 using VDFMapper;
 using System.Linq;
-using LegendaryMapper;
+using LegendaryMapperV2;
+using LegendaryGUI.Services;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using LegendaryMapperV2.Model;
+using LegendaryMapperV2.Service;
 
 namespace SteamShortcutsParser
 {
     class Program
-    {
-        static void Output(Terminal t)
+    { 
+        private static LegendaryAuth auth;
+
+        void OnUpdate(LegendaryDownload download)
         {
+            Console.WriteLine($"Triggered onUpdate on {download.Game.AppTitle}: {download.Progress}");
+        }
+
+        void OnDownload(LegendaryDownload download)
+        {
+            Console.WriteLine($"Triggered onDownload on {download.Game.AppTitle}");
+        }
+
+        void OnRefresh(LegendaryGameManager man)
+        {
+            Console.WriteLine("Triggered refresh");
+        }
+
+        void Success()
+        {
+            Console.WriteLine("Success!");
+            LegendaryGameManager parser = new(auth);
+            parser.GetGames();
+            //parser.InstalledGames[2].Launch();
+            //parser.InstalledGames.Find(x => x.AppTitle == "Fez").Uninstall();
+            LegendaryDownload download = parser.Games.Find(x => x.AppTitle == "Fez").InstantiateDownload();
+            download.OnUpdate = OnUpdate;
+            download.OnCompletionOrCancel = OnDownload;
+            parser.OnGameRefresh = OnRefresh;
+            download.Start();
+        }
+        void Failure()
+        {
+            Console.WriteLine("Failure!");
+        }
+
+        void Start()
+        {
+            auth = new LegendaryAuth();
+            auth.AttemptLogin(Success, Failure);
+        }
+
+        static void Main(string[] args) => new Program().Start();
+        //{
+            //Directory.GetFiles("C:/Users/SuchMeme/.config/legendary/metadata").ToList().ForEach(x => JsonConvert.DeserializeObject<GameMetadata>(File.ReadAllText(x)));
             /*
-            Console.WriteLine($"Exitcode: {t.ExitCode}");
-            foreach (string s in t.StdOut)
-            {
-                Console.WriteLine(s);
-            }
+            LegendaryCommand command = new("legendary", "status --json");
+            command.Block().Start();
 
-            foreach (string s in t.StdErr)
-            {
-                Console.WriteLine(s);
-            }
+            GameMetadata data = JsonConvert.DeserializeObject<GameMetadata>(File.ReadAllText("C:/Users/SuchMeme/.config/legendary/metadata/Cobra.json"));
             */
-        }
 
-        static void OutputLine(Terminal t)
-        {
-            Console.WriteLine(t.StdOut.Last());
-        }
+            //auth.GetStatus().Block().Start();
 
-        static void Main(string[] args)
-        {
+            
+
+            /*
             Console.WriteLine("Hello World!" + GetSteamShortcutPath.GetShortcutsPath());
+
+            SteamManager m = new SteamManager();
+            m.Read();
+            */
             /*
             Legendary l = new Legendary();
             SteamManager m = new SteamManager();
@@ -47,8 +89,8 @@ namespace SteamShortcutsParser
             //m.UpdateWithLegendaryGameList(l.InstalledGames, "EpicGames");
             m.Write();
             */
-            
-            return;
+
+            //return;
 
             //Terminal terminal = Terminal.GetInstance();
             //terminal.Exec("legendary", "list-installed --csv");
@@ -120,6 +162,6 @@ namespace SteamShortcutsParser
             map.Write(writer, null);
             writer.Close();
             */
-        }
+        //}
     }
 }

@@ -35,7 +35,6 @@ namespace VDFMapper
             else if (Environment.OSVersion.Platform == PlatformID.Unix)
             {
                 int a = -1;
-                
                 return int.Parse(new DirectoryInfo(GetUserDataPath()).GetDirectories().ToList().Where(x => int.TryParse(x.Name, out a)).First().Name);
             }
             else throw new Exception("Unknown OS");

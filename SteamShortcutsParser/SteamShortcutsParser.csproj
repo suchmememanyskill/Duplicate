@@ -10,6 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LegendaryGUI\LegendaryGUI.csproj" />
+    <ProjectReference Include="..\LegendaryMapperV2\LegendaryMapperV2.csproj" />
     <ProjectReference Include="..\LegendaryMapper\LegendaryMapper.csproj" />
     <ProjectReference Include="..\VDFMapper\VDFMapper.csproj" />
   </ItemGroup>
