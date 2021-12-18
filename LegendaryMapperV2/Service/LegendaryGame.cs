@@ -12,6 +12,8 @@ namespace LegendaryMapperV2.Service
         public InstalledGame InstalledData { get; set; } = null;
         public GameMetadata Metadata { get; private set; }
         public LegendaryGameManager Parser { get; private set; }
+        public List<LegendaryGame> Dlc { get; private set; } = new();
+        public bool IsDlc { get; set; }
 
         public string AppName { get => Metadata.AppName; }
         public string AppTitle { get => Metadata.AppTitle; }

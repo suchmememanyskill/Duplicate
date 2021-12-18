@@ -58,7 +58,7 @@ namespace LegendaryMapperV2.Service
             if (game.Parser.GameDirectory != "")
                 args += $"--game-folder \"{game.Parser.GameDirectory}/{game.AppTitle}\"";
 
-            Action = new LegendaryCommand($"-y install {game.AppName} {args}").Then(x => NotifyCompletion()).OnErrLine(DownloadTracker);
+            Action = new LegendaryCommand($"-y install {game.AppName} {args}").Then(x => NotifyCompletion()).OnError(x => NotifyCompletion()).OnErrLine(DownloadTracker);
         }
 
         public void Start()

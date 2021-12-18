@@ -111,6 +111,12 @@ namespace LegendaryMapperV2.Model
         public string VersionTitle { get; set; }
     }
 
+    public class DlcItem
+    {
+        [JsonProperty("releaseInfo")]
+        public List<MetaReleaseDetails> ReleaseDetails { get; set; }
+    }
+
     public class GameMetadataExt
     {
         [JsonProperty("categories")]
@@ -128,6 +134,9 @@ namespace LegendaryMapperV2.Model
 
         [JsonProperty("developerId")]
         public string DeveloperId { get; set; }
+
+        [JsonProperty("dlcItemList")]
+        public List<DlcItem> DlcItemList { get; set; }
 
         [JsonProperty("endOfSupport")]
         public bool EndOfSupport { get; set; }

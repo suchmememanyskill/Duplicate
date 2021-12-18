@@ -25,12 +25,7 @@ namespace LegendaryGUIv2.ViewModels
             }).Start();
         }
 
-        private void OnLogin()
-        {
-            manager = new LegendaryGameManager(auth);
-            manager.GetGames();
-            Content = null;
-        }
+        private void OnLogin() => Content = new MainViewModel(auth);
 
         private void OnLoginFailure() => Content = loginFailure;
 

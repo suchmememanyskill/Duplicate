@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -49,6 +50,45 @@ namespace LegendaryMapperV2.Service
 
             list.GetGamesAsList()
                 .ForEach(x => Games.Find(y => y.Metadata.AppName == x.AppName)?.SetInstalledData(x));
+
+            // Filter out dlc
+            List<LegendaryGame> dlc = new();
+            Games.ForEach(currentGame =>
+            {
+                if (currentGame.Metadata.Metadata.DlcItemList != null)
+                {
+                    List<LegendaryGame> currentGameDlc = Games.Where(possibleDlc =>
+                        currentGame.Metadata.Metadata.DlcItemList.Any(currentGameDlc =>
+                        {
+                            if (currentGameDlc.ReleaseDetails == null)
+                                return false;
+
+                            return currentGameDlc.ReleaseDetails.Any(currentGameDlcRelease =>
+                                currentGameDlcRelease.AppId == possibleDlc.AppName
+                            );
+                        })
+                    ).ToList();
+                    currentGame.Dlc.AddRange(currentGameDlc);
+                    currentGameDlc.ForEach(x => x.IsDlc = true);
+                    dlc.AddRange(currentGameDlc);
+                }
+            });
+
+            Games.RemoveAll(x => dlc.Contains(x));
+
+            // Filter out UE stuff
+            Games.RemoveAll(x => !x.Metadata.Metadata.Categories.Any(y => y["path"] == "games"));
+
+            Games = Games.OrderBy(x => x.AppTitle).ToList();
+
+            Games.ForEach(x =>
+            {
+                Debug.WriteLine(x.AppTitle);
+                x.Dlc.ForEach(y =>
+                {
+                    Debug.WriteLine("+ " + y.AppTitle);
+                });
+            });
 
             OnGameRefresh?.Invoke(this);
         }
