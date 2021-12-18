@@ -1,3 +1,4 @@
+using Avalonia.Media;
 using LegendaryMapperV2.Service;
 using ReactiveUI;
 

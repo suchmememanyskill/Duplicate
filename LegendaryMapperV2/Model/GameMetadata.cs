@@ -186,6 +186,8 @@ namespace LegendaryMapperV2.Model
         public string AppName { get; set; }
         [JsonProperty("app_title")]
         public string AppTitle { get; set; }
+        [JsonProperty("asset_info")]
+        public AssetInfo AssetInfo { get; set; }
         [JsonProperty("asset_infos")]
         public Dictionary<string, AssetInfo> AssetInfos { get; set; }
         [JsonProperty("base_urls")]

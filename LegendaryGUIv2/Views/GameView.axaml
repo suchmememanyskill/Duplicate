@@ -13,7 +13,26 @@
 			<Panel Background="{Binding HalfTransparency}" DockPanel.Dock="Bottom" Height="50">
 				<Label Content="{Binding GameName}" HorizontalAlignment="Center" VerticalAlignment="Center">I'm a game!</Label>
 			</Panel>
-			<Panel />
+			<Panel Height="75" DockPanel.Dock="Top" Background="{Binding HalfTransparency}" IsVisible="{Binding Downloading}">
+				
+			</Panel>
+			<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="10" IsVisible="{Binding Selected}">
+				<Button FontSize="20" Width="150" IsVisible="{Binding Installed}" Classes="darker" BorderBrush="LightGreen" BorderThickness="2">
+					<Label HorizontalAlignment="Center">Play</Label>
+				</Button>
+				<Button FontSize="20" Width="150" IsVisible="{Binding Installed}" Classes="darker">
+					<Label HorizontalAlignment="Center">Info</Label>
+				</Button>
+				<Button FontSize="20" Width="150" IsVisible="{Binding UpdateAvailable}" Classes="darker">
+					<Label HorizontalAlignment="Center">Update</Label>
+				</Button>
+				<Button FontSize="20" Width="150" IsVisible="{Binding Installed}" Classes="darker" BorderBrush="Red" BorderThickness="2">
+					<Label HorizontalAlignment="Center">Uninstall</Label>
+				</Button>
+				<Button FontSize="20" Width="150" IsVisible="{Binding NotInstalled}" Classes="darker">
+					<Label HorizontalAlignment="Center">Install</Label>
+				</Button>
+			</StackPanel>
 		</DockPanel>
 	</Panel>
 	

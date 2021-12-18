@@ -26,5 +26,14 @@
 		<Style Selector="Label,Button">
 			<Setter Property="FontFamily" Value="/Assets/Fonts/Roboto-Regular.ttf"/>
 		</Style>
+		<Style Selector="Button.darker">
+			<Setter Property="Background" Value="{Binding ThreeFourthsTransparency}"/>
+		</Style>
+		<Style Selector="Button.darker:pointerover /template/ ContentPresenter">
+			<Setter Property="Background" Value="{Binding HalfTransparency}"/>
+		</Style>
+		<Style Selector="Button.darker:pressed /template/ ContentPresenter">
+			<Setter Property="Background" Value="Black"/>
+		</Style>
 	</Window.Styles>
 </Window>

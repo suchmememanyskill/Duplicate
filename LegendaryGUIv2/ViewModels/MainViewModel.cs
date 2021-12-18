@@ -33,7 +33,13 @@ namespace LegendaryGUIv2.ViewModels
         private void DownloadAllImages()
         {
             foreach (GameViewModel model in Installed)
-                model.DownloadImages();
+            {
+                try
+                {
+                    model.DownloadImages();
+                }
+                catch { }
+            }
         }
 
         private string gameCountText = "";
