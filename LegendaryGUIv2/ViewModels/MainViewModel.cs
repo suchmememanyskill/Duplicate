@@ -14,6 +14,8 @@ namespace LegendaryGUIv2.ViewModels
     {
         private LegendaryAuth auth;
         private LegendaryGameManager manager;
+        private Thread imageDownloadThread;
+        private bool stopImageDownloadThread = false;
         public MainViewModel(LegendaryAuth auth)
         {
             this.auth = auth;
@@ -23,9 +25,17 @@ namespace LegendaryGUIv2.ViewModels
 
         public void OnLibraryRefresh()
         {
+            if (imageDownloadThread != null && imageDownloadThread.IsAlive)
+            {
+                stopImageDownloadThread = true;
+                imageDownloadThread.Join();
+            }
+
             GameCountText = $"Found {manager.Games.Count} games, {manager.InstalledGames.Count} installed";
             Installed = new(manager.Games.Select(x => new GameViewModel(x)));
-            Thread imageDownloadThread = new(DownloadAllImages);
+
+            stopImageDownloadThread = false;
+            imageDownloadThread = new(DownloadAllImages);
             imageDownloadThread.IsBackground = true;
             imageDownloadThread.Start();
         }
@@ -34,6 +44,9 @@ namespace LegendaryGUIv2.ViewModels
         {
             foreach (GameViewModel model in Installed)
             {
+                if (stopImageDownloadThread)
+                    return;
+
                 try
                 {
                     model.DownloadImages();

@@ -10,23 +10,24 @@
 		<Image Width="200" Stretch="UniformToFill" Source="{Binding Cover}" />
 		<Image Width="200" Stretch="Uniform" VerticalAlignment="Center" Source="{Binding Icon}" />
 		<DockPanel>
-			<Panel Background="{Binding HalfTransparency}" DockPanel.Dock="Bottom" Height="50">
-				<Label Content="{Binding GameName}" HorizontalAlignment="Center" VerticalAlignment="Center">I'm a game!</Label>
-			</Panel>
+			<StackPanel VerticalAlignment="Center" Background="{Binding HalfTransparency}" DockPanel.Dock="Bottom" Height="50">
+				<Label Content="{Binding GameName}" HorizontalAlignment="Center">I'm a game!</Label>
+				<Label Content="{Binding GameSize}" IsVisible="{Binding Installed}" HorizontalAlignment="Center" Margin="0,0,0,5">0.69 GB</Label>
+			</StackPanel>
 			<Panel Height="75" DockPanel.Dock="Top" Background="{Binding HalfTransparency}" IsVisible="{Binding Downloading}">
 				
 			</Panel>
 			<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="10" IsVisible="{Binding Selected}">
-				<Button FontSize="20" Width="150" IsVisible="{Binding Installed}" Classes="darker" BorderBrush="LightGreen" BorderThickness="2">
+				<Button FontSize="20" Width="150" IsVisible="{Binding Installed}" Command="{Binding Play}" Classes="darker" BorderBrush="LightGreen" BorderThickness="2">
 					<Label HorizontalAlignment="Center">Play</Label>
 				</Button>
-				<Button FontSize="20" Width="150" IsVisible="{Binding Installed}" Classes="darker">
+				<Button FontSize="20" Width="150" IsVisible="{Binding Installed}" Command="{Binding Info}" Classes="darker">
 					<Label HorizontalAlignment="Center">Info</Label>
 				</Button>
 				<Button FontSize="20" Width="150" IsVisible="{Binding UpdateAvailable}" Classes="darker">
 					<Label HorizontalAlignment="Center">Update</Label>
 				</Button>
-				<Button FontSize="20" Width="150" IsVisible="{Binding Installed}" Classes="darker" BorderBrush="Red" BorderThickness="2">
+				<Button FontSize="20" Width="150" IsVisible="{Binding Installed}" Command="{Binding Uninstall}" Classes="darker" BorderBrush="Red" BorderThickness="2">
 					<Label HorizontalAlignment="Center">Uninstall</Label>
 				</Button>
 				<Button FontSize="20" Width="150" IsVisible="{Binding NotInstalled}" Classes="darker">

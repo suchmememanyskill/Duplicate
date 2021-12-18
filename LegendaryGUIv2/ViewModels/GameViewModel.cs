@@ -12,6 +12,10 @@ using Avalonia.Media;
 using LegendaryMapperV2.Service;
 using ReactiveUI;
 using System.Threading;
+using MessageBox.Avalonia.BaseWindows.Base;
+using MessageBox.Avalonia;
+using MessageBox.Avalonia.Enums;
+using Avalonia.Controls;
 
 namespace LegendaryGUIv2.ViewModels
 {
@@ -26,6 +30,7 @@ namespace LegendaryGUIv2.ViewModels
                 Installed = true;
                 if (game.UpdateAvailable)
                     updateAvailable = true;
+                GameSize = game.InstallSizeReadable;
             }
                 
             else
@@ -65,6 +70,25 @@ namespace LegendaryGUIv2.ViewModels
             }
         }
 
+        public void Play() => game.Launch();
+        public void Info() => CreateMessageBox("Game information", $"Game: {game.AppTitle}\nGame ID: {game.AppName}\nInstalled version: {game.InstalledVersion}\nAvalilable version: {game.AvailableVersion}\nInstalled path: {game.InstallPath}").Show();
+        public void Uninstall() => CreateMessageBox("Uninstall", $"Are you sure you want to uninstall {game.AppTitle}?        ", ButtonEnum.OkCancel).Show().ContinueWith(x =>
+        {
+            if (x.Result == ButtonResult.Ok)
+                game.Uninstall();
+        });
+
+        private IMsBoxWindow<ButtonResult> CreateMessageBox(string title, string message, ButtonEnum buttons = ButtonEnum.Ok) =>
+            MessageBoxManager.GetMessageBoxStandardWindow(new MessageBox.Avalonia.DTO.MessageBoxStandardParams
+            {
+                ButtonDefinitions = buttons,
+                ContentTitle = title,
+                ContentMessage = message,
+                SizeToContent = SizeToContent.WidthAndHeight,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                CanResize = true,
+            });
+
         public string GameName { get => game.AppTitle; }
         public static IBrush HalfTransparency { get; } = new SolidColorBrush(Avalonia.Media.Color.FromArgb(128,0,0,0));
         public static IBrush ThreeFourthsTransparency { get; } = new SolidColorBrush(Avalonia.Media.Color.FromArgb(196, 0, 0, 0));
@@ -79,5 +103,6 @@ namespace LegendaryGUIv2.ViewModels
         public bool NotInstalled { get => notInstalled; set => this.RaiseAndSetIfChanged(ref notInstalled, value); }
         public bool Downloading { get => downloading; set => this.RaiseAndSetIfChanged(ref downloading, value); }
         public bool UpdateAvailable { get => updateAvailable; set => this.RaiseAndSetIfChanged(ref updateAvailable, value); }
+        public string GameSize { get; }
     }
 }
