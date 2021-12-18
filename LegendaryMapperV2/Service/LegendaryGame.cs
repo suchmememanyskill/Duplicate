@@ -18,7 +18,15 @@ namespace LegendaryMapperV2.Service
         public string AppName { get => Metadata.AppName; }
         public string AppTitle { get => Metadata.AppTitle; }
         public string InstalledVersion { get => InstalledData.Version; }
-        public string AvailableVersion { get => Metadata.AssetInfo.BuildVersion; }
+        public string AvailableVersion { get {
+                if (Metadata.AssetInfo != null)
+                    return Metadata.AssetInfo.BuildVersion;
+                if (Metadata.AssetInfos != null)
+                    return Metadata.AssetInfos["Windows"].BuildVersion;
+
+                return null;
+            }
+        }
         public bool UpdateAvailable { get => InstalledVersion != AvailableVersion; }
         public long InstallSizeBytes { get => InstalledData.InstallSize; }
         private readonly string[] gameSizes = { "B", "KB", "MB", "GB" };
