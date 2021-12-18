@@ -7,6 +7,8 @@
 
 	<Panel Width="200" Height="300">
 		<Rectangle Fill="OrangeRed"/>
+		<Image Width="200" Stretch="UniformToFill" Source="{Binding Cover}" />
+		<Image Width="200" Stretch="Uniform" VerticalAlignment="Center" Source="{Binding Icon}" />
 		<DockPanel>
 			<Panel Background="{Binding HalfTransparency}" DockPanel.Dock="Bottom" Height="50">
 				<Label Content="{Binding GameName}" HorizontalAlignment="Center" VerticalAlignment="Center">I'm a game!</Label>

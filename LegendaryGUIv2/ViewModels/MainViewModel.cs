@@ -6,6 +6,7 @@ using LegendaryMapperV2.Service;
 using System.Threading.Tasks;
 using ReactiveUI;
 using System.Collections.ObjectModel;
+using System.Threading;
 
 namespace LegendaryGUIv2.ViewModels
 {
@@ -23,7 +24,14 @@ namespace LegendaryGUIv2.ViewModels
         public void OnLibraryRefresh()
         {
             GameCountText = $"Found {manager.Games.Count} games, {manager.InstalledGames.Count} installed";
-            Installed = new(manager.InstalledGames.Select(x => new GameViewModel(x)));
+            Installed = new(manager.Games.Select(x => new GameViewModel(x)));
+            new Thread(DownloadAllImages).Start();
+        }
+
+        private void DownloadAllImages()
+        {
+            foreach (GameViewModel model in Installed)
+                model.DownloadImages();
         }
 
         private string gameCountText = "";

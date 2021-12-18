@@ -38,6 +38,10 @@ namespace LegendaryMapperV2.Service
         public string InstallPath { get => InstalledData.InstallPath; }
         public bool IsInstalled { get => InstalledData != null; }
 
+        public MetaImage GameBanner { get => GetGameImage("DieselGameBox"); }
+        public MetaImage GameBannerTall { get => GetGameImage("DieselGameBoxTall"); }
+        public MetaImage GameLogo { get => GetGameImage("DieselGameBoxLogo"); }
+
         public LegendaryGame(GameMetadata meta, LegendaryGameManager parser)
         {
             Metadata = meta;
@@ -69,6 +73,14 @@ namespace LegendaryMapperV2.Service
                 throw new Exception("Game is not installed");
 
             new LegendaryCommand($"uninstall {InstalledData.AppName} -y").Then(x => Parser.GetGames()).Start();
+        }
+
+        private MetaImage GetGameImage(string type)
+        {
+            if (!Metadata.Metadata.KeyImages.Any(x => x.Type == type))
+                return null;
+            else
+                return Metadata.Metadata.KeyImages.Find(x => x.Type == type);
         }
     }
 }
