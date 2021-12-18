@@ -50,25 +50,25 @@ namespace LegendaryMapperV2.Service
 
         public delegate void LegendaryAuthCallback();
 
-        public void AttemptLogin(LegendaryAuthCallback onLogin, LegendaryAuthCallback onFailure)
+        public void AttemptLogin(LegendaryAuthCallback onLogin = null, LegendaryAuthCallback onFailure = null)
         {
             GetStatus().Then(x =>
             {
                 if (StatusResponse.IsLoggedIn())
-                    onLogin();
+                    onLogin?.Invoke();
                 else
-                    onFailure();
+                    onFailure?.Invoke();
             }).OnError(x =>
             {
                 GetStatus(true).Then(y =>
                 {
                     if (StatusResponse.IsLoggedIn())
-                        onLogin();
+                        onLogin?.Invoke();
                     else
-                        onFailure();
+                        onFailure?.Invoke();
                 }).OnError(y =>
                 {
-                    onFailure();
+                    onFailure?.Invoke();
                 }).Start();
             }).Start();
         }

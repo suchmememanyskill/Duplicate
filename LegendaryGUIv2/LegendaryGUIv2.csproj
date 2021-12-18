@@ -16,4 +16,12 @@
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.10" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.10" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LegendaryMapperV2\LegendaryMapperV2.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Views\LoginFailureView.axaml.cs">
+      <DependentUpon>LoginFailureView.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

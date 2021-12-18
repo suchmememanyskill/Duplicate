@@ -1,0 +1,20 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="LegendaryGUIv2.Views.LoginFailureView">
+
+
+	
+	<StackPanel Spacing="5" VerticalAlignment="Center">
+		<Label Content="Login failed. Please open the url and enter the sid below" HorizontalAlignment="Center"/>
+		<Button Content="https://www.epicgames.com/id/login?redirectUrl=https://www.epicgames.com/id/api/redirect" Command="{Binding UrlOpen}" HorizontalAlignment="Center" Classes="url" />
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10" Margin="0,20,0,0">
+			<TextBox Width="300" Watermark="Enter SID here" Text="{Binding SidField}" />
+			<Button Command="{Binding OnSubmit}" IsEnabled="{Binding !Submitted}">Submit</Button>
+		</StackPanel>
+		<Label HorizontalAlignment="Center" Foreground="Red" IsVisible="{Binding LoginFailure}">Failed logging in</Label>
+	</StackPanel>
+	
+</UserControl>
