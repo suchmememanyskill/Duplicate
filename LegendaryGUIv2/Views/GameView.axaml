@@ -1,0 +1,19 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="300"
+             x:Class="LegendaryGUIv2.Views.GameView">
+
+	<Panel Width="200" Height="300">
+		<Rectangle Fill="OrangeRed"/>
+		<DockPanel>
+			<Panel Background="{Binding HalfTransparency}" DockPanel.Dock="Bottom" Height="50">
+				<Label Content="{Binding GameName}" HorizontalAlignment="Center" VerticalAlignment="Center">I'm a game!</Label>
+			</Panel>
+			<Panel />
+		</DockPanel>
+	</Panel>
+	
+	
+</UserControl>

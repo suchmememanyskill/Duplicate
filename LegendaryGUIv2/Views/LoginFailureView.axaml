@@ -14,7 +14,7 @@
 			<TextBox Width="300" Watermark="Enter SID here" Text="{Binding SidField}" />
 			<Button Command="{Binding OnSubmit}" IsEnabled="{Binding !Submitted}" IsDefault="True">Submit</Button>
 		</StackPanel>
-		<Label HorizontalAlignment="Center" Foreground="Red" IsVisible="{Binding LoginFailure}">Failed logging in</Label>
+		<Label HorizontalAlignment="Center" Foreground="Red" IsVisible="{Binding LoginFailure}">Failed to log in. Please re-enter the SID</Label>
 	</StackPanel>
 	
 </UserControl>

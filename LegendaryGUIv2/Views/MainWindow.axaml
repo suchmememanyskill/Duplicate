@@ -27,5 +27,4 @@
 			<Setter Property="FontFamily" Value="/Assets/Fonts/Roboto-Regular.ttf"/>
 		</Style>
 	</Window.Styles>
-	
 </Window>

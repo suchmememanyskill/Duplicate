@@ -5,6 +5,7 @@ using System.Text;
 using LegendaryMapperV2.Service;
 using System.Threading.Tasks;
 using ReactiveUI;
+using System.Collections.ObjectModel;
 
 namespace LegendaryGUIv2.ViewModels
 {
@@ -22,9 +23,20 @@ namespace LegendaryGUIv2.ViewModels
         public void OnLibraryRefresh()
         {
             GameCountText = $"Found {manager.Games.Count} games, {manager.InstalledGames.Count} installed";
+            Installed = new(manager.InstalledGames.Select(x => new GameViewModel(x)));
         }
 
         private string gameCountText = "";
         public string GameCountText { get => gameCountText; set => this.RaiseAndSetIfChanged(ref gameCountText, value); }
+        private ObservableCollection<GameViewModel> installed = new();
+        public ObservableCollection<GameViewModel> Installed { get => installed; set => this.RaiseAndSetIfChanged(ref installed, value); }
+        private GameViewModel selectedGame;
+        public GameViewModel SelectedGame { get => selectedGame; 
+            set {
+                selectedGame?.Unselect();
+                this.RaiseAndSetIfChanged(ref selectedGame, value);
+                selectedGame?.Select();
+            }
+        }
     }
 }
