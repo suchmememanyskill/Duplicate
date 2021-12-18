@@ -8,8 +8,8 @@
 
 	
 	<StackPanel Spacing="5" VerticalAlignment="Center">
-		<Label Content="Login failed. Please open the url and enter the sid below" HorizontalAlignment="Center"/>
-		<Button Content="https://www.epicgames.com/id/login?redirectUrl=https://www.epicgames.com/id/api/redirect" Command="{Binding UrlOpen}" HorizontalAlignment="Center" Classes="url invisible" />
+		<Label Content="Login failed. Please open the url and enter the sid below" FontSize="25" HorizontalAlignment="Center"/>
+		<Button FontSize="15" Content="https://www.epicgames.com/id/login?redirectUrl=https://www.epicgames.com/id/api/redirect" Command="{Binding UrlOpen}" HorizontalAlignment="Center" Classes="url invisible" />
 		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10" Margin="0,20,0,0">
 			<TextBox Width="300" Watermark="Enter SID here" Text="{Binding SidField}" />
 			<Button Command="{Binding OnSubmit}" IsEnabled="{Binding !Submitted}" IsDefault="True">Submit</Button>

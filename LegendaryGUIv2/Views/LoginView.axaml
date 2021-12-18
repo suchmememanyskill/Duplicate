@@ -4,5 +4,5 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="LegendaryGUIv2.Views.LoginView">
-	<Label VerticalAlignment="Center" HorizontalAlignment="Center">Logging in...</Label>
+	<Label VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="25">Logging in...</Label>
 </UserControl>
