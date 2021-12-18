@@ -15,7 +15,7 @@
 			</StackPanel>
 		</DockPanel>
 		<ScrollViewer Margin="10">
-			<ListBox Items="{Binding Installed}" SelectedItem="{Binding SelectedGame}" Background="Transparent" Margin="0 20">
+			<ListBox HorizontalAlignment="Center" Items="{Binding Installed}" SelectedItem="{Binding SelectedGame}" Background="Transparent" Margin="0 20">
 				<ListBox.ItemsPanel>
 					<ItemsPanelTemplate>
 						<WrapPanel />

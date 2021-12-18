@@ -25,7 +25,9 @@ namespace LegendaryGUIv2.ViewModels
         {
             GameCountText = $"Found {manager.Games.Count} games, {manager.InstalledGames.Count} installed";
             Installed = new(manager.Games.Select(x => new GameViewModel(x)));
-            new Thread(DownloadAllImages).Start();
+            Thread imageDownloadThread = new(DownloadAllImages);
+            imageDownloadThread.IsBackground = true;
+            imageDownloadThread.Start();
         }
 
         private void DownloadAllImages()
