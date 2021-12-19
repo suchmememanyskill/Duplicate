@@ -88,6 +88,8 @@ namespace LegendaryGUIv2.ViewModels
             LegendaryCommand x = game.LaunchCommand();
             x.Block().Start();
 
+            Thread.Sleep(1); // What the fuck
+
             if (x.ExitCode != 0)
                 Utils.CreateMessageBox("An erorr occured!", $"Something went wrong while launching {game.AppTitle}!\n\nStandard out:\n{string.Join('\n', x.Terminal.StdOut)}\n\nStandard error:\n{string.Join('\n', x.Terminal.StdErr)}    ").Show();
         }
