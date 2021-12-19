@@ -15,13 +15,36 @@
 			</StackPanel>
 		</DockPanel>
 		<ScrollViewer Margin="10">
-			<ListBox HorizontalAlignment="Center" Items="{Binding Installed}" SelectedItem="{Binding SelectedGame}" Background="Transparent" Margin="0 20">
-				<ListBox.ItemsPanel>
-					<ItemsPanelTemplate>
-						<WrapPanel />
-					</ItemsPanelTemplate>
-				</ListBox.ItemsPanel>
-			</ListBox>
+			<StackPanel>
+				<StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
+					<Border Background="Gray" CornerRadius="10" Padding="5,1,5,1">
+						<Label FontSize="18">
+							Installed
+						</Label>
+					</Border>
+				</StackPanel>
+				<ListBox HorizontalAlignment="Center" Items="{Binding Installed}" SelectedItem="{Binding SelectedGameInstalled}" Background="Transparent" Margin="0 20">
+					<ListBox.ItemsPanel>
+						<ItemsPanelTemplate>
+							<WrapPanel />
+						</ItemsPanelTemplate>
+					</ListBox.ItemsPanel>
+				</ListBox>
+				<StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
+					<Border Background="Gray" CornerRadius="10" Padding="5,1,5,1">
+						<Label FontSize="18">
+							Not Installed
+						</Label>
+					</Border>
+				</StackPanel>
+				<ListBox HorizontalAlignment="Center" Items="{Binding NotInstalled}" SelectedItem="{Binding SelectedGameNotInstalled}" Background="Transparent" Margin="0 20">
+					<ListBox.ItemsPanel>
+						<ItemsPanelTemplate>
+							<WrapPanel />
+						</ItemsPanelTemplate>
+					</ListBox.ItemsPanel>
+				</ListBox>
+			</StackPanel>
 		</ScrollViewer>
 	</DockPanel>
 </UserControl>

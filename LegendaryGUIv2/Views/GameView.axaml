@@ -26,7 +26,7 @@
 				<Button FontSize="20" Width="150" IsVisible="{Binding Installed}" Command="{Binding Info}" Classes="darker">
 					<Label HorizontalAlignment="Center">Info</Label>
 				</Button>
-				<Button FontSize="20" Width="150" IsVisible="{Binding UpdateAvailable}" Classes="darker">
+				<Button FontSize="20" Width="150" IsVisible="{Binding UpdateAvailable}" Classes="darker" Command="{Binding Install}">
 					<Label HorizontalAlignment="Center">Update</Label>
 				</Button>
 				<Button FontSize="20" Width="150" IsVisible="{Binding Installed}" Command="{Binding Uninstall}" Classes="darker" BorderBrush="Red" BorderThickness="2">

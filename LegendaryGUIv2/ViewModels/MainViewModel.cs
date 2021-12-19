@@ -32,9 +32,29 @@ namespace LegendaryGUIv2.ViewModels
             }
 
             GameCountText = $"Found {manager.Games.Count} games, {manager.InstalledGames.Count} installed";
-            Installed = new(manager.Games.Select(x => new GameViewModel(x)));
+            Installed = new(manager.InstalledGames.Select(x => new GameViewModel(x)));
+            NotInstalled = new(manager.NotInstalledGames.Select(x => new GameViewModel(x)));
 
-            manager.Downloads.ForEach(x => Installed.First(y => y.Game.AppName == x.Game.AppName).ApplyDownload(x));
+            List<GameViewModel> transferList = new();
+            manager.Downloads.ForEach(x =>
+            {
+                if (Installed.Any(y => x.Game.AppName == y.Game.AppName))
+                    Installed.First(y => x.Game.AppName == y.Game.AppName).ApplyDownload(x);
+                else if (NotInstalled.Any(y => x.Game.AppName == y.Game.AppName))
+                {
+                    GameViewModel model = NotInstalled.First(y => x.Game.AppName == y.Game.AppName);
+                    transferList.Add(model);
+                    model.ApplyDownload(x);
+                }
+            });
+
+            int i = 0;
+            transferList.ForEach(x =>
+            {
+                Installed.Insert(i++, x);
+                NotInstalled.Remove(x);
+            });
+            
 
             stopImageDownloadThread = false;
             imageDownloadThread = new(DownloadAllImages);
@@ -44,7 +64,7 @@ namespace LegendaryGUIv2.ViewModels
 
         private void DownloadAllImages()
         {
-            foreach (GameViewModel model in Installed)
+            foreach (GameViewModel model in Installed.Concat(NotInstalled))
             {
                 if (stopImageDownloadThread)
                     return;
@@ -61,12 +81,25 @@ namespace LegendaryGUIv2.ViewModels
         public string GameCountText { get => gameCountText; set => this.RaiseAndSetIfChanged(ref gameCountText, value); }
         private ObservableCollection<GameViewModel> installed = new();
         public ObservableCollection<GameViewModel> Installed { get => installed; set => this.RaiseAndSetIfChanged(ref installed, value); }
-        private GameViewModel? selectedGame;
-        public GameViewModel? SelectedGame { get => selectedGame; 
+        private ObservableCollection<GameViewModel> notInstalled = new();
+        public ObservableCollection<GameViewModel> NotInstalled { get => notInstalled; set => this.RaiseAndSetIfChanged(ref notInstalled, value); }
+        private GameViewModel? selectedGameInstalled, selectedGameNotInstalled;
+        public GameViewModel? SelectedGameInstalled { 
+            get => selectedGameInstalled; 
             set {
-                selectedGame?.Unselect();
-                this.RaiseAndSetIfChanged(ref selectedGame, value);
-                selectedGame?.Select();
+                selectedGameInstalled?.Unselect();
+                this.RaiseAndSetIfChanged(ref selectedGameInstalled, value);
+                selectedGameInstalled?.Select();
+            }
+        }
+        public GameViewModel? SelectedGameNotInstalled
+        {
+            get => selectedGameNotInstalled;
+            set
+            {
+                selectedGameNotInstalled?.Unselect();
+                this.RaiseAndSetIfChanged(ref selectedGameNotInstalled, value);
+                selectedGameNotInstalled?.Select();
             }
         }
     }
