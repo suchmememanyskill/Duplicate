@@ -10,7 +10,8 @@
 		<Button HorizontalAlignment="Center" FontSize="18" Command="{Binding OnBack}">Back</Button>
 		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10" Margin="0,20,0,0">
 			<TextBox Width="300" Watermark="Enter new path here" Text="{Binding UserPath}" />
-			<Button Command="{Binding OnSubmit}" IsDefault="True">Change path</Button>
+			<Button Command="{Binding OnBrowse}">Browse</Button>
+			<Button Command="{Binding OnSubmit}" IsDefault="True" Background="OrangeRed">Save</Button>
 		</StackPanel>
 		<Label HorizontalAlignment="Center" Foreground="Red" IsVisible="{Binding HadPathFailure}">Failed to change path. Is the path valid?</Label>
 	</StackPanel>

@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Avalonia;
+using Avalonia.Controls;
 using ReactiveUI;
 
 namespace LegendaryGUIv2.ViewModels
@@ -14,6 +17,7 @@ namespace LegendaryGUIv2.ViewModels
         {
             this.mainView = mainView;
             currentPath = mainView.DownloadLocation;
+            UserPath = mainView.Manager.GameDirectory;
         }
 
         public void OnBack() => mainView.SetViewOnWindow(mainView);
@@ -33,6 +37,13 @@ namespace LegendaryGUIv2.ViewModels
             OnBack();
         }
 
+        public async Task OnBrowse()
+        {
+            OpenFolderDialog dialog = new();
+            string result = await dialog.ShowAsync(App.mainWindow);
+            if (result != null && result != "")
+                UserPath = result;
+        }
 
         private string userPath = "", currentPath = "";
         private bool hadPathFailure = false;

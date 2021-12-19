@@ -62,12 +62,15 @@ namespace LegendaryMapperV2.Service
                 .ToList()
                 .Select(x => new LegendaryGame(JsonConvert.DeserializeObject<GameMetadata>(File.ReadAllText(x)), this)).ToList();
 
-            InstalledGameList list = new();
+            if (File.Exists(Path.Combine(configDir, "installed.json")))
+            {
+                InstalledGameList list = new();
 
-            list.Games = JsonConvert.DeserializeObject<Dictionary<string, InstalledGame>>(File.ReadAllText(Path.Combine(configDir, "installed.json")));
+                list.Games = JsonConvert.DeserializeObject<Dictionary<string, InstalledGame>>(File.ReadAllText(Path.Combine(configDir, "installed.json")));
 
-            list.GetGamesAsList()
-                .ForEach(x => Games.Find(y => y.Metadata.AppName == x.AppName)?.SetInstalledData(x));
+                list.GetGamesAsList()
+                    .ForEach(x => Games.Find(y => y.Metadata.AppName == x.AppName)?.SetInstalledData(x));
+            }
 
             // Filter out dlc
             List<LegendaryGame> dlc = new();
