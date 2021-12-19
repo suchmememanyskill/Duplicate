@@ -22,6 +22,7 @@ namespace LegendaryGUIv2.ViewModels
     public class GameViewModel : ViewModelBase
     {
         private LegendaryGame game;
+        private LegendaryDownload download;
         public GameViewModel(LegendaryGame game)
         {
             this.game = game;
@@ -32,11 +33,11 @@ namespace LegendaryGUIv2.ViewModels
                     updateAvailable = true;
                 GameSize = game.InstallSizeReadable;
             }
-                
+
             else
                 NotInstalled = true;
         }
-        
+
         public void Select()
         {
             Selected = true;
@@ -47,6 +48,18 @@ namespace LegendaryGUIv2.ViewModels
         {
             Selected = false;
             Debug.WriteLine($"Unselected {GameName}");
+        }
+
+        public void ApplyDownload(LegendaryDownload download)
+        {
+            this.download = download;
+            Installed = false;
+            UpdateAvailable = false;
+            NotInstalled = false;
+            Downloading = true;
+            DownloadPaused = false;
+            DownloadNotPaused = true;
+            download.OnUpdate = x => UpdateDownloadData();
         }
 
         public void DownloadImages()
@@ -78,6 +91,33 @@ namespace LegendaryGUIv2.ViewModels
                 game.Uninstall();
         });
 
+        public void Install() => game.InstantiateDownload().Start();
+
+        public void Pause()
+        {
+            download.Pause();
+            DownloadPaused = true;
+            DownloadNotPaused = false;
+            DownloadRemainingTime = "Paused";
+        }
+
+        public void Continue()
+        {
+            download.Start();
+            DownloadPaused = false;
+            DownloadNotPaused = true;
+        }
+
+        public void Stop() => download.Stop();
+
+        private void UpdateDownloadData()
+        {
+            DownloadProgress = download.Progress;
+            DownloadSize = $"Download: {download.DownloadSize}";
+            TimeSpan t = TimeSpan.FromSeconds(download.SecondsETA);
+            DownloadRemainingTime = $"Remaining: {t:hh\\:mm\\:ss}";
+        }
+
         private IMsBoxWindow<ButtonResult> CreateMessageBox(string title, string message, ButtonEnum buttons = ButtonEnum.Ok) =>
             MessageBoxManager.GetMessageBoxStandardWindow(new MessageBox.Avalonia.DTO.MessageBoxStandardParams
             {
@@ -89,6 +129,7 @@ namespace LegendaryGUIv2.ViewModels
                 CanResize = true,
             });
 
+        public LegendaryGame Game { get => game; }
         public string GameName { get => game.AppTitle; }
         public static IBrush HalfTransparency { get; } = new SolidColorBrush(Avalonia.Media.Color.FromArgb(128,0,0,0));
         public static IBrush ThreeFourthsTransparency { get; } = new SolidColorBrush(Avalonia.Media.Color.FromArgb(196, 0, 0, 0));
@@ -97,12 +138,19 @@ namespace LegendaryGUIv2.ViewModels
         public Avalonia.Media.Imaging.Bitmap Cover { get => cover; set => this.RaiseAndSetIfChanged(ref cover, value); }
         private Avalonia.Media.Imaging.Bitmap icon;
         public Avalonia.Media.Imaging.Bitmap Icon { get => icon; set => this.RaiseAndSetIfChanged(ref icon, value); }
-        private bool selected = false, installed = false, notInstalled = false, downloading = false, updateAvailable = false;
+        private bool selected = false, installed = false, notInstalled = false, downloading = false, downloadPaused = false, downloadNotPaused = false, updateAvailable = false;
         public bool Selected { get => selected; set => this.RaiseAndSetIfChanged(ref selected, value); }
         public bool Installed { get => installed; set => this.RaiseAndSetIfChanged(ref installed, value); }
         public bool NotInstalled { get => notInstalled; set => this.RaiseAndSetIfChanged(ref notInstalled, value); }
         public bool Downloading { get => downloading; set => this.RaiseAndSetIfChanged(ref downloading, value); }
+        public bool DownloadPaused { get => downloadPaused; set => this.RaiseAndSetIfChanged(ref downloadPaused, value); }
+        public bool DownloadNotPaused { get => downloadNotPaused; set => this.RaiseAndSetIfChanged(ref downloadNotPaused, value); }
         public bool UpdateAvailable { get => updateAvailable; set => this.RaiseAndSetIfChanged(ref updateAvailable, value); }
         public string GameSize { get; }
+        private double downloadProgress;
+        private string downloadSize, downloadRemainingTime;
+        public double DownloadProgress { get => downloadProgress; set => this.RaiseAndSetIfChanged(ref downloadProgress, value); }
+        public string DownloadSize { get => downloadSize; set => this.RaiseAndSetIfChanged(ref downloadSize, value); }
+        public string DownloadRemainingTime { get => downloadRemainingTime; set => this.RaiseAndSetIfChanged(ref downloadRemainingTime, value); }
     }
 }

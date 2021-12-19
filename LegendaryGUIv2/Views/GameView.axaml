@@ -14,9 +14,11 @@
 				<Label Content="{Binding GameName}" HorizontalAlignment="Center">I'm a game!</Label>
 				<Label Content="{Binding GameSize}" IsVisible="{Binding Installed}" HorizontalAlignment="Center" Margin="0,0,0,5">0.69 GB</Label>
 			</StackPanel>
-			<Panel Height="75" DockPanel.Dock="Top" Background="{Binding HalfTransparency}" IsVisible="{Binding Downloading}">
-				
-			</Panel>
+			<StackPanel Height="80" DockPanel.Dock="Top" Background="{Binding HalfTransparency}" IsVisible="{Binding Downloading}" Spacing="2">
+				<ProgressBar Height="25" Value="{Binding DownloadProgress}" CornerRadius="0" />
+				<Label Content="{Binding DownloadSize}" HorizontalAlignment="Center">Download: 69.69MB</Label>
+				<Label Content="{Binding DownloadRemainingTime}" HorizontalAlignment="Center">Remaining: 10:20:30</Label>
+			</StackPanel>
 			<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="10" IsVisible="{Binding Selected}">
 				<Button FontSize="20" Width="150" IsVisible="{Binding Installed}" Command="{Binding Play}" Classes="darker" BorderBrush="LightGreen" BorderThickness="2">
 					<Label HorizontalAlignment="Center">Play</Label>
@@ -30,8 +32,19 @@
 				<Button FontSize="20" Width="150" IsVisible="{Binding Installed}" Command="{Binding Uninstall}" Classes="darker" BorderBrush="Red" BorderThickness="2">
 					<Label HorizontalAlignment="Center">Uninstall</Label>
 				</Button>
-				<Button FontSize="20" Width="150" IsVisible="{Binding NotInstalled}" Classes="darker">
+				<Button FontSize="20" Width="150" IsVisible="{Binding NotInstalled}" Classes="darker" Command="{Binding Install}">
 					<Label HorizontalAlignment="Center">Install</Label>
+				</Button>
+				<Button FontSize="20" Width="150" IsVisible="{Binding DownloadPaused}" Classes="darker" Command="{Binding Continue}">
+					<Label HorizontalAlignment="Center">Continue</Label>
+				</Button>
+
+				<Button FontSize="20" Width="150" IsVisible="{Binding DownloadNotPaused}" Classes="darker" Command="{Binding Pause}">
+					<Label HorizontalAlignment="Center">Pause</Label>
+				</Button>
+
+				<Button FontSize="20" Width="150" IsVisible="{Binding Downloading}" Classes="darker" Command="{Binding Stop}">
+					<Label HorizontalAlignment="Center">Stop</Label>
 				</Button>
 			</StackPanel>
 		</DockPanel>

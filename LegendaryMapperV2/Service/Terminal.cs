@@ -59,6 +59,7 @@ namespace LegendaryMapperV2.Service
             {
                 proc.Start();
                 Thread thread = new Thread(TrackProc);
+                thread.IsBackground = true;
                 thread.Start();
             }
             catch
@@ -105,6 +106,8 @@ namespace LegendaryMapperV2.Service
         {
             Thread stdOut = new Thread(CaptureStdOutOutput);
             Thread stdErr = new Thread(CaptureStdErrOutput);
+            stdOut.IsBackground = true;
+            stdErr.IsBackground = true;
 
             stdOut.Start();
             stdErr.Start();

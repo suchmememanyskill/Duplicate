@@ -3,6 +3,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using LegendaryGUIv2.ViewModels;
 using LegendaryGUIv2.Views;
+using System.Globalization;
 
 namespace LegendaryGUIv2
 {
@@ -15,6 +16,8 @@ namespace LegendaryGUIv2
 
         public override void OnFrameworkInitializationCompleted()
         {
+            CultureInfo.CurrentCulture = new CultureInfo("en-EN", false);
+
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 desktop.MainWindow = new MainWindow
