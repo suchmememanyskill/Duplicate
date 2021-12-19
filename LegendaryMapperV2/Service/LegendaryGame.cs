@@ -58,10 +58,14 @@ namespace LegendaryMapperV2.Service
 
         public void SetInstalledData(InstalledGame installed) => InstalledData = installed;
 
-        public void Launch(bool offline=false, bool skipUpdate=false)
+        public void Launch(bool offline = false, bool skipUpdate = false) => LaunchCommand(offline, skipUpdate).Start();
+        public LegendaryCommand LaunchCommand(bool offline = false, bool skipUpdate = false)
         {
             if (InstalledData == null)
                 throw new Exception("Game is not installed");
+
+            if (Parser.Auth.OfflineLogin)
+                offline = true;
 
             string args = "";
             if (offline)
@@ -70,7 +74,7 @@ namespace LegendaryMapperV2.Service
             if (!offline && skipUpdate)
                 args += "--skip-version-check";
 
-            new LegendaryCommand($"launch {InstalledData.AppName} {args}").Start();
+            return new LegendaryCommand($"launch {InstalledData.AppName} {args}");
         }
 
         public LegendaryDownload InstantiateDownload() => new LegendaryDownload(this);

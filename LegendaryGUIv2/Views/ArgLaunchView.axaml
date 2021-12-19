@@ -1,0 +1,16 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="LegendaryGUIv2.Views.ArgLaunchView">
+	<StackPanel VerticalAlignment="Center">
+		<Label Content="{Binding Text}" HorizontalAlignment="Center" Margin="10" FontSize="20">This is a test message</Label>
+		<StackPanel Orientation="Horizontal" Margin="5" Spacing="5" HorizontalAlignment="Center">
+			<Button Content="Open LegendaryGUI" Command="{Binding $parent[Window].DataContext.SetMainViewModel}" />
+			<Button IsVisible="{Binding LaunchAvailable}" Content="Launch Anyway" Command="{Binding ForceLaunch}" />
+			<Button IsVisible="{Binding ConsoleAvailable}" Content="Console" Command="{Binding ViewConsole}" />
+			<Button Content="Exit" Command="{Binding ExitApplication}" />
+		</StackPanel>
+	</StackPanel>
+</UserControl>

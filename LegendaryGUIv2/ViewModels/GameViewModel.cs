@@ -84,7 +84,7 @@ namespace LegendaryGUIv2.ViewModels
         }
 
         public void Play() => game.Launch();
-        public void Info() => CreateMessageBox("Game information", $"Game: {game.AppTitle}\nGame ID: {game.AppName}\nInstalled version: {game.InstalledVersion}\nAvalilable version: {game.AvailableVersion}\nInstalled path: {game.InstallPath}").Show();
+        public void Info() => CreateMessageBox("Game information", $"Game: {game.AppTitle}\nGame ID: {game.AppName}\nInstalled version: {game.InstalledVersion}\nAvalilable version: {game.AvailableVersion}\nInstalled path: {game.InstallPath}             ").Show();
         public void Uninstall() => CreateMessageBox("Uninstall", $"Are you sure you want to uninstall {game.AppTitle}?        ", ButtonEnum.OkCancel).Show().ContinueWith(x =>
         {
             if (x.Result == ButtonResult.Ok)
