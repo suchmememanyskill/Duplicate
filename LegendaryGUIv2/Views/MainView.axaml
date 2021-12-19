@@ -18,8 +18,8 @@
 		<ScrollViewer Margin="10">
 			<StackPanel>
 				<StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
-					<Border Background="Gray" CornerRadius="10" Padding="5,1,5,1">
-						<Label FontSize="18">Installed</Label>
+					<Border Background="Green" CornerRadius="10" Padding="5,1,5,1">
+						<Label FontSize="18" VerticalAlignment="Center">Installed</Label>
 					</Border>
 					<Button FontSize="18" Command="{Binding BtnUpdateSteamGames}">Update Steam games</Button>
 					<Button FontSize="18" Command="{Binding BtnRemoveSteamGames}">Remove Steam games</Button>
@@ -32,8 +32,8 @@
 					</ListBox.ItemsPanel>
 				</ListBox>
 				<StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
-					<Border Background="Gray" CornerRadius="10" Padding="5,1,5,1">
-						<Label FontSize="18">Not Installed</Label>
+					<Border Background="Blue" CornerRadius="10" Padding="5,1,5,1">
+						<Label FontSize="18" VerticalAlignment="Center">Not Installed</Label>
 					</Border>
 					<Button FontSize="18" Content="{Binding DownloadLocation}" Command="{Binding OnPathChange}">Download location: ~/Legendary</Button>
 				</StackPanel>

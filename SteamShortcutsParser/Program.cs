@@ -52,8 +52,11 @@ namespace SteamShortcutsParser
 
         void Start()
         {
+            /*
             auth = new LegendaryAuth();
             auth.AttemptLogin(Success, Failure);
+            */
+            Console.WriteLine(AppDomain.CurrentDomain.FriendlyName);
         }
 
         static void Main(string[] args) => new Program().Start();

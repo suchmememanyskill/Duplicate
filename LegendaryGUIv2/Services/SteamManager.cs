@@ -64,11 +64,11 @@ namespace LegendaryGUI.Services
 
             if (Environment.OSVersion.Platform == PlatformID.Win32NT)
             {
-                entry.Exe = Path.GetFullPath("./LegendaryGUI.exe");
+                entry.Exe = Path.GetFullPath($"./{AppDomain.CurrentDomain.FriendlyName}.exe");
             }
             else
             {
-                entry.Exe = Path.GetFullPath("./LegendaryGUI");
+                entry.Exe = Path.GetFullPath($"./{AppDomain.CurrentDomain.FriendlyName}");
             }
             entry.LaunchOptions = $"{appName}";
         }
