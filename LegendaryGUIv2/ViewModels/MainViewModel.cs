@@ -23,6 +23,8 @@ namespace LegendaryGUIv2.ViewModels
             manager.GetGames();
         }
 
+        public void RefreshLibrary() => manager.GetGames();
+
         public void OnLibraryRefresh()
         {
             if (imageDownloadThread != null && imageDownloadThread.IsAlive)

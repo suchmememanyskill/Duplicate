@@ -81,6 +81,7 @@ namespace LegendaryMapperV2.Service
 
             Games = Games.OrderBy(x => x.AppTitle).ToList();
 
+            /*
             Games.ForEach(x =>
             {
                 Debug.WriteLine(x.AppTitle);
@@ -89,6 +90,7 @@ namespace LegendaryMapperV2.Service
                     Debug.WriteLine("+ " + y.AppTitle);
                 });
             });
+            */
 
             OnGameRefresh?.Invoke(this);
         }
