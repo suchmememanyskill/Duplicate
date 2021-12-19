@@ -83,8 +83,14 @@ namespace LegendaryGUIv2.ViewModels
                 }
             }
         }
+        public void Play()
+        {
+            LegendaryCommand x = game.LaunchCommand();
+            x.Block().Start();
 
-        public void Play() => game.Launch();
+            if (x.ExitCode != 0)
+                Utils.CreateMessageBox("An erorr occured!", $"Something went wrong while launching {game.AppTitle}!\n\nStandard out:\n{string.Join('\n', x.Terminal.StdOut)}\n\nStandard error:\n{string.Join('\n', x.Terminal.StdErr)}    ").Show();
+        }
         public void Info() => Utils.CreateMessageBox("Game information", $"Game: {game.AppTitle}\nGame ID: {game.AppName}\nInstalled version: {game.InstalledVersion}\nAvalilable version: {game.AvailableVersion}\nInstalled path: {game.InstallPath}             ").Show();
         public void Uninstall() => Utils.CreateMessageBox("Uninstall", $"Are you sure you want to uninstall {game.AppTitle}?        ", ButtonEnum.OkCancel).Show().ContinueWith(x =>
         {
