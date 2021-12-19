@@ -24,10 +24,22 @@ namespace LegendaryMapperV2.Service
             get => gameDirectory;
             set
             {
-                if (!Directory.Exists(value))
+                string val = value.Trim();
+                if (val == "")
+                {
+                    if (File.Exists("./DlLoc.txt"))
+                        File.Delete("./DlLoc.txt");
+
+                    gameDirectory = "";
+                    return;
+                }
+
+                if (!Directory.Exists(val))
                     throw new Exception("Invalid game directory");
 
-                gameDirectory = value;
+                File.WriteAllText("./DlLoc.txt", val);
+
+                gameDirectory = val;
             }
         }
         public List<LegendaryDownload> Downloads { get; private set; } = new List<LegendaryDownload>();
@@ -36,6 +48,12 @@ namespace LegendaryMapperV2.Service
         {
             Auth = auth;
             OnGameRefresh = onGameRefresh;
+            if (File.Exists("./DlLoc.txt"))
+            {
+                string dir = File.ReadAllText("./DlLoc.txt");
+                if (Directory.Exists(dir))
+                    gameDirectory = dir;
+            }      
         }
         public void GetGames()
         {

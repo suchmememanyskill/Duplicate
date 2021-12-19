@@ -14,14 +14,21 @@ namespace LegendaryGUIv2.ViewModels
     {
         private LegendaryAuth auth;
         private LegendaryGameManager manager;
+        private MainWindowViewModel window;
+        public LegendaryGameManager Manager { get => manager; }
         private Thread? imageDownloadThread;
         private bool stopImageDownloadThread = false;
-        public MainViewModel(LegendaryAuth auth)
+        public MainViewModel(LegendaryAuth auth, MainWindowViewModel window)
         {
             this.auth = auth;
+            this.window = window;
             manager = new(auth, x => OnLibraryRefresh());
             manager.GetGames();
+            SetDownloadLocationText();
         }
+
+        public void OnPathChange() => SetViewOnWindow(new ChangeGameFolderViewModel(this));
+        public void SetViewOnWindow(ViewModelBase view) => window.SetViewModel(view);
 
         public void RefreshLibrary() => manager.GetGames();
 
@@ -79,8 +86,20 @@ namespace LegendaryGUIv2.ViewModels
             }
         }
 
+        public void SetDownloadLocationText()
+        {
+            if (manager.GameDirectory != "")
+                DownloadLocation = $"Download location: {manager.GameDirectory}";
+            else
+                DownloadLocation = $"Download location: ~/Legendary";
+        }
+
         private string gameCountText = "";
         public string GameCountText { get => gameCountText; set => this.RaiseAndSetIfChanged(ref gameCountText, value); }
+
+        private string downloadLocation = "";
+        public string DownloadLocation { get => downloadLocation; set => this.RaiseAndSetIfChanged(ref downloadLocation, value); }
+
         private ObservableCollection<GameViewModel> installed = new();
         public ObservableCollection<GameViewModel> Installed { get => installed; set => this.RaiseAndSetIfChanged(ref installed, value); }
         private ObservableCollection<GameViewModel> notInstalled = new();

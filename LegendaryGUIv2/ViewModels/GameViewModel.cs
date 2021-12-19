@@ -57,8 +57,8 @@ namespace LegendaryGUIv2.ViewModels
             UpdateAvailable = false;
             NotInstalled = false;
             Downloading = true;
-            DownloadPaused = false;
-            DownloadNotPaused = true;
+            DownloadPaused = true;
+            DownloadNotPaused = false;
             download.OnUpdate = x => UpdateDownloadData();
         }
 
@@ -98,7 +98,6 @@ namespace LegendaryGUIv2.ViewModels
             download?.Pause();
             DownloadPaused = true;
             DownloadNotPaused = false;
-            DownloadRemainingTime = "Paused";
         }
 
         public void Continue()
@@ -112,10 +111,13 @@ namespace LegendaryGUIv2.ViewModels
 
         private void UpdateDownloadData()
         {
+            DownloadPaused = false;
+            DownloadNotPaused = true;
             DownloadProgress = download!.Progress;
             DownloadSize = $"Download: {download!.DownloadSize}";
             TimeSpan t = TimeSpan.FromSeconds(download!.SecondsETA);
             DownloadRemainingTime = $"Remaining: {t:hh\\:mm\\:ss}";
+            DownloadUnpackedSize = download!.GameSize;
         }
 
         private IMsBoxWindow<ButtonResult> CreateMessageBox(string title, string message, ButtonEnum buttons = ButtonEnum.Ok) =>
@@ -148,9 +150,10 @@ namespace LegendaryGUIv2.ViewModels
         public bool UpdateAvailable { get => updateAvailable; set => this.RaiseAndSetIfChanged(ref updateAvailable, value); }
         public string GameSize { get; } = "";
         private double downloadProgress = 0.00;
-        private string downloadSize = "", downloadRemainingTime = "";
+        private string downloadSize = "", downloadRemainingTime = "", downloadUnpackedSize = "";
         public double DownloadProgress { get => downloadProgress; set => this.RaiseAndSetIfChanged(ref downloadProgress, value); }
         public string DownloadSize { get => downloadSize; set => this.RaiseAndSetIfChanged(ref downloadSize, value); }
+        public string DownloadUnpackedSize { get => downloadUnpackedSize; set => this.RaiseAndSetIfChanged(ref downloadUnpackedSize, value); }
         public string DownloadRemainingTime { get => downloadRemainingTime; set => this.RaiseAndSetIfChanged(ref downloadRemainingTime, value); }
     }
 }

@@ -19,9 +19,7 @@
 			<StackPanel>
 				<StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
 					<Border Background="Gray" CornerRadius="10" Padding="5,1,5,1">
-						<Label FontSize="18">
-							Installed
-						</Label>
+						<Label FontSize="18">Installed</Label>
 					</Border>
 				</StackPanel>
 				<ListBox HorizontalAlignment="Center" Items="{Binding Installed}" SelectedItem="{Binding SelectedGameInstalled}" Background="Transparent" Margin="0 20">
@@ -33,10 +31,9 @@
 				</ListBox>
 				<StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
 					<Border Background="Gray" CornerRadius="10" Padding="5,1,5,1">
-						<Label FontSize="18">
-							Not Installed
-						</Label>
+						<Label FontSize="18">Not Installed</Label>
 					</Border>
+					<Button FontSize="18" Content="{Binding DownloadLocation}" Command="{Binding OnPathChange}">Download location: ~/Legendary</Button>
 				</StackPanel>
 				<ListBox HorizontalAlignment="Center" Items="{Binding NotInstalled}" SelectedItem="{Binding SelectedGameNotInstalled}" Background="Transparent" Margin="0 20">
 					<ListBox.ItemsPanel>

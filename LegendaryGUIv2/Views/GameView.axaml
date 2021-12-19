@@ -13,11 +13,13 @@
 			<StackPanel VerticalAlignment="Center" Background="{Binding HalfTransparency}" DockPanel.Dock="Bottom" Height="50">
 				<Label Content="{Binding GameName}" HorizontalAlignment="Center">I'm a game!</Label>
 				<Label Content="{Binding GameSize}" IsVisible="{Binding Installed}" HorizontalAlignment="Center" Margin="0,0,0,5">0.69 GB</Label>
+				<Label Content="{Binding DownloadUnpackedSize}" IsVisible="{Binding Downloading}" HorizontalAlignment="Center" Margin="0,0,0,5">0.69 GB</Label>
 			</StackPanel>
 			<StackPanel Height="80" DockPanel.Dock="Top" Background="{Binding HalfTransparency}" IsVisible="{Binding Downloading}" Spacing="2">
 				<ProgressBar Height="25" Value="{Binding DownloadProgress}" CornerRadius="0" />
 				<Label Content="{Binding DownloadSize}" HorizontalAlignment="Center">Download: 69.69MB</Label>
-				<Label Content="{Binding DownloadRemainingTime}" HorizontalAlignment="Center">Remaining: 10:20:30</Label>
+				<Label IsVisible="{Binding DownloadNotPaused}" Content="{Binding DownloadRemainingTime}" HorizontalAlignment="Center">Remaining: 10:20:30</Label>
+				<Label IsVisible="{Binding DownloadPaused}" HorizontalAlignment="Center">Paused</Label>
 			</StackPanel>
 			<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="10" IsVisible="{Binding Selected}">
 				<Button FontSize="20" Width="150" IsVisible="{Binding Installed}" Command="{Binding Play}" Classes="darker" BorderBrush="LightGreen" BorderThickness="2">
