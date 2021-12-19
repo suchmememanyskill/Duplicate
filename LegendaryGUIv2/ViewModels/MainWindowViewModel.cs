@@ -8,7 +8,6 @@ namespace LegendaryGUIv2.ViewModels
     public class MainWindowViewModel : ViewModelBase
     {
         private LegendaryAuth auth;
-        private LegendaryGameManager manager;
 
         public MainWindowViewModel()
         {
@@ -30,8 +29,8 @@ namespace LegendaryGUIv2.ViewModels
 
         private void OnLoginFailure() => Content = loginFailure;
 
-        private ViewModelBase content = null;
+        private ViewModelBase? content = null;
         private LoginFailureViewModel loginFailure;
-        public ViewModelBase Content { get => content; set => content = this.RaiseAndSetIfChanged(ref content, value); }
+        public ViewModelBase? Content { get => content; set => content = this.RaiseAndSetIfChanged(ref content, value); }
     }
 }

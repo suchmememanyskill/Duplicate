@@ -14,7 +14,7 @@ namespace LegendaryGUIv2.ViewModels
     {
         private LegendaryAuth auth;
         private LegendaryGameManager manager;
-        private Thread imageDownloadThread;
+        private Thread? imageDownloadThread;
         private bool stopImageDownloadThread = false;
         public MainViewModel(LegendaryAuth auth)
         {
@@ -61,8 +61,8 @@ namespace LegendaryGUIv2.ViewModels
         public string GameCountText { get => gameCountText; set => this.RaiseAndSetIfChanged(ref gameCountText, value); }
         private ObservableCollection<GameViewModel> installed = new();
         public ObservableCollection<GameViewModel> Installed { get => installed; set => this.RaiseAndSetIfChanged(ref installed, value); }
-        private GameViewModel selectedGame;
-        public GameViewModel SelectedGame { get => selectedGame; 
+        private GameViewModel? selectedGame;
+        public GameViewModel? SelectedGame { get => selectedGame; 
             set {
                 selectedGame?.Unselect();
                 this.RaiseAndSetIfChanged(ref selectedGame, value);

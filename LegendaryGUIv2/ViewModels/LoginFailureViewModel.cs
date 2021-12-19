@@ -53,7 +53,7 @@ namespace LegendaryGUIv2.ViewModels
             Submitted = false;
         }
 
-        public string SidField { get; set; }
+        public string SidField { get; set; } = "";
         private bool loginFailure = false;
         public bool LoginFailure { get => loginFailure; set => this.RaiseAndSetIfChanged(ref loginFailure, value); }
         private bool submitted = false;

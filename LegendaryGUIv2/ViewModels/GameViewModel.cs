@@ -22,7 +22,7 @@ namespace LegendaryGUIv2.ViewModels
     public class GameViewModel : ViewModelBase
     {
         private LegendaryGame game;
-        private LegendaryDownload download;
+        private LegendaryDownload? download;
         public GameViewModel(LegendaryGame game)
         {
             this.game = game;
@@ -95,7 +95,7 @@ namespace LegendaryGUIv2.ViewModels
 
         public void Pause()
         {
-            download.Pause();
+            download?.Pause();
             DownloadPaused = true;
             DownloadNotPaused = false;
             DownloadRemainingTime = "Paused";
@@ -103,18 +103,18 @@ namespace LegendaryGUIv2.ViewModels
 
         public void Continue()
         {
-            download.Start();
+            download?.Start();
             DownloadPaused = false;
             DownloadNotPaused = true;
         }
 
-        public void Stop() => download.Stop();
+        public void Stop() => download?.Stop();
 
         private void UpdateDownloadData()
         {
-            DownloadProgress = download.Progress;
-            DownloadSize = $"Download: {download.DownloadSize}";
-            TimeSpan t = TimeSpan.FromSeconds(download.SecondsETA);
+            DownloadProgress = download!.Progress;
+            DownloadSize = $"Download: {download!.DownloadSize}";
+            TimeSpan t = TimeSpan.FromSeconds(download!.SecondsETA);
             DownloadRemainingTime = $"Remaining: {t:hh\\:mm\\:ss}";
         }
 
@@ -134,10 +134,10 @@ namespace LegendaryGUIv2.ViewModels
         public static IBrush HalfTransparency { get; } = new SolidColorBrush(Avalonia.Media.Color.FromArgb(128,0,0,0));
         public static IBrush ThreeFourthsTransparency { get; } = new SolidColorBrush(Avalonia.Media.Color.FromArgb(196, 0, 0, 0));
 
-        private Avalonia.Media.Imaging.Bitmap cover;
-        public Avalonia.Media.Imaging.Bitmap Cover { get => cover; set => this.RaiseAndSetIfChanged(ref cover, value); }
-        private Avalonia.Media.Imaging.Bitmap icon;
-        public Avalonia.Media.Imaging.Bitmap Icon { get => icon; set => this.RaiseAndSetIfChanged(ref icon, value); }
+        private Avalonia.Media.Imaging.Bitmap? cover;
+        public Avalonia.Media.Imaging.Bitmap? Cover { get => cover; set => this.RaiseAndSetIfChanged(ref cover, value); }
+        private Avalonia.Media.Imaging.Bitmap? icon;
+        public Avalonia.Media.Imaging.Bitmap? Icon { get => icon; set => this.RaiseAndSetIfChanged(ref icon, value); }
         private bool selected = false, installed = false, notInstalled = false, downloading = false, downloadPaused = false, downloadNotPaused = false, updateAvailable = false;
         public bool Selected { get => selected; set => this.RaiseAndSetIfChanged(ref selected, value); }
         public bool Installed { get => installed; set => this.RaiseAndSetIfChanged(ref installed, value); }
@@ -146,9 +146,9 @@ namespace LegendaryGUIv2.ViewModels
         public bool DownloadPaused { get => downloadPaused; set => this.RaiseAndSetIfChanged(ref downloadPaused, value); }
         public bool DownloadNotPaused { get => downloadNotPaused; set => this.RaiseAndSetIfChanged(ref downloadNotPaused, value); }
         public bool UpdateAvailable { get => updateAvailable; set => this.RaiseAndSetIfChanged(ref updateAvailable, value); }
-        public string GameSize { get; }
-        private double downloadProgress;
-        private string downloadSize, downloadRemainingTime;
+        public string GameSize { get; } = "";
+        private double downloadProgress = 0.00;
+        private string downloadSize = "", downloadRemainingTime = "";
         public double DownloadProgress { get => downloadProgress; set => this.RaiseAndSetIfChanged(ref downloadProgress, value); }
         public string DownloadSize { get => downloadSize; set => this.RaiseAndSetIfChanged(ref downloadSize, value); }
         public string DownloadRemainingTime { get => downloadRemainingTime; set => this.RaiseAndSetIfChanged(ref downloadRemainingTime, value); }
