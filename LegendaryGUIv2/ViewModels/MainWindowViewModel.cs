@@ -12,11 +12,18 @@ namespace LegendaryGUIv2.ViewModels
 
         public MainWindowViewModel(string[] args)
         {
-            auth = new LegendaryAuth();
-            auth.AttemptLogin(OnLogin, OnLoginFailure);
-            loginFailure = new(this);
-            Content = new LoginView();
             this.args = args;
+            auth = new LegendaryAuth();
+            try
+            {
+                auth.AttemptLogin(OnLogin, OnLoginFailure);
+                loginFailure = new(this);
+                Content = new LoginView();
+            }
+            catch
+            {
+                Content = new NotInstalledViewModel();
+            }
         }
 
         public void Login(string sid)
