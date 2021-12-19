@@ -9,6 +9,7 @@ using MessageBox.Avalonia;
 using MessageBox.Avalonia.BaseWindows.Base;
 using Avalonia.Controls;
 using MessageBox.Avalonia.Enums;
+using LegendaryGUIv2.Services;
 
 namespace LegendaryGUIv2.ViewModels
 {
@@ -54,18 +55,7 @@ namespace LegendaryGUIv2.ViewModels
 
         public void ExitApplication() => Environment.Exit(0);
         public void ForceLaunch() => game?.LaunchCommand(false, true).Then(x => ExitApplication()).Start();
-        public void ViewConsole() => CreateMessageBox("Console", cliOut).Show();
-
-        private IMsBoxWindow<ButtonResult> CreateMessageBox(string title, string message, ButtonEnum buttons = ButtonEnum.Ok) =>
-            MessageBoxManager.GetMessageBoxStandardWindow(new MessageBox.Avalonia.DTO.MessageBoxStandardParams
-            {
-                ButtonDefinitions = buttons,
-                ContentTitle = title,
-                ContentMessage = message,
-                SizeToContent = SizeToContent.WidthAndHeight,
-                WindowStartupLocation = WindowStartupLocation.CenterOwner,
-                CanResize = true,
-            });
+        public void ViewConsole() => Utils.CreateMessageBox("Console", cliOut).Show();
 
         private string text = "Launching game...";
         private bool launchAvailable = false, consoleAvailable = false;

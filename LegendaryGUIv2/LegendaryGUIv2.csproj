@@ -3,6 +3,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
+    <AssemblyName>LegendaryGUI</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
@@ -19,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LegendaryMapperV2\LegendaryMapperV2.csproj" />
+    <ProjectReference Include="..\VDFMapper\VDFMapper.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Views\LoginFailureView.axaml.cs">

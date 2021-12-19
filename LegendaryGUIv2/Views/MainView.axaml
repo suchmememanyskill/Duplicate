@@ -21,6 +21,8 @@
 					<Border Background="Gray" CornerRadius="10" Padding="5,1,5,1">
 						<Label FontSize="18">Installed</Label>
 					</Border>
+					<Button FontSize="18" Command="{Binding BtnUpdateSteamGames}">Update Steam games</Button>
+					<Button FontSize="18" Command="{Binding BtnRemoveSteamGames}">Remove Steam games</Button>
 				</StackPanel>
 				<ListBox HorizontalAlignment="Center" Items="{Binding Installed}" SelectedItem="{Binding SelectedGameInstalled}" Background="Transparent" Margin="0 20">
 					<ListBox.ItemsPanel>

@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using ReactiveUI;
 using System.Collections.ObjectModel;
 using System.Threading;
+using LegendaryGUIv2.Services;
+using LegendaryGUI.Services;
 
 namespace LegendaryGUIv2.ViewModels
 {
@@ -69,6 +71,36 @@ namespace LegendaryGUIv2.ViewModels
             imageDownloadThread = new(DownloadAllImages);
             imageDownloadThread.IsBackground = true;
             imageDownloadThread.Start();
+        }
+
+        public void BtnUpdateSteamGames()
+        {
+            SteamManager m = new SteamManager();
+            if (!m.Read())
+            {
+                Utils.CreateMessageBox("Fatal error!", $"Failure reading {m.VdfPath}").Show();
+                return;
+            }
+            Tuple<int, int> res = m.UpdateWithLegendaryGameList(manager.InstalledGames);
+            m.Write();
+
+            Utils.CreateMessageBox("Steam games updated", $"Removed {res.Item1}, Added {res.Item2} on Steam with '(Epic)' in name\nPlease restart steam for changes to take effect").Show();
+        }
+
+        public void BtnRemoveSteamGames()
+        {
+            SteamManager m = new SteamManager();
+            if (!m.Read())
+            {
+                Utils.CreateMessageBox("Fatal error!", $"Failure reading {m.VdfPath}").Show();
+                return;
+            }
+            int count = m.RemoveAllGamesWithTag();
+
+            if (count != 0)
+                m.Write();
+
+            Utils.CreateMessageBox("Steam games removed", $"Removed {count} on Steam with '(Epic)' in name\nPlease restart steam for changes to take effect").Show();
         }
 
         private void DownloadAllImages()
