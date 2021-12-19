@@ -3,7 +3,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <AssemblyName>LegendaryGUIv2</AssemblyName>
+    <AssemblyName>Duplicate</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />

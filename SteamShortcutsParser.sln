@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LegendaryGUI", "LegendaryGU
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LegendaryMapperV2", "LegendaryMapperV2\LegendaryMapperV2.csproj", "{1723AE29-586F-473D-9B34-CBD322661C5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegendaryGUIv2", "LegendaryGUIv2\LegendaryGUIv2.csproj", "{B66513B2-12A7-4E9B-8308-C9209CE0D8B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Duplicate", "LegendaryGUIv2\Duplicate.csproj", "{B66513B2-12A7-4E9B-8308-C9209CE0D8B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

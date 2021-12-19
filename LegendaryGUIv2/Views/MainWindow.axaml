@@ -7,7 +7,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="LegendaryGUIv2.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
-        Title="LegendaryGUIv2"
+        Title="Duplicate : GUI for Legendary"
 		Content="{Binding Content}">
 
 	<Window.Styles>
