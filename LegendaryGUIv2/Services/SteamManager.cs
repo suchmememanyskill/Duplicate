@@ -116,19 +116,17 @@ namespace LegendaryGUI.Services
                 if (boxTall != null)
                 {
                     if (!File.Exists(Path.Combine(gridPath, $"{entry.AppId}.{boxTall.UrlExt}"))){
-                        boxTall.SaveImageAs(Path.Combine(gridPath, $"{entry.AppId}"));
+                        File.WriteAllBytes(Path.Combine(gridPath, $"{entry.AppId}.{boxTall.UrlExt}"), boxTall.GetImage());
                     }
 
                     if (!File.Exists(Path.Combine(gridPath, $"{entry.AppId}p.{boxTall.UrlExt}")))
-                    {
                         File.Copy(Path.Combine(gridPath, $"{entry.AppId}.{boxTall.UrlExt}"), Path.Combine(gridPath, $"{entry.AppId}p.{boxTall.UrlExt}"));
-                    }
                 }
                     
                 if (box != null)
                 {
-                    if (!File.Exists(Path.Combine(gridPath, $"{entry.AppId}_hero.{boxTall.UrlExt}")))
-                        box.SaveImageAs(Path.Combine(gridPath, $"{entry.AppId}_hero"));
+                    if (!File.Exists(Path.Combine(gridPath, $"{entry.AppId}_hero.{box.UrlExt}")))
+                        File.WriteAllBytes(Path.Combine(gridPath, $"{entry.AppId}_hero.{box.UrlExt}"), box.GetImage());
                 }
 
                 addedCount++;

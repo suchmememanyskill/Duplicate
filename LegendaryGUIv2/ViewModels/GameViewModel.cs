@@ -67,20 +67,14 @@ namespace LegendaryGUIv2.ViewModels
         {
             if (game.GameBannerTall != null)
             {
-                using (WebClient client = new WebClient())
-                {
-                    Stream stream = new MemoryStream(client.DownloadData(game.GameBannerTall.Url));
-                    Cover = Avalonia.Media.Imaging.Bitmap.DecodeToHeight(stream, 300);
-                }
+                Stream stream = new MemoryStream(game.GameBannerTall.GetImage());
+                Cover = Avalonia.Media.Imaging.Bitmap.DecodeToHeight(stream, 300);
             }
 
             if (game.GameLogo != null)
             {
-                using (WebClient client = new WebClient())
-                {
-                    Stream stream = new MemoryStream(client.DownloadData(game.GameLogo.Url));
-                    Icon = Avalonia.Media.Imaging.Bitmap.DecodeToWidth(stream, 200);
-                }
+                Stream stream = new MemoryStream(game.GameLogo.GetImage());
+                Icon = Avalonia.Media.Imaging.Bitmap.DecodeToWidth(stream, 200);
             }
         }
         public void Play()

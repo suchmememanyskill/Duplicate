@@ -7,6 +7,7 @@ using System.Globalization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Net;
+using System.IO;
 
 namespace LegendaryMapperV2.Model
 {
@@ -77,12 +78,46 @@ namespace LegendaryMapperV2.Model
                 return a;
             }
         }
+        [JsonIgnore]
+        public string FileName
+        {
+            get
+            {
+                string a = Url.AbsolutePath.Split('/').Last();
+                return a;
+            }
+        }
+
 
         public void SaveImageAs(string path)
         {
             using (WebClient client = new WebClient())
             {
                 client.DownloadFile(Url, $"{path}.{UrlExt}");
+            }
+        }
+
+        public byte[] GetImage(bool cache = true)
+        {
+            string cachePath = Path.Join(Path.GetTempPath(), "LegendaryImageCache", FileName);
+            string cachePathFolder = Path.Join(Path.GetTempPath(), "LegendaryImageCache");
+
+            if (cache)
+                if (File.Exists(cachePath))
+                    return File.ReadAllBytes(cachePath);
+
+            using (WebClient client = new WebClient())
+            {
+                byte[] bytes = client.DownloadData(Url);
+                if (cache)
+                {
+                    if (!Directory.Exists(cachePathFolder))
+                        Directory.CreateDirectory(cachePathFolder);
+
+                    File.WriteAllBytes(cachePath, bytes);
+                }
+
+                return bytes;
             }
         }
     }
