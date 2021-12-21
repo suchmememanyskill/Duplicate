@@ -1,4 +1,7 @@
+using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.Threading;
 using LegendaryMapperV2.Service;
 using ReactiveUI;
 
@@ -38,12 +41,13 @@ namespace LegendaryGUIv2.ViewModels
         private void OnLogin()
         {
             if (args.Length < 1)
-                Content = mainView = new MainViewModel(auth, this);
+                SetMainViewModel();
             else
                 Content = new ArgLaunchViewModel(auth, args);
         }
 
         public void SetMainViewModel() => Content = mainView = new MainViewModel(auth, this);
+
         private void OnLoginFailure() => Content = loginFailure;
 
         private ViewModelBase? content = null;

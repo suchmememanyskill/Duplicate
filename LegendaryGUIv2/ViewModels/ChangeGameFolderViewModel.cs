@@ -40,7 +40,7 @@ namespace LegendaryGUIv2.ViewModels
         public async Task OnBrowse()
         {
             OpenFolderDialog dialog = new();
-            string result = await dialog.ShowAsync(App.mainWindow);
+            string result = await dialog.ShowAsync(App.MainWindow);
             if (result != null && result != "")
                 UserPath = result;
         }

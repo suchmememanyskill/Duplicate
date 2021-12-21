@@ -12,6 +12,7 @@
 				<Label VerticalAlignment="Center" Margin="10,0,0,0" Content="{Binding GameCountText}" FontSize="20">Found 6 games, 9 installed</Label>
 			</StackPanel>
 			<StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
+				<TextBox Watermark="Search..." VerticalAlignment="Center" Margin="10,0,10,0" Width="250" Text="{Binding SearchBoxText}" />
 				<Button FontSize="16" Margin="0,0,5,0" Command="{Binding RefreshLibrary}">Reload games</Button>
 			</StackPanel>
 		</DockPanel>

@@ -16,7 +16,8 @@ namespace LegendaryGUIv2
             AvaloniaXamlLoader.Load(this);
         }
 
-        public static Avalonia.Controls.Window mainWindow;
+        public static Avalonia.Controls.Window MainWindow { get; private set; }
+        public static IClassicDesktopStyleApplicationLifetime Desktop { get; private set; }
 
         public override void OnFrameworkInitializationCompleted()
         {
@@ -30,7 +31,8 @@ namespace LegendaryGUIv2
                     DataContext = new MainWindowViewModel(desktop.Args),
                 };
 
-                mainWindow = desktop.MainWindow;
+                MainWindow = desktop.MainWindow;
+                Desktop = desktop;
             }
 
             base.OnFrameworkInitializationCompleted();
