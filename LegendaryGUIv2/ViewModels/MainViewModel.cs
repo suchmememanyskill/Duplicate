@@ -132,7 +132,7 @@ namespace LegendaryGUIv2.ViewModels
             else
             {
                 ObservableCollection < GameViewModel > a = new(allInstalled.Where(x => x.Game.AppTitle.Contains(SearchBoxText, StringComparison.OrdinalIgnoreCase)));
-                ObservableCollection < GameViewModel > b = new(notInstalled.Where(x => x.Game.AppTitle.Contains(SearchBoxText, StringComparison.OrdinalIgnoreCase)));;
+                ObservableCollection < GameViewModel > b = new(allNotInstalled.Where(x => x.Game.AppTitle.Contains(SearchBoxText, StringComparison.OrdinalIgnoreCase)));;
                 Installed = a;
                 NotInstalled = b;
             }
