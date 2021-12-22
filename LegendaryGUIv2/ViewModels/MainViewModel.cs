@@ -57,8 +57,8 @@ namespace LegendaryGUIv2.ViewModels
             }
 
             GameCountText = $"Found {manager.Games.Count} games, {manager.InstalledGames.Count} installed";
-            Installed = new(manager.InstalledGames.Select(x => new GameViewModel(x)));
-            NotInstalled = new(manager.NotInstalledGames.Select(x => new GameViewModel(x)));
+            Installed = new(manager.InstalledGames.Select(x => new GameViewModel(x, this)));
+            NotInstalled = new(manager.NotInstalledGames.Select(x => new GameViewModel(x, this)));
 
             List<GameViewModel> transferList = new();
             manager.Downloads.ForEach(x =>

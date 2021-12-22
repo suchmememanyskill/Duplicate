@@ -24,8 +24,10 @@ namespace LegendaryGUIv2.ViewModels
     {
         private LegendaryGame game;
         private LegendaryDownload? download;
-        public GameViewModel(LegendaryGame game)
+        private MainViewModel mainView;
+        public GameViewModel(LegendaryGame game, MainViewModel mainView)
         {
+            this.mainView = mainView;
             this.game = game;
             if (game.IsInstalled)
             {
@@ -87,7 +89,8 @@ namespace LegendaryGUIv2.ViewModels
             if (x.ExitCode != 0)
                 Utils.CreateMessageBox("An error occured!", $"Something went wrong while launching {game.AppTitle}!\n\nStandard out:\n{string.Join('\n', x.Terminal.StdOut)}\n\nStandard error:\n{string.Join('\n', x.Terminal.StdErr)}    ").Show();
         }
-        public void Info() => Utils.CreateMessageBox("Game information", $"Game: {game.AppTitle}\nGame ID: {game.AppName}\nInstalled version: {game.InstalledVersion}\nAvalilable version: {game.AvailableVersion}\nInstalled path: {game.InstallPath}             ").Show();
+
+        public void Info() => mainView.SetViewOnWindow(new GameInfoViewModel(mainView, game));
         public void Uninstall() => Utils.CreateMessageBox("Uninstall", $"Are you sure you want to uninstall {game.AppTitle}?        ", ButtonEnum.OkCancel).Show().ContinueWith(x =>
         {
             if (x.Result == ButtonResult.Ok)

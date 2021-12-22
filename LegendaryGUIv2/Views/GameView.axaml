@@ -23,7 +23,7 @@
 				<Label IsVisible="{Binding DownloadNotPaused}" Content="{Binding DownloadRemainingTime}" HorizontalAlignment="Center">Remaining: 10:20:30</Label>
 				<Label IsVisible="{Binding DownloadPaused}" HorizontalAlignment="Center">Paused</Label>
 			</StackPanel>
-			<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="10" IsVisible="{Binding Selected}">
+			<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="15" IsVisible="{Binding Selected}">
 				<Button FontSize="20" Width="150" IsVisible="{Binding Installed}" Command="{Binding Play}" Classes="darker" BorderBrush="LightGreen" BorderThickness="2">
 					<Label HorizontalAlignment="Center">Play</Label>
 				</Button>
@@ -32,9 +32,6 @@
 				</Button>
 				<Button FontSize="20" Width="150" IsVisible="{Binding UpdateAvailable}" Classes="darker" Command="{Binding Install}">
 					<Label HorizontalAlignment="Center">Update</Label>
-				</Button>
-				<Button FontSize="20" Width="150" IsVisible="{Binding Installed}" Command="{Binding Uninstall}" Classes="darker" BorderBrush="Red" BorderThickness="2">
-					<Label HorizontalAlignment="Center">Uninstall</Label>
 				</Button>
 				<Button FontSize="20" Width="150" IsVisible="{Binding NotInstalled}" Classes="darker" Command="{Binding Install}">
 					<Label HorizontalAlignment="Center">Install</Label>

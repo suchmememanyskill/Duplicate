@@ -42,6 +42,8 @@ namespace LegendaryMapperV2.Service
                 return $"{bytesLeft:0.00} {gameSizes[type]}";
             }
         }
+
+        public string Developer { get => Metadata.Metadata.Developer; }
         
         public string InstallPath { get => InstalledData.InstallPath; }
         public bool IsInstalled { get => InstalledData != null; }
