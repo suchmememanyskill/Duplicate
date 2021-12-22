@@ -37,7 +37,7 @@ namespace LegendaryGUIv2.ViewModels
             SetDownloadLocationText();
 
             this.WhenAnyValue(x => x.SearchBoxText)
-                .Throttle(TimeSpan.FromMilliseconds(200))
+                //.Throttle(TimeSpan.FromMilliseconds(200))
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(HandleSearchEvent!);
         }
@@ -57,17 +57,17 @@ namespace LegendaryGUIv2.ViewModels
             }
 
             GameCountText = $"Found {manager.Games.Count} games, {manager.InstalledGames.Count} installed";
-            allInstalled = new(manager.InstalledGames.Select(x => new GameViewModel(x)));
-            allNotInstalled = new(manager.NotInstalledGames.Select(x => new GameViewModel(x)));
+            Installed = new(manager.InstalledGames.Select(x => new GameViewModel(x)));
+            NotInstalled = new(manager.NotInstalledGames.Select(x => new GameViewModel(x)));
 
             List<GameViewModel> transferList = new();
             manager.Downloads.ForEach(x =>
             {
-                if (allInstalled.Any(y => x.Game.AppName == y.Game.AppName))
-                    allInstalled.First(y => x.Game.AppName == y.Game.AppName).ApplyDownload(x);
-                else if (allNotInstalled.Any(y => x.Game.AppName == y.Game.AppName))
+                if (Installed.Any(y => x.Game.AppName == y.Game.AppName))
+                    Installed.First(y => x.Game.AppName == y.Game.AppName).ApplyDownload(x);
+                else if (NotInstalled.Any(y => x.Game.AppName == y.Game.AppName))
                 {
-                    GameViewModel model = allNotInstalled.First(y => x.Game.AppName == y.Game.AppName);
+                    GameViewModel model = NotInstalled.First(y => x.Game.AppName == y.Game.AppName);
                     transferList.Add(model);
                     model.ApplyDownload(x);
                 }
@@ -76,12 +76,9 @@ namespace LegendaryGUIv2.ViewModels
             int i = 0;
             transferList.ForEach(x =>
             {
-                allInstalled.Insert(i++, x);
-                allNotInstalled.Remove(x);
+                Installed.Insert(i++, x);
+                NotInstalled.Remove(x);
             });
-
-            Installed = allInstalled;
-            NotInstalled = allNotInstalled;
 
             stopImageDownloadThread = false;
             imageDownloadThread = new(DownloadAllImages);
@@ -119,23 +116,12 @@ namespace LegendaryGUIv2.ViewModels
             Utils.CreateMessageBox("Steam games removed", $"Removed {count} on Steam with '(Epic)' in name\nPlease restart steam for changes to take effect").Show();
         }
 
-        private Thread searcher;
-
         public async void HandleSearchEvent(string search)
         {
             if (string.IsNullOrWhiteSpace(SearchBoxText))
-            {
-                Installed = allInstalled;
-                NotInstalled = allNotInstalled;
-            }
-                
+                Installed.Concat(NotInstalled).ToList().ForEach(x => x.Visible = true);
             else
-            {
-                ObservableCollection < GameViewModel > a = new(allInstalled.Where(x => x.Game.AppTitle.Contains(SearchBoxText, StringComparison.OrdinalIgnoreCase)));
-                ObservableCollection < GameViewModel > b = new(allNotInstalled.Where(x => x.Game.AppTitle.Contains(SearchBoxText, StringComparison.OrdinalIgnoreCase)));;
-                Installed = a;
-                NotInstalled = b;
-            }
+                Installed.Concat(NotInstalled).ToList().ForEach(x => x.Visible = x.Game.AppTitle.Contains(SearchBoxText, StringComparison.OrdinalIgnoreCase));
         }
 
         private void DownloadAllImages()
@@ -167,9 +153,9 @@ namespace LegendaryGUIv2.ViewModels
         private string downloadLocation = "";
         public string DownloadLocation { get => downloadLocation; set => this.RaiseAndSetIfChanged(ref downloadLocation, value); }
 
-        private ObservableCollection<GameViewModel> installed = new(), allInstalled = new();
+        private ObservableCollection<GameViewModel> installed = new();
         public ObservableCollection<GameViewModel> Installed { get => installed; set => this.RaiseAndSetIfChanged(ref installed, value); }
-        private ObservableCollection<GameViewModel> notInstalled = new(), allNotInstalled = new();
+        private ObservableCollection<GameViewModel> notInstalled = new();
         public ObservableCollection<GameViewModel> NotInstalled { get => notInstalled; set => this.RaiseAndSetIfChanged(ref notInstalled, value); }
         private GameViewModel? selectedGameInstalled, selectedGameNotInstalled;
         public GameViewModel? SelectedGameInstalled { 
@@ -192,10 +178,6 @@ namespace LegendaryGUIv2.ViewModels
         }
 
         private string searchBoxText;
-        public string SearchBoxText { get => searchBoxText; set
-            {
-                this.RaiseAndSetIfChanged(ref searchBoxText, value);
-                //HandleSearchEvent();
-            } }
+        public string SearchBoxText { get => searchBoxText; set => this.RaiseAndSetIfChanged(ref searchBoxText, value); }
     }
 }

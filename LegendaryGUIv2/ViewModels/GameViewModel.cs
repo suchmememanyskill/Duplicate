@@ -132,7 +132,7 @@ namespace LegendaryGUIv2.ViewModels
         public Avalonia.Media.Imaging.Bitmap? Cover { get => cover; set => this.RaiseAndSetIfChanged(ref cover, value); }
         private Avalonia.Media.Imaging.Bitmap? icon;
         public Avalonia.Media.Imaging.Bitmap? Icon { get => icon; set => this.RaiseAndSetIfChanged(ref icon, value); }
-        private bool selected = false, installed = false, notInstalled = false, downloading = false, downloadPaused = false, downloadNotPaused = false, updateAvailable = false;
+        private bool selected = false, installed = false, notInstalled = false, downloading = false, downloadPaused = false, downloadNotPaused = false, updateAvailable = false, visible = true;
         public bool Selected { get => selected; set => this.RaiseAndSetIfChanged(ref selected, value); }
         public bool Installed { get => installed; set => this.RaiseAndSetIfChanged(ref installed, value); }
         public bool NotInstalled { get => notInstalled; set => this.RaiseAndSetIfChanged(ref notInstalled, value); }
@@ -147,5 +147,6 @@ namespace LegendaryGUIv2.ViewModels
         public string DownloadSize { get => downloadSize; set => this.RaiseAndSetIfChanged(ref downloadSize, value); }
         public string DownloadUnpackedSize { get => downloadUnpackedSize; set => this.RaiseAndSetIfChanged(ref downloadUnpackedSize, value); }
         public string DownloadRemainingTime { get => downloadRemainingTime; set => this.RaiseAndSetIfChanged(ref downloadRemainingTime, value); }
+        public bool Visible { get => visible; set => this.RaiseAndSetIfChanged(ref visible, value); }
     }
 }

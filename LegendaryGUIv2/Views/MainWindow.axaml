@@ -35,5 +35,8 @@
 		<Style Selector="Button.darker:pressed /template/ ContentPresenter">
 			<Setter Property="Background" Value="Black"/>
 		</Style>
+		<Style Selector="ListBoxItem">
+			<Setter Property="Padding" Value="0"/>
+		</Style>
 	</Window.Styles>
 </Window>
