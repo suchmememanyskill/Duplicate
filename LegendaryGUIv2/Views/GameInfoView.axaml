@@ -23,7 +23,7 @@
 						<Image Width="400" Stretch="UniformToFill" Source="{Binding Cover}" />
 						<Image Width="400" Stretch="Uniform" VerticalAlignment="Center" Source="{Binding Icon}" />
 					</Panel>
-					<StackPanel VerticalAlignment="Center" Margin="20" IsVisible="{Binding Game.IsInstalled}">
+					<StackPanel VerticalAlignment="Center" Margin="20">
 						<StackPanel.Styles>
 							<Style Selector="Label">
 								<Setter Property="FontSize" Value="18"/>
@@ -50,22 +50,26 @@
 							<Label>App ID:</Label>
 							<Label Content="{Binding Game.AppName}">AppName</Label>
 						</StackPanel>
-						<StackPanel Orientation="Horizontal">
+						<StackPanel Orientation="Horizontal" IsVisible="{Binding Game.IsInstalled}">
 							<Label>Current version:</Label>
-							<Label Content="{Binding Game.InstalledVersion}">InstalledVersion</Label>
+							<Label Content="{Binding InstalledVersion}">InstalledVersion</Label>
 						</StackPanel>
 						<StackPanel Orientation="Horizontal">
 							<Label>Available version:</Label>
 							<Label Content="{Binding Game.AvailableVersion}">AvailableVersion</Label>
 						</StackPanel>
 						<StackPanel Orientation="Horizontal">
-							<Label>Game Size:</Label>
-							<Label Content="{Binding Game.InstallSizeReadable}">0.69GB</Label>
+							<Label>Installed Size:</Label>
+							<Label Content="{Binding InstalledSize}">0.69GB</Label>
 						</StackPanel>
-						<Button Command="{Binding OpenLocation}" Padding="0" Classes="url invisible">
+						<StackPanel IsVisible="{Binding !Game.IsInstalled}" Orientation="Horizontal">
+							<Label>Download Size:</Label>
+							<Label Content="{Binding DownloadSize}">0.69GB</Label>
+						</StackPanel>
+						<Button IsVisible="{Binding Game.IsInstalled}" Command="{Binding OpenLocation}" Padding="0" Classes="url invisible">
 							<StackPanel Orientation="Horizontal">
 								<Label>Location on disk:</Label>
-								<Label Content="{Binding Game.InstallPath}">InstallPath</Label>
+								<Label Content="{Binding InstallPath}">InstallPath</Label>
 							</StackPanel>
 						</Button>
 
@@ -90,15 +94,24 @@
 							</StackPanel>
 						</Button>
 
-						<Button Command="{Binding Uninstall}" Margin="0,10,0,0" Background="Red" Classes="uninstall" Padding="3">
+						<Button IsVisible="{Binding Game.IsInstalled}" Command="{Binding GameView.Play}" Padding="3" Background="Green" Margin="0,10,0,4">
+							<Label>Play</Label>
+						</Button>
+
+						<Button IsVisible="{Binding HasUpdate}" Command="{Binding Install}" Padding="3" Margin="0,4,0,4">
+							<Label>Update</Label>
+						</Button>
+
+						<Button IsVisible="{Binding !Game.IsInstalled}" Command="{Binding Install}" Padding="3" Margin="0,4,0,4">
+							<Label>Install</Label>
+						</Button>
+
+						<Button IsVisible="{Binding Game.IsInstalled}" Margin="0,4,0,4" Command="{Binding Uninstall}" Background="Red" Classes="uninstall" Padding="3">
 							<StackPanel Orientation="Horizontal">
 								<Label>Uninstall</Label>
 								<Label Content="{Binding Game.AppTitle}">Celeste</Label>
 							</StackPanel>
 						</Button>
-						
-						
-						
 					</StackPanel>
 				</StackPanel>
 			</Border>

@@ -27,14 +27,14 @@
 				<Button FontSize="20" Width="150" IsVisible="{Binding Installed}" Command="{Binding Play}" Classes="darker" BorderBrush="LightGreen" BorderThickness="2">
 					<Label HorizontalAlignment="Center">Play</Label>
 				</Button>
-				<Button FontSize="20" Width="150" IsVisible="{Binding Installed}" Command="{Binding Info}" Classes="darker">
+				<Button FontSize="20" Width="150" IsVisible="{Binding NotInstalled}" Classes="darker" Command="{Binding Install}">
+					<Label HorizontalAlignment="Center">Install</Label>
+				</Button>
+				<Button FontSize="20" Width="150" IsVisible="{Binding !Downloading}" Command="{Binding Info}" Classes="darker">
 					<Label HorizontalAlignment="Center">Info</Label>
 				</Button>
 				<Button FontSize="20" Width="150" IsVisible="{Binding UpdateAvailable}" Classes="darker" Command="{Binding Install}">
 					<Label HorizontalAlignment="Center">Update</Label>
-				</Button>
-				<Button FontSize="20" Width="150" IsVisible="{Binding NotInstalled}" Classes="darker" Command="{Binding Install}">
-					<Label HorizontalAlignment="Center">Install</Label>
 				</Button>
 				<Button FontSize="20" Width="150" IsVisible="{Binding DownloadPaused}" Classes="darker" Command="{Binding Continue}">
 					<Label HorizontalAlignment="Center">Continue</Label>

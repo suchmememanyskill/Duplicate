@@ -90,13 +90,7 @@ namespace LegendaryGUIv2.ViewModels
                 Utils.CreateMessageBox("An error occured!", $"Something went wrong while launching {game.AppTitle}!\n\nStandard out:\n{string.Join('\n', x.Terminal.StdOut)}\n\nStandard error:\n{string.Join('\n', x.Terminal.StdErr)}    ").Show();
         }
 
-        public void Info() => mainView.SetViewOnWindow(new GameInfoViewModel(mainView, game));
-        public void Uninstall() => Utils.CreateMessageBox("Uninstall", $"Are you sure you want to uninstall {game.AppTitle}?        ", ButtonEnum.OkCancel).Show().ContinueWith(x =>
-        {
-            if (x.Result == ButtonResult.Ok)
-                game.Uninstall();
-        });
-
+        public void Info() => mainView.SetViewOnWindow(new GameInfoViewModel(mainView, this));
         public void Install() => game.InstantiateDownload().Start();
 
         public void Pause()

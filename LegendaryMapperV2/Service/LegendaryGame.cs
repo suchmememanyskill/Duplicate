@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace LegendaryMapperV2.Service
 {
@@ -87,6 +88,19 @@ namespace LegendaryMapperV2.Service
                 throw new Exception("Game is not installed");
 
             new LegendaryCommand($"uninstall {InstalledData.AppName} -y").Then(x => Parser.GetGames()).Start();
+        }
+
+        public delegate void InfoCallback(LegendaryInfoResponse response);
+        public void Info(InfoCallback callback)
+        {
+            if (Parser.Auth.OfflineLogin)
+                throw new Exception("Info cannot be gathered while offline!");
+
+            new LegendaryCommand($"info {AppName} --json").Then(x =>
+            {
+                LegendaryInfoResponse info = JsonConvert.DeserializeObject<LegendaryInfoResponse>(x.Terminal.StdOut.First());
+                callback.Invoke(info);
+            }).Start();
         }
 
         private MetaImage GetGameImage(string type)
