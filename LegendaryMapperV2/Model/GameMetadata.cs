@@ -84,6 +84,8 @@ namespace LegendaryMapperV2.Model
             get
             {
                 string a = Url.AbsolutePath.Split('/').Last();
+                if (!a.Contains('.'))
+                    a += "." + UrlExt;
                 return a;
             }
         }

@@ -49,13 +49,9 @@ namespace LegendaryGUIv2.ViewModels
             }
         }
 
-        public void OpenLocation()
-        {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                Process.Start("explorer.exe", "\"" + game.InstallPath.Replace("/", "\\") + "\"");
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                Process.Start("xdg-open", game.InstallPath);
-        }
+        public void OpenLocation() => Utils.OpenFolder(game.InstallPath);
+        public void OpenLocationOfFile(string file) => Utils.OpenFolderWithHighlightedFile(Path.Join(Path.GetTempPath(), "LegendaryImageCache", file));
+
 
         public void Uninstall() => Utils.CreateMessageBox("Uninstall", $"Are you sure you want to uninstall {game.AppTitle}?        ", ButtonEnum.OkCancel).Show().ContinueWith(x =>
         {

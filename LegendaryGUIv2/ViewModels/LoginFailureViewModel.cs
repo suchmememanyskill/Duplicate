@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using LegendaryGUIv2.Services;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,26 +18,8 @@ namespace LegendaryGUIv2.ViewModels
         {
             this.mainWindow = mainWindow;
         }
-        private void OpenUrl(string url)
-        {
-            // hack because of this: https://github.com/dotnet/corefx/issues/10361
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                url = url.Replace("&", "^&");
-                Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
-            }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                Process.Start("xdg-open", url);
-            }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            {
-                Process.Start("open", url);
-            }
-            else throw new Exception("No url 4 u");
-        }
 
-        public void UrlOpen() => OpenUrl("https://www.epicgames.com/id/login?redirectUrl=https://www.epicgames.com/id/api/redirect");
+        public void UrlOpen() => Utils.OpenUrl("https://www.epicgames.com/id/login?redirectUrl=https://www.epicgames.com/id/api/redirect");
 
         public void OnSubmit()
         {

@@ -69,12 +69,36 @@
 							</StackPanel>
 						</Button>
 
+						<Button IsVisible="{Binding Cover, Converter={x:Static ObjectConverters.IsNotNull}}" Command="{Binding OpenLocationOfFile}" CommandParameter="{Binding Game.GameBannerTall.FileName}" Padding="0" Classes="url invisible">
+							<StackPanel Orientation="Horizontal">
+								<Label>Tall Cover image:</Label>
+								<Label Content="{Binding Game.GameBannerTall.FileName}">frii</Label>
+							</StackPanel>
+						</Button>
+
+						<Button IsVisible="{Binding Icon, Converter={x:Static ObjectConverters.IsNotNull}}" Command="{Binding OpenLocationOfFile}" CommandParameter="{Binding Game.GameLogo.FileName}" Padding="0" Classes="url invisible">
+							<StackPanel Orientation="Horizontal">
+								<Label>Logo image:</Label>
+								<Label Content="{Binding Game.GameLogo.FileName}">frii</Label>
+							</StackPanel>
+						</Button>
+
+						<Button IsVisible="{Binding Background, Converter={x:Static ObjectConverters.IsNotNull}}" Command="{Binding OpenLocationOfFile}" CommandParameter="{Binding Game.GameBanner.FileName}" Padding="0" Classes="url invisible">
+							<StackPanel Orientation="Horizontal">
+								<Label>Background image:</Label>
+								<Label Content="{Binding Game.GameBanner.FileName}">frii</Label>
+							</StackPanel>
+						</Button>
+
 						<Button Command="{Binding Uninstall}" Margin="0,10,0,0" Background="Red" Classes="uninstall" Padding="3">
 							<StackPanel Orientation="Horizontal">
 								<Label>Uninstall</Label>
 								<Label Content="{Binding Game.AppTitle}">Celeste</Label>
 							</StackPanel>
 						</Button>
+						
+						
+						
 					</StackPanel>
 				</StackPanel>
 			</Border>
