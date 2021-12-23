@@ -162,6 +162,8 @@ namespace LegendaryGUIv2.ViewModels
             get => selectedGameInstalled; 
             set {
                 selectedGameInstalled?.Unselect();
+                if (value != null)
+                    SelectedGameNotInstalled = null;
                 this.RaiseAndSetIfChanged(ref selectedGameInstalled, value);
                 selectedGameInstalled?.Select();
             }
@@ -172,6 +174,8 @@ namespace LegendaryGUIv2.ViewModels
             set
             {
                 selectedGameNotInstalled?.Unselect();
+                if (value != null)
+                    SelectedGameInstalled = null;
                 this.RaiseAndSetIfChanged(ref selectedGameNotInstalled, value);
                 selectedGameNotInstalled?.Select();
             }
