@@ -27,8 +27,8 @@ namespace LegendaryMapperV2.Service
                 string val = value.Trim();
                 if (val == "")
                 {
-                    if (File.Exists("./DlLoc.txt"))
-                        File.Delete("./DlLoc.txt");
+                    if (File.Exists(DlLocFile))
+                        File.Delete(DlLocFile);
 
                     gameDirectory = "";
                     return;
@@ -37,7 +37,7 @@ namespace LegendaryMapperV2.Service
                 if (!Directory.Exists(val))
                     throw new Exception("Invalid game directory");
 
-                File.WriteAllText("./DlLoc.txt", val);
+                File.WriteAllText(DlLocFile, val);
 
                 gameDirectory = val;
             }
@@ -48,9 +48,9 @@ namespace LegendaryMapperV2.Service
         {
             Auth = auth;
             OnGameRefresh = onGameRefresh;
-            if (File.Exists("./DlLoc.txt"))
+            if (File.Exists(DlLocFile))
             {
-                string dir = File.ReadAllText("./DlLoc.txt");
+                string dir = File.ReadAllText(DlLocFile);
                 if (Directory.Exists(dir))
                     gameDirectory = dir;
             }      
@@ -101,18 +101,6 @@ namespace LegendaryMapperV2.Service
             Games.RemoveAll(x => !x.Metadata.Metadata.Categories.Any(y => y["path"] == "games"));
 
             Games = Games.OrderBy(x => x.AppTitle).ToList();
-
-            /*
-            Games.ForEach(x =>
-            {
-                Debug.WriteLine(x.AppTitle);
-                x.Dlc.ForEach(y =>
-                {
-                    Debug.WriteLine("+ " + y.AppTitle);
-                });
-            });
-            */
-
             OnGameRefresh?.Invoke(this);
         }
 
@@ -127,5 +115,19 @@ namespace LegendaryMapperV2.Service
             Downloads.Remove(download);
             GetGames();
         }
+
+        private string ConfigDir
+        {
+            get
+            {
+                string path = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".config", "Duplicate");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+
+                return path;
+            }
+        }
+
+        private string DlLocFile { get => Path.Join(ConfigDir, "DlLoc.txt"); }
     }
 }
