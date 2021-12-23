@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.Net;
+using System.Diagnostics;
 
 namespace LegendaryMapperV2.Service
 {
@@ -101,6 +103,29 @@ namespace LegendaryMapperV2.Service
                 LegendaryInfoResponse info = JsonConvert.DeserializeObject<LegendaryInfoResponse>(x.Terminal.StdOut.First());
                 callback.Invoke(info);
             }).Start();
+        }
+
+        public string GetProductSlug()
+        {
+            try
+            {
+                using (WebClient client = new WebClient())
+                {
+                    client.Headers.Add(HttpRequestHeader.ContentType, "application/json");
+                    string request = "{\"query\":\"{Catalog{catalogOffers( namespace:\\\"" + Metadata.Metadata.Namespace + "\\\"){elements {productSlug}}}}\"}";
+                    Debug.WriteLine(request);
+                    string response = client.UploadString("https://www.epicgames.com/graphql", request);
+                    EpicProductSlugResponse parsedResponse = JsonConvert.DeserializeObject<EpicProductSlugResponse>(response);
+                    Element slug = parsedResponse.Data.Catalog.CatalogOffers.Elements.FirstOrDefault(x => x.ProductSlug != null);
+                    if (slug == null)
+                        return "";
+                    return slug.ProductSlug.Split("/").First();
+                }
+            }
+            catch
+            {
+                return "";
+            }
         }
 
         private MetaImage GetGameImage(string type)

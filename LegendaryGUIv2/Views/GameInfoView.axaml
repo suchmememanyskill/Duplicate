@@ -43,7 +43,13 @@
 							<Label>Developer:</Label>
 							<Label Content="{Binding Game.Developer}">Matt makes games</Label>
 						</StackPanel>
-						<Button FontSize="18" Margin="0,5,0,50" Command="{Binding Back}" Padding="3">
+						<Button Padding="0" Classes="url invisible" Command="{Binding OpenEpicGames}" IsVisible="{Binding GameSlug, Converter={x:Static StringConverters.IsNotNullOrEmpty}}}">
+							<StackPanel  Orientation="Horizontal">
+								<Label>View on epic games:</Label>
+								<Label Content="{Binding GameSlug}">celeste</Label>
+							</StackPanel>
+						</Button>
+						<Button FontSize="18" Margin="0,5,0,30" Command="{Binding Back}" Padding="3">
 							<Label>Back to game overview</Label>
 						</Button>
 						<StackPanel Orientation="Horizontal">
@@ -94,24 +100,26 @@
 							</StackPanel>
 						</Button>
 
-						<Button IsVisible="{Binding Game.IsInstalled}" Command="{Binding GameView.Play}" Padding="3" Background="Green" Margin="0,10,0,4">
-							<Label>Play</Label>
-						</Button>
+						<StackPanel Orientation="Horizontal" Spacing="20" Margin="0,10,0,10">
+							<Button IsVisible="{Binding Game.IsInstalled}" Command="{Binding GameView.Play}" Background="Green">
+								<Label>Play</Label>
+							</Button>
 
-						<Button IsVisible="{Binding HasUpdate}" Command="{Binding Install}" Padding="3" Margin="0,4,0,4">
-							<Label>Update</Label>
-						</Button>
+							<Button IsVisible="{Binding HasUpdate}" Command="{Binding Install}">
+								<Label>Update</Label>
+							</Button>
 
-						<Button IsVisible="{Binding !Game.IsInstalled}" Command="{Binding Install}" Padding="3" Margin="0,4,0,4">
-							<Label>Install</Label>
-						</Button>
+							<Button IsVisible="{Binding !Game.IsInstalled}" Command="{Binding Install}">
+								<Label>Install</Label>
+							</Button>
 
-						<Button IsVisible="{Binding Game.IsInstalled}" Margin="0,4,0,4" Command="{Binding Uninstall}" Background="Red" Classes="uninstall" Padding="3">
-							<StackPanel Orientation="Horizontal">
-								<Label>Uninstall</Label>
-								<Label Content="{Binding Game.AppTitle}">Celeste</Label>
-							</StackPanel>
-						</Button>
+							<Button IsVisible="{Binding Game.IsInstalled}" Command="{Binding Uninstall}" Background="Red" Classes="uninstall">
+								<StackPanel Orientation="Horizontal">
+									<Label>Uninstall</Label>
+									<Label Content="{Binding Game.AppTitle}">Celeste</Label>
+								</StackPanel>
+							</Button>
+						</StackPanel>
 					</StackPanel>
 				</StackPanel>
 			</Border>

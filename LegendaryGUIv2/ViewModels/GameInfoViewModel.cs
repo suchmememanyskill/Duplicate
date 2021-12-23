@@ -27,6 +27,7 @@ namespace LegendaryGUIv2.ViewModels
             this.gameView = gameView;
             game = gameView.Game;
             new Thread(() => DownloadImages()).Start();
+            new Thread(() => GameSlug = game.GetProductSlug()).Start();
 
             if (!game.IsInstalled)
                 game.Info(InfoCallback);
@@ -75,6 +76,8 @@ namespace LegendaryGUIv2.ViewModels
             Back();
         }
 
+        public void OpenEpicGames() => Utils.OpenUrl($"https://www.epicgames.com/store/en-US/p/{GameSlug}");
+
         private void InfoCallback(LegendaryInfoResponse response)
         {
             DownloadSize = response.Manifest.DownloadSizeReadable;
@@ -91,9 +94,10 @@ namespace LegendaryGUIv2.ViewModels
         private Avalonia.Media.Imaging.Bitmap? cover;
         public Avalonia.Media.Imaging.Bitmap? Cover { get => cover; set => this.RaiseAndSetIfChanged(ref cover, value); }
 
-        private string downloadSize = "--", installedSize = "--";
+        private string downloadSize = "--", installedSize = "--", gameSlug = "";
         public string DownloadSize { get => downloadSize; set => this.RaiseAndSetIfChanged(ref downloadSize, value); }
         public string InstalledSize { get => installedSize; set => this.RaiseAndSetIfChanged(ref installedSize, value); }
+        public string GameSlug { get => gameSlug; set => this.RaiseAndSetIfChanged(ref gameSlug, value); }
 
         public bool HasUpdate
         {
