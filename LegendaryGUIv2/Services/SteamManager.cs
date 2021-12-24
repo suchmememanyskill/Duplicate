@@ -17,8 +17,8 @@ namespace LegendaryGUI.Services
     {
         private string vdfPath = GetSteamShortcutPath.GetShortcutsPath();
         private string gridPath = GetSteamShortcutPath.GetGridPath();
-        private VDFMap root;
-        public ShortcutRoot ShortcutRoot { get; private set; }
+        private VDFMap? root;
+        public ShortcutRoot? ShortcutRoot { get; private set; }
         public string VdfPath { get => vdfPath; private set => vdfPath = value; }
 
         public bool Read()
@@ -37,7 +37,7 @@ namespace LegendaryGUI.Services
         {
             File.WriteAllText(vdfPath, "");
             BinaryWriter writer = new BinaryWriter(new FileStream(vdfPath, FileMode.OpenOrCreate));
-            root.Write(writer, null);
+            root!.Write(writer, null);
             writer.Close();
             return true;
         }
@@ -46,7 +46,7 @@ namespace LegendaryGUI.Services
         {
             int count = 0;
 
-            for (int i = 0; i < ShortcutRoot.GetSize(); i++)
+            for (int i = 0; i < ShortcutRoot!.GetSize(); i++)
             {
                 if (ShortcutRoot.GetEntry(i).AppName.Contains("(Epic)"))
                 {
@@ -81,17 +81,20 @@ namespace LegendaryGUI.Services
             int removedCount = 0;
             int addedCount = 0;
 
-            for (int i = 0; i < ShortcutRoot.GetSize(); i++)
+            for (int i = 0; i < ShortcutRoot!.GetSize(); i++)
             {
                 ShortcutEntry entry = ShortcutRoot.GetEntry(i);
                 if (entry.AppName.Contains("(Epic)"))
                 {
-                    string temp = entry.AppName.Substring(0, entry.AppName.Length - 7);
+                    string temp = entry.AppName[0..^7];
                     if (copy.Any(x => temp == x.AppTitle)) // Is game already registered?
                     {
-                        LegendaryGame game = copy.Find(x => temp == x.AppTitle);
-                        copy.Remove(game);
-                        UpdateExe(entry, game.AppName);
+                        LegendaryGame? game = copy.Find(x => temp == x.AppTitle);
+                        if (game != null)
+                        {
+                            copy.Remove(game);
+                            UpdateExe(entry, game.AppName);
+                        }
                     }
                     else // Game that doesn't seem to be in the list. lets remove it
                     {

@@ -33,7 +33,7 @@ namespace LegendaryGUIv2.ViewModels
         {
             auth.GetAuth(sid).Then(x =>
             {
-                auth.AttemptLogin(OnLogin, loginFailure.OnFailedSubmit);
+                auth.AttemptLogin(OnLogin, loginFailure!.OnFailedSubmit);
             }).Start();
         }
         public void SetViewModel(ViewModelBase view) => Content = view;
@@ -52,7 +52,7 @@ namespace LegendaryGUIv2.ViewModels
 
         private ViewModelBase? content = null;
         private MainViewModel? mainView;
-        private LoginFailureViewModel loginFailure;
+        private LoginFailureViewModel? loginFailure;
         public ViewModelBase? Content { get => content; set => content = this.RaiseAndSetIfChanged(ref content, value); }
     }
 }

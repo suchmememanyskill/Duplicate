@@ -16,8 +16,8 @@ namespace LegendaryGUIv2
             AvaloniaXamlLoader.Load(this);
         }
 
-        public static Avalonia.Controls.Window MainWindow { get; private set; }
-        public static IClassicDesktopStyleApplicationLifetime Desktop { get; private set; }
+        public static Avalonia.Controls.Window? MainWindow { get; private set; }
+        public static IClassicDesktopStyleApplicationLifetime? Desktop { get; private set; }
 
         public override void OnFrameworkInitializationCompleted()
         {

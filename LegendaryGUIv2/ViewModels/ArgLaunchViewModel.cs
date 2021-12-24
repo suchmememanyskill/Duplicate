@@ -18,7 +18,7 @@ namespace LegendaryGUIv2.ViewModels
         private LegendaryAuth auth;
         private string[] args;
         private LegendaryGame? game;
-        private string cliOut;
+        private string cliOut = "";
         public ArgLaunchViewModel(LegendaryAuth auth, string[] args)
         {
             this.auth = auth;

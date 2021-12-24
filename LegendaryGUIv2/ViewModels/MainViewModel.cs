@@ -116,7 +116,7 @@ namespace LegendaryGUIv2.ViewModels
             Utils.CreateMessageBox("Steam games removed", $"Removed {count} on Steam with '(Epic)' in name\nPlease restart steam for changes to take effect").Show();
         }
 
-        public async void HandleSearchEvent(string search)
+        public void HandleSearchEvent(string search)
         {
             if (string.IsNullOrWhiteSpace(SearchBoxText))
                 Installed.Concat(NotInstalled).ToList().ForEach(x => x.Visible = true);
@@ -181,7 +181,7 @@ namespace LegendaryGUIv2.ViewModels
             }
         }
 
-        private string searchBoxText;
+        private string searchBoxText = "";
         public string SearchBoxText { get => searchBoxText; set => this.RaiseAndSetIfChanged(ref searchBoxText, value); }
     }
 }
