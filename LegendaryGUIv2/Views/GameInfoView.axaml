@@ -62,7 +62,10 @@
 								<Label>Back to game overview</Label>
 							</Button>
 							<Button IsVisible="{Binding Game.IsInstalled}" Command="{Binding GameView.Play}" Background="Green">
-								<Label>Play</Label>
+								<StackPanel Orientation="Horizontal">
+									<Label>Play</Label>
+									<Label Content="{Binding Game.AppTitle}">Celeste</Label>
+								</StackPanel>
 							</Button>
 
 							<Button IsVisible="{Binding HasUpdate}" Command="{Binding Install}">
@@ -101,24 +104,15 @@
 						</Button>
 
 						<Button IsVisible="{Binding Cover, Converter={x:Static ObjectConverters.IsNotNull}}" Command="{Binding OpenLocationOfFile}" CommandParameter="{Binding Game.GameBannerTall.FileName}" Padding="0" Classes="url invisible">
-							<StackPanel Orientation="Horizontal">
-								<Label>Tall Cover image:</Label>
-								<Label Content="{Binding Game.GameBannerTall.FileName}">frii</Label>
-							</StackPanel>
+							<Label>Cover image</Label>
 						</Button>
 
 						<Button IsVisible="{Binding Icon, Converter={x:Static ObjectConverters.IsNotNull}}" Command="{Binding OpenLocationOfFile}" CommandParameter="{Binding Game.GameLogo.FileName}" Padding="0" Classes="url invisible">
-							<StackPanel Orientation="Horizontal">
-								<Label>Logo image:</Label>
-								<Label Content="{Binding Game.GameLogo.FileName}">frii</Label>
-							</StackPanel>
+							<Label>Logo image</Label>
 						</Button>
 
 						<Button IsVisible="{Binding Background, Converter={x:Static ObjectConverters.IsNotNull}}" Command="{Binding OpenLocationOfFile}" CommandParameter="{Binding Game.GameBanner.FileName}" Padding="0" Classes="url invisible">
-							<StackPanel Orientation="Horizontal">
-								<Label>Background image:</Label>
-								<Label Content="{Binding Game.GameBanner.FileName}">frii</Label>
-							</StackPanel>
+							<Label>Background image</Label>
 						</Button>
 					</StackPanel>
 				</StackPanel>
