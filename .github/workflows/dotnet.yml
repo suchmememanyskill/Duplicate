@@ -1,0 +1,56 @@
+name: .NET
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: clone repo
+      uses: actions/checkout@v2
+        
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore
+    
+    - name: Linux build
+      run: |
+        cd LegendaryGUIv2
+        dotnet publish -o Linux -r linux-x64 -p:PublishSingleFile=true
+        wget -O Linux/legendary https://github.com/derrod/legendary/releases/latest/download/legendary
+        chmod a+x Linux/legendary
+        chmod a+x Linux/Duplicate
+    
+    - name: Windows build
+      run: |
+        cd LegendaryGUIv2
+        dotnet publish -o Windows -r win-x64 -p:PublishSingleFile=true
+        wget -O Windows/legendary.exe https://github.com/derrod/legendary/releases/latest/download/legendary.exe
+
+    - name: Zip Linux Build
+      uses: edgarrc/action-7z@v1
+      with:
+        args: 7z a Linux.7z ./LegendaryGUIv2/Linux
+        
+    - name: Zip Windows Build
+      uses: edgarrc/action-7z@v1
+      with:
+        args: 7z a Windows.7z ./LegendaryGUIv2/Windows
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: Duplicate
+        path: |
+          Linux.7z
+          Windows.7z
