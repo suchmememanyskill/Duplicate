@@ -4,10 +4,14 @@
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
     <AssemblyName>Duplicate</AssemblyName>
+    <PackageIcon></PackageIcon>
+    <PackageIconUrl />
+    <ApplicationIcon>duplicate.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
     <None Remove=".gitignore" />
+    <None Remove="Assets\duplicate.ico" />
     <None Remove="Assets\Fonts\Roboto-Regular.ttf" />
   </ItemGroup>
   <ItemGroup>
