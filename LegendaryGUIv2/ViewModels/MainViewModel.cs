@@ -147,6 +147,8 @@ namespace LegendaryGUIv2.ViewModels
                 DownloadLocation = $"Download location: ~/Legendary";
         }
 
+        public void OpenFreeGame() => Utils.OpenUrl("https://www.epicgames.com/store/en-US/free-games");
+
         private string gameCountText = "";
         public string GameCountText { get => gameCountText; set => this.RaiseAndSetIfChanged(ref gameCountText, value); }
 
