@@ -1,4 +1,5 @@
 ﻿using LegendaryGUIv2.Services;
+using LegendaryMapperV2.Service;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace LegendaryGUIv2.ViewModels
             Submitted = true;
         }
 
-        public void OnFailedSubmit()
+        public void OnFailedSubmit(LegendaryAuth a)
         {
             LoginFailure = true;
             Submitted = false;

@@ -38,7 +38,7 @@ namespace LegendaryGUIv2.ViewModels
         }
         public void SetViewModel(ViewModelBase view) => Content = view;
 
-        private void OnLogin()
+        private void OnLogin(LegendaryAuth a)
         {
             if (args.Length < 1)
                 SetMainViewModel();
@@ -48,7 +48,7 @@ namespace LegendaryGUIv2.ViewModels
 
         public void SetMainViewModel() => Content = mainView = new MainViewModel(auth, this);
 
-        private void OnLoginFailure() => Content = loginFailure;
+        private void OnLoginFailure(LegendaryAuth a) => Content = loginFailure;
 
         private ViewModelBase? content = null;
         private MainViewModel? mainView;

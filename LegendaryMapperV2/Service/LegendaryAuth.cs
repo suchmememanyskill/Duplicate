@@ -48,27 +48,27 @@ namespace LegendaryMapperV2.Service
             return new LegendaryCommand($"auth --sid {sid}");
         }
 
-        public delegate void LegendaryAuthCallback();
+        public delegate void LegendaryAuthCallback(LegendaryAuth auth);
 
         public void AttemptLogin(LegendaryAuthCallback onLogin = null, LegendaryAuthCallback onFailure = null)
         {
             GetStatus().Then(x =>
             {
                 if (StatusResponse.IsLoggedIn())
-                    onLogin?.Invoke();
+                    onLogin?.Invoke(this);
                 else
-                    onFailure?.Invoke();
+                    onFailure?.Invoke(this);
             }).OnError(x =>
             {
                 GetStatus(true).Then(y =>
                 {
                     if (StatusResponse.IsLoggedIn())
-                        onLogin?.Invoke();
+                        onLogin?.Invoke(this);
                     else
-                        onFailure?.Invoke();
+                        onFailure?.Invoke(this);
                 }).OnError(y =>
                 {
-                    onFailure?.Invoke();
+                    onFailure?.Invoke(this);
                 }).Start();
             }).Start();
         }
