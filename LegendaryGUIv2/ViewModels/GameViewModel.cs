@@ -82,10 +82,11 @@ namespace LegendaryGUIv2.ViewModels
         }
         public void Play()
         {
-            game.LaunchCommand().Then(x => new ProcessMonitor(game).SpawnNewApp()).OnError(x =>
+            game.LaunchCommand().OnError(x =>
                 Dispatcher.UIThread.Post(() => 
                 Utils.CreateMessageBox("An error occured!", $"Something went wrong while launching {game.AppTitle}!\n\nStandard out:\n{string.Join('\n', x.Terminal.StdOut)}\n\nStandard error:\n{string.Join('\n', x.Terminal.StdErr)}    ").Show())
             ).Start();
+            new ProcessMonitor(game).SpawnNewApp();
         }
 
         public void Info() => mainView.SetViewOnWindow(new GameInfoViewModel(mainView, this));

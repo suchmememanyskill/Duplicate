@@ -131,7 +131,12 @@ namespace LegendaryMapperV2.Service
 
         public Process GetGameProcess()
         {
-            string processName = InstalledData.Executable;
+            string processName;
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT) // Now, you may think this is a mistake. It's not. Os' were a mistake
+                processName = InstalledData.Executable.Replace(".exe", ""); // Needs .exe stripped to work
+            else
+                processName = InstalledData.Executable; // Needs .exe intact to work
+
             Process[] possibleProcesses = Process.GetProcessesByName(processName);
             Console.WriteLine($"Found {possibleProcesses.Length} processes with name {processName}\n\n{String.Join("\n", possibleProcesses.ToList().Select(x => x.ProcessName))}");
             return possibleProcesses.FirstOrDefault();

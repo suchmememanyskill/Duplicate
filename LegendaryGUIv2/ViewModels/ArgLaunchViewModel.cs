@@ -49,7 +49,6 @@ namespace LegendaryGUIv2.ViewModels
             }
 
             game.LaunchCommand().Then(x => {
-                new ProcessMonitor(game).SpawnNewApp();
                 ExitApplication();
             }).OnError(x =>
             {
@@ -57,6 +56,7 @@ namespace LegendaryGUIv2.ViewModels
                 cliOut = $"Standard out:\n{string.Join('\n', x.Terminal.StdOut)}\n\nStandard error:\n{string.Join('\n', x.Terminal.StdErr)}    ";
                 Text = $"{game.AppTitle} failed to launch. See console for errors";
             }).Start();
+            new ProcessMonitor(game).SpawnNewApp();
         }
 
         public void ExitApplication() => Dispatcher.UIThread.Post(() => App.MainWindow?.Close());
