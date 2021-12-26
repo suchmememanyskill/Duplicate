@@ -16,6 +16,7 @@ using System.Diagnostics;
 using Avalonia.Threading;
 using System.Reactive;
 using System.Reactive.Linq;
+using LegendaryGUIv2.Views;
 
 namespace LegendaryGUIv2.ViewModels
 {
@@ -84,6 +85,8 @@ namespace LegendaryGUIv2.ViewModels
             imageDownloadThread = new(DownloadAllImages);
             imageDownloadThread.IsBackground = true;
             imageDownloadThread.Start();
+
+            MainWindow.gameViewModels = Installed.Concat(notInstalled).ToList();
         }
 
         public void BtnUpdateSteamGames()
