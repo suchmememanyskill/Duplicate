@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Net;
 using System.Diagnostics;
+using System.IO;
 
 namespace LegendaryMapperV2.Service
 {
@@ -130,15 +131,10 @@ namespace LegendaryMapperV2.Service
 
         public Process GetGameProcess()
         {
-            string processName = InstalledData.Executable.Replace(".exe", "");
+            string processName = InstalledData.Executable;
             Process[] possibleProcesses = Process.GetProcessesByName(processName);
-
-
-            string processPath = InstalledData.InstallPath;
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-                processPath = InstalledData.InstallPath.Replace("/", "\\");
-
-            return possibleProcesses.FirstOrDefault(p => p.MainModule.FileName.StartsWith(processPath));
+            Console.WriteLine($"Found {possibleProcesses.Length} processes with name {processName}\n\n{String.Join("\n", possibleProcesses.ToList().Select(x => x.ProcessName))}");
+            return possibleProcesses.FirstOrDefault();
         }
         private MetaImage GetGameImage(string type)
         {
