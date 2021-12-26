@@ -17,6 +17,7 @@ using MessageBox.Avalonia;
 using MessageBox.Avalonia.Enums;
 using Avalonia.Controls;
 using LegendaryGUIv2.Services;
+using Avalonia.Threading;
 
 namespace LegendaryGUIv2.ViewModels
 {
@@ -81,13 +82,10 @@ namespace LegendaryGUIv2.ViewModels
         }
         public void Play()
         {
-            LegendaryCommand x = game.LaunchCommand();
-            x.Block().Start();
-
-            Thread.Sleep(1); // What the fuck
-
-            if (x.ExitCode != 0)
-                Utils.CreateMessageBox("An error occured!", $"Something went wrong while launching {game.AppTitle}!\n\nStandard out:\n{string.Join('\n', x.Terminal.StdOut)}\n\nStandard error:\n{string.Join('\n', x.Terminal.StdErr)}    ").Show();
+            game.LaunchCommand().OnError(x =>
+                Dispatcher.UIThread.Post(() => 
+                Utils.CreateMessageBox("An error occured!", $"Something went wrong while launching {game.AppTitle}!\n\nStandard out:\n{string.Join('\n', x.Terminal.StdOut)}\n\nStandard error:\n{string.Join('\n', x.Terminal.StdErr)}    ").Show())
+            ).Start();
         }
 
         public void Info() => mainView.SetViewOnWindow(new GameInfoViewModel(mainView, this));
