@@ -15,22 +15,28 @@ namespace LegendaryGUIv2.Services
     public class ProcessMonitor
     {
         private LegendaryGame game;
-        private Thread thread;
         public ProcessMonitor(LegendaryGame game)
         {
             this.game = game;
-            thread = new Thread(Monitor);
-            thread.Start();
         }
 
-        private void Monitor()
+        public void SpawnNewApp()
+        {
+            string path = Utils.GetExecutablePath();
+            Process.Start(path, $"watch {game.AppName}");
+        }
+
+        public void Monitor()
         {
             Process? p = null;
-
+            int count = 0;
             do
             {
                 Thread.Sleep(1000);
                 p = game.GetGameProcess();
+                count++;
+                if (count > 30)
+                    return; // I give up
             } while (p == null);
 
             ProcessSessionLog session = new();

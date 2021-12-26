@@ -49,7 +49,7 @@ namespace LegendaryGUIv2.ViewModels
             }
 
             game.LaunchCommand().Then(x => {
-                new ProcessMonitor(game);
+                new ProcessMonitor(game).SpawnNewApp();
                 ExitApplication();
             }).OnError(x =>
             {
