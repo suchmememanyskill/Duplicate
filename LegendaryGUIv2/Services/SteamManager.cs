@@ -10,6 +10,7 @@ using VDFMapper.ShortcutMap;
 using VDFMapper.VDF;
 using LegendaryMapperV2.Service;
 using LegendaryMapperV2.Model;
+using LegendaryGUIv2.Services;
 
 namespace LegendaryGUI.Services
 {
@@ -61,15 +62,7 @@ namespace LegendaryGUI.Services
 
         private void UpdateExe(ShortcutEntry entry, string appName)
         {
-
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-            {
-                entry.Exe = Path.GetFullPath($"./{AppDomain.CurrentDomain.FriendlyName}.exe");
-            }
-            else
-            {
-                entry.Exe = Path.GetFullPath($"./{AppDomain.CurrentDomain.FriendlyName}");
-            }
+            entry.Exe = Utils.GetExecutablePath();
             entry.LaunchOptions = $"{appName}";
         }
 

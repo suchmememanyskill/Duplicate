@@ -5,6 +5,7 @@ using MessageBox.Avalonia.Enums;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -58,6 +59,14 @@ namespace LegendaryGUIv2.Services
                 Process.Start("explorer.exe", "/select,\"" + path.Replace("/", "\\") + "\""); // I love windows hacks
                 
             else OpenFolder(path);
+        }
+
+        public static string GetExecutablePath()
+        {
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+                return Path.GetFullPath($"./{AppDomain.CurrentDomain.FriendlyName}.exe");
+            else
+                return Path.GetFullPath($"./{AppDomain.CurrentDomain.FriendlyName}");
         }
     }
 }
