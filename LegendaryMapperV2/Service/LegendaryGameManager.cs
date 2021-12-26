@@ -116,7 +116,7 @@ namespace LegendaryMapperV2.Service
             GetGames();
         }
 
-        private string ConfigDir
+        public static string ConfigDir
         {
             get
             {
@@ -128,6 +128,6 @@ namespace LegendaryMapperV2.Service
             }
         }
 
-        private string DlLocFile { get => Path.Join(ConfigDir, "DlLoc.txt"); }
+        private static string DlLocFile { get => Path.Join(ConfigDir, "DlLoc.txt"); }
     }
 }

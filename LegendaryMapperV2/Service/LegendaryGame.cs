@@ -128,6 +128,18 @@ namespace LegendaryMapperV2.Service
             }
         }
 
+        public Process GetGameProcess()
+        {
+            string processName = InstalledData.Executable.Replace(".exe", "");
+            Process[] possibleProcesses = Process.GetProcessesByName(processName);
+
+
+            string processPath = InstalledData.InstallPath;
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+                processPath = InstalledData.InstallPath.Replace("/", "\\");
+
+            return possibleProcesses.FirstOrDefault(p => p.MainModule.FileName.StartsWith(processPath));
+        }
         private MetaImage GetGameImage(string type)
         {
             if (!Metadata.Metadata.KeyImages.Any(x => x.Type == type))

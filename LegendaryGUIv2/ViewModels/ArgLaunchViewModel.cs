@@ -10,6 +10,9 @@ using MessageBox.Avalonia.BaseWindows.Base;
 using Avalonia.Controls;
 using MessageBox.Avalonia.Enums;
 using LegendaryGUIv2.Services;
+using System.Threading;
+using System.Diagnostics;
+using Avalonia.Threading;
 
 namespace LegendaryGUIv2.ViewModels
 {
@@ -45,7 +48,10 @@ namespace LegendaryGUIv2.ViewModels
                 return;
             }
 
-            game.LaunchCommand().Then(x => ExitApplication()).OnError(x =>
+            game.LaunchCommand().Then(x => {
+                new ProcessMonitor(game);
+                ExitApplication();
+            }).OnError(x =>
             {
                 ConsoleAvailable = true;
                 cliOut = $"Standard out:\n{string.Join('\n', x.Terminal.StdOut)}\n\nStandard error:\n{string.Join('\n', x.Terminal.StdErr)}    ";
@@ -53,7 +59,7 @@ namespace LegendaryGUIv2.ViewModels
             }).Start();
         }
 
-        public void ExitApplication() => Environment.Exit(0);
+        public void ExitApplication() => Dispatcher.UIThread.Post(() => App.MainWindow?.Close());
         public void ForceLaunch() => game?.LaunchCommand(false, true).Then(x => ExitApplication()).Start();
         public void ViewConsole() => Utils.CreateMessageBox("Console", cliOut).Show();
 

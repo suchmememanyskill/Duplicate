@@ -12,6 +12,8 @@ using System.Runtime.InteropServices;
 using LegendaryGUIv2.Services;
 using MessageBox.Avalonia.Enums;
 using LegendaryMapperV2.Model;
+using LegendaryGUIv2.Models;
+using Newtonsoft.Json;
 
 namespace LegendaryGUIv2.ViewModels
 {
@@ -33,6 +35,14 @@ namespace LegendaryGUIv2.ViewModels
                 game.Info(InfoCallback);
             else
                 InstalledSize = game.InstallSizeReadable;
+
+            string playtimePath = Path.Join(LegendaryGameManager.ConfigDir, $"{game.AppName}.json");
+            if (File.Exists(playtimePath))
+            {
+                ProcessLog log = JsonConvert.DeserializeObject<ProcessLog>(File.ReadAllText(playtimePath));
+                TimeSpan total = TimeSpan.FromSeconds(log!.Sessions.Sum(x => x.TimeSpent.TotalSeconds));
+                Playtime = $"{total:hh\\h\\ mm\\m}";
+            }
         }
 
         public void Back() => mainView.SetViewOnWindow(mainView);
@@ -98,7 +108,7 @@ namespace LegendaryGUIv2.ViewModels
         public string DownloadSize { get => downloadSize; set => this.RaiseAndSetIfChanged(ref downloadSize, value); }
         public string InstalledSize { get => installedSize; set => this.RaiseAndSetIfChanged(ref installedSize, value); }
         public string GameSlug { get => gameSlug; set => this.RaiseAndSetIfChanged(ref gameSlug, value); }
-
+        public string Playtime { get; } = "";
         public bool HasUpdate
         {
             get

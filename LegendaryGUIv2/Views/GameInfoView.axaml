@@ -43,6 +43,10 @@
 							<Label>Developer:</Label>
 							<Label Content="{Binding Game.Developer}">Matt makes games</Label>
 						</StackPanel>
+						<StackPanel Orientation="Horizontal" IsVisible="{Binding Playtime, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+							<Label>Time Played:</Label>
+							<Label Content="{Binding Playtime}">1 day, 69 hours, 10 mins</Label>
+						</StackPanel>
 						<Button Padding="0" Classes="url invisible" Command="{Binding OpenEpicGames}" IsVisible="{Binding GameSlug, Converter={x:Static StringConverters.IsNotNullOrEmpty}}}">
 							<StackPanel  Orientation="Horizontal">
 								<Label>View on epic games:</Label>

@@ -82,7 +82,7 @@ namespace LegendaryGUIv2.ViewModels
         }
         public void Play()
         {
-            game.LaunchCommand().OnError(x =>
+            game.LaunchCommand().Then(x => new ProcessMonitor(game)).OnError(x =>
                 Dispatcher.UIThread.Post(() => 
                 Utils.CreateMessageBox("An error occured!", $"Something went wrong while launching {game.AppTitle}!\n\nStandard out:\n{string.Join('\n', x.Terminal.StdOut)}\n\nStandard error:\n{string.Join('\n', x.Terminal.StdErr)}    ").Show())
             ).Start();
