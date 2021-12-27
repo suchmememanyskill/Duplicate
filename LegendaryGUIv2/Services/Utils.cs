@@ -64,9 +64,9 @@ namespace LegendaryGUIv2.Services
         public static string GetExecutablePath()
         {
             if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-                return Path.GetFullPath($"./{AppDomain.CurrentDomain.FriendlyName}.exe");
+                return Path.Join(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), $"{AppDomain.CurrentDomain.FriendlyName}.exe");
             else
-                return Path.GetFullPath($"./{AppDomain.CurrentDomain.FriendlyName}");
+                return Path.Join(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), AppDomain.CurrentDomain.FriendlyName);
         }
     }
 }
