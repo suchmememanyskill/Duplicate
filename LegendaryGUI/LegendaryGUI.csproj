@@ -14,7 +14,4 @@
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.10" />
     <PackageReference Include="MessageBox.Avalonia" Version="1.5.5" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\LegendaryMapper\LegendaryMapper.csproj" />
-  </ItemGroup>
 </Project>

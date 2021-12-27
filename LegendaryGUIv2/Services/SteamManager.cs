@@ -10,9 +10,8 @@ using VDFMapper.ShortcutMap;
 using VDFMapper.VDF;
 using LegendaryMapperV2.Service;
 using LegendaryMapperV2.Model;
-using LegendaryGUIv2.Services;
 
-namespace LegendaryGUI.Services
+namespace LegendaryGUIv2.Services
 {
     public class SteamManager
     {

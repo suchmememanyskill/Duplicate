@@ -8,7 +8,6 @@ using ReactiveUI;
 using System.Collections.ObjectModel;
 using System.Threading;
 using LegendaryGUIv2.Services;
-using LegendaryGUI.Services;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Input;
