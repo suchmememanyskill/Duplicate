@@ -15,11 +15,25 @@ namespace LegendaryGUIv2.Services
 {
     public class SteamManager
     {
-        private string vdfPath = GetSteamShortcutPath.GetShortcutsPath();
-        private string gridPath = GetSteamShortcutPath.GetGridPath();
+        private string vdfPath = "";
+        private string gridPath = "";
         private VDFMap? root;
         public ShortcutRoot? ShortcutRoot { get; private set; }
         public string VdfPath { get => vdfPath; private set => vdfPath = value; }
+
+
+        public bool InitialisePaths()
+        {
+            if (GetSteamShortcutPath.GetUserDataPath() == "")
+                return false;
+
+            if (GetSteamShortcutPath.GetCurrentlyLoggedInUser() <= 0)
+                return false;
+
+            vdfPath = GetSteamShortcutPath.GetShortcutsPath();
+            gridPath = GetSteamShortcutPath.GetGridPath();
+            return true;
+        }
 
         public bool Read()
         {

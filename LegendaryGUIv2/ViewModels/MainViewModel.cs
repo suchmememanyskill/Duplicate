@@ -91,9 +91,16 @@ namespace LegendaryGUIv2.ViewModels
         public void BtnUpdateSteamGames()
         {
             SteamManager m = new SteamManager();
+
+            if (!m.InitialisePaths())
+            {
+                Utils.CreateMessageBox("Fatal error!", "Failure getting steam paths. Is steam running?").Show();
+                return;
+            }
+
             if (!m.Read())
             {
-                Utils.CreateMessageBox("Fatal error!", $"Failure reading {m.VdfPath}").Show();
+                Utils.CreateMessageBox("Fatal error!", $"Failure reading {m.VdfPath}.\nDo you have at least 1 non-steam game shortcut in steam?    ").Show();
                 return;
             }
             Tuple<int, int> res = m.UpdateWithLegendaryGameList(manager.InstalledGames);
@@ -105,6 +112,11 @@ namespace LegendaryGUIv2.ViewModels
         public void BtnRemoveSteamGames()
         {
             SteamManager m = new SteamManager();
+            if (!m.InitialisePaths())
+            {
+                Utils.CreateMessageBox("Fatal error!", "Failure getting steam paths. Is steam running?").Show();
+                return;
+            }
             if (!m.Read())
             {
                 Utils.CreateMessageBox("Fatal error!", $"Failure reading {m.VdfPath}").Show();

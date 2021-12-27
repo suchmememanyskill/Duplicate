@@ -14,10 +14,10 @@ namespace VDFMapper
         {
             if (Environment.OSVersion.Platform == PlatformID.Win32NT)
             {
-                return Path.Combine(
-                    (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Valve\\Steam", "InstallPath", null),
-                    "userdata"
-                    );
+                string path = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Valve\\Steam", "InstallPath", null);
+                if (path == null)
+                    return "";
+                return Path.Combine(path, "userdata");
             }
             else if (Environment.OSVersion.Platform == PlatformID.Unix)
             {
