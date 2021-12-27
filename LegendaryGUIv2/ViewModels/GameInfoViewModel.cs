@@ -39,7 +39,7 @@ namespace LegendaryGUIv2.ViewModels
             string playtimePath = Path.Join(LegendaryGameManager.ConfigDir, $"{game.AppName}.json");
             if (File.Exists(playtimePath))
             {
-                ProcessLog log = JsonConvert.DeserializeObject<ProcessLog>(File.ReadAllText(playtimePath));
+                ProcessLog? log = JsonConvert.DeserializeObject<ProcessLog>(File.ReadAllText(playtimePath));
                 TimeSpan total = TimeSpan.FromSeconds(log!.Sessions.Sum(x => x.TimeSpent.TotalSeconds));
                 Playtime = $"{total:hh\\h\\ mm\\m}";
             }

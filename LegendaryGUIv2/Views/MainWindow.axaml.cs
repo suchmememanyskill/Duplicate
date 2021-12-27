@@ -19,7 +19,7 @@ namespace LegendaryGUIv2.Views
 #endif
         }
 
-        public void Deinit(object sender, CancelEventArgs e)
+        public void Deinit(object? sender, CancelEventArgs? e)
         {
             gameViewModels?.ForEach(x =>
             {
