@@ -15,15 +15,44 @@ namespace LegendaryGUIv2.Services
     public class ProcessMonitor
     {
         private LegendaryGame game;
+        private ProcessSessionLog session = new();
         public ProcessMonitor(LegendaryGame game)
         {
             this.game = game;
         }
 
-        public void SpawnNewApp()
+        public void SpawnNewApp() => SpawnApp($"{game.AppName}");
+        public void SpawnNewWatchApp() => SpawnApp($"watch {game.AppName}");
+        public void SpawnNewAppSkipUpdate() => SpawnApp($"skipupdate {game.AppName}");
+        public static void SpawnApp(string args)
         {
             string path = Utils.GetExecutablePath();
-            Process.Start(path, $"watch {game.AppName}");
+            Process.Start(path, args);
+        }
+
+        public void SetStartTime() => session.StartTime = DateTime.Now;
+
+        public void SetEndTime()
+        {
+            session.EndTime = DateTime.Now;
+            session.TimeSpent = session.EndTime - session.StartTime;
+        }
+
+        public void Write()
+        {
+            string path = Path.Join(LegendaryGameManager.ConfigDir, $"{game.AppName}.json");
+            ProcessLog? log = null;
+            if (!File.Exists(path))
+            {
+                log = new();
+                log.AppName = game.AppName;
+                log.AppTitle = game.AppTitle;
+            }
+            else
+                log = JsonConvert.DeserializeObject<ProcessLog>(File.ReadAllText(path));
+
+            log!.Sessions.Add(session);
+            File.WriteAllText(path, JsonConvert.SerializeObject(log));
         }
 
         public void Monitor()
@@ -39,27 +68,12 @@ namespace LegendaryGUIv2.Services
                     return; // I give up
             } while (p == null);
 
-            ProcessSessionLog session = new();
 
-
-            session.StartTime = DateTime.Now;
+            SetStartTime();
             p.WaitForExit();
-            session.EndTime = DateTime.Now;
-            session.TimeSpent = session.EndTime - session.StartTime;
+            SetEndTime();
 
-            string path = Path.Join(LegendaryGameManager.ConfigDir, $"{game.AppName}.json");
-            ProcessLog? log = null;
-            if (!File.Exists(path))
-            {
-                log = new();
-                log.AppName = game.AppName;
-                log.AppTitle = game.AppTitle;
-            }
-            else
-                log = JsonConvert.DeserializeObject<ProcessLog>(File.ReadAllText(path));
-
-            log!.Sessions.Add(session);
-            File.WriteAllText(path, JsonConvert.SerializeObject(log));
+            Write();
         }
     }
 }

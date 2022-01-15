@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using LegendaryGUIv2.Models;
 using LegendaryGUIv2.ViewModels;
 using LegendaryGUIv2.Views;
 using System;
@@ -26,9 +27,10 @@ namespace LegendaryGUIv2
 
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
+                CLIState state = (CLIState)Enum.Parse(typeof(CLIState), desktop.Args[0]);
                 desktop.MainWindow = new MainWindow
                 {
-                    DataContext = new MainWindowViewModel(desktop.Args),
+                    DataContext = new MainWindowViewModel(state),
                 };
 
                 MainWindow = desktop.MainWindow;

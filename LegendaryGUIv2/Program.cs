@@ -15,16 +15,7 @@ namespace LegendaryGUIv2
         // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
         // yet and stuff might break.
         [STAThread]
-        public static void Main(string[] args)
-        {
-            if (args.Length > 1)
-            {
-                new LegendaryAuth().AttemptLogin(x => OnLogin(x, args), x => Debug.WriteLine("hello"));
-            }
-            else
-                BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
-        }
-
+        public static void Main(string[] args) => new CLI(args).Handle();
         public static void OnLogin(LegendaryAuth auth, string[] args)
         {
             LegendaryGameManager manager = new(auth);

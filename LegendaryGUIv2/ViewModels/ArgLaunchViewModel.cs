@@ -13,54 +13,45 @@ using LegendaryGUIv2.Services;
 using System.Threading;
 using System.Diagnostics;
 using Avalonia.Threading;
+using LegendaryGUIv2.Models;
 
 namespace LegendaryGUIv2.ViewModels
 {
     public class ArgLaunchViewModel : ViewModelBase
     {
-        private LegendaryAuth auth;
-        private string[] args;
-        private LegendaryGame? game;
         private string cliOut = "";
-        public ArgLaunchViewModel(LegendaryAuth auth, string[] args)
+        private GameLaunchLog log = GameLaunchLog.Get();
+
+        public ArgLaunchViewModel()
         {
-            this.auth = auth;
-            this.args = args;
-            AttemptLaunch();
+            DisplayError();
         }
 
-        public void AttemptLaunch()
+        public void DisplayError()
         {
-            string gameName = args[0];
-            LegendaryGameManager manager = new(auth);
-            manager.GetGames();
-            game = manager.InstalledGames.FirstOrDefault(x => x.AppName == gameName);
-            if (game == null)
+            switch (log.State)
             {
-                Text = $"Game not found: {gameName}";
-                return;
+                case GameLaunchState.NotInstalled:;
+                    Text = $"Game not found: {log.AppName}";
+                    break;
+                case GameLaunchState.UpdateAvailable:
+                    LaunchAvailable = true;
+                    Text = $"{log.Game!.AppTitle} has an available update";
+                    break;
+                case GameLaunchState.LegendaryError:
+                    ConsoleAvailable = true;
+                    cliOut = $"Standard out:\n{log.MergeStdOut()}\n\nStandard error:\n{log.MergeStdErr()}    ";
+                    Text = $"{log.Game!.AppTitle} failed to launch. See console for errors";
+                    break;
             }
-
-            if (game.UpdateAvailable)
-            {
-                LaunchAvailable = true;
-                Text = $"{game.AppTitle} has an available update";
-                return;
-            }
-
-            game.LaunchCommand().Then(x => {
-                ExitApplication();
-            }).OnError(x =>
-            {
-                ConsoleAvailable = true;
-                cliOut = $"Standard out:\n{string.Join('\n', x.Terminal.StdOut)}\n\nStandard error:\n{string.Join('\n', x.Terminal.StdErr)}    ";
-                Text = $"{game.AppTitle} failed to launch. See console for errors";
-            }).Start();
-            new ProcessMonitor(game).SpawnNewApp();
         }
 
         public void ExitApplication() => Dispatcher.UIThread.Post(() => App.MainWindow?.Close());
-        public void ForceLaunch() => game?.LaunchCommand(false, true).Then(x => ExitApplication()).Start();
+        public void ForceLaunch()
+        {
+            new ProcessMonitor(log.Game!).SpawnNewAppSkipUpdate();
+            ExitApplication();
+        }
         public void ViewConsole() => Utils.CreateMessageBox("Console", cliOut).Show();
 
         private string text = "Launching game...";

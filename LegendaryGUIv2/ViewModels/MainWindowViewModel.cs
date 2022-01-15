@@ -2,26 +2,36 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Threading;
+using LegendaryGUIv2.Models;
+using LegendaryGUIv2.Services;
 using LegendaryMapperV2.Service;
 using ReactiveUI;
-
+using System;
 
 namespace LegendaryGUIv2.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
         private LegendaryAuth auth;
-        private string[] args;
+        public CLIState CLIState { get; private set; }
 
-        public MainWindowViewModel(string[] args)
+        public MainWindowViewModel(CLIState state)
         {
-            this.args = args;
+            CLIState = state;
             auth = new LegendaryAuth();
             try
             {
-                auth.AttemptLogin(OnLogin, OnLoginFailure);
-                loginFailure = new(this);
-                Content = new LoginView();
+                if (CLIState == CLIState.LaunchError)
+                {
+                    auth = GameLaunchLog.Get().Auth!;
+                    Content = new ArgLaunchViewModel();
+                }
+                else
+                {
+                    auth.AttemptLogin(OnLogin, OnLoginFailure);
+                    loginFailure = new(this);
+                    Content = new LoginView();
+                }
             }
             catch
             {
@@ -33,18 +43,21 @@ namespace LegendaryGUIv2.ViewModels
         {
             auth.GetAuth(sid).Then(x =>
             {
-                auth.AttemptLogin(OnLogin, loginFailure!.OnFailedSubmit);
+                auth.AttemptLogin(y =>
+                {
+                    if (CLIState == CLIState.Passtrough)
+                        OnLogin(y);
+                    else
+                    {
+                        ProcessMonitor.SpawnApp(string.Join(" ", CLI.Args));
+                        Dispatcher.UIThread.Post(() => App.MainWindow?.Close());
+                    }
+                }, loginFailure!.OnFailedSubmit);
             }).Start();
         }
         public void SetViewModel(ViewModelBase view) => Content = view;
 
-        private void OnLogin(LegendaryAuth a)
-        {
-            if (args.Length < 1)
-                SetMainViewModel();
-            else
-                Content = new ArgLaunchViewModel(auth, args);
-        }
+        private void OnLogin(LegendaryAuth a) => SetMainViewModel();
 
         public void SetMainViewModel() => Content = mainView = new MainViewModel(auth, this);
 
