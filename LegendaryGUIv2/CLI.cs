@@ -88,14 +88,12 @@ namespace LegendaryGUIv2
                 return;
             }
 
-            bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-
             ProcessMonitor monitor = new(game);
             monitor.SetStartTime();
 
             game.LaunchCommand(false, skipUpdate).Then(x =>
             {
-                if (isWindows)
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                     monitor.Monitor();
                 else
                 {

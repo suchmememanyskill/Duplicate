@@ -18,6 +18,7 @@ using MessageBox.Avalonia.Enums;
 using Avalonia.Controls;
 using LegendaryGUIv2.Services;
 using Avalonia.Threading;
+using System.Runtime.InteropServices;
 
 namespace LegendaryGUIv2.ViewModels
 {
@@ -80,7 +81,18 @@ namespace LegendaryGUIv2.ViewModels
                 Icon = Avalonia.Media.Imaging.Bitmap.DecodeToWidth(stream, 200);
             }
         }
-        public void Play() => new ProcessMonitor(game).SpawnNewAppSkipUpdate();
+        public void Play()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) // This os specific code is because linux keeps the legendary command active. This means if you close the GUI, the app itself won't close
+            {
+                game.LaunchCommand().OnError(x =>
+                    Dispatcher.UIThread.Post(() =>
+                    Utils.CreateMessageBox("An error occured!", $"Something went wrong while launching {game.AppTitle}!\n\nStandard out:\n{string.Join('\n', x.Terminal.StdOut)}\n\nStandard error:\n{string.Join('\n', x.Terminal.StdErr)}    ").Show())
+                ).Start();
+                new ProcessMonitor(game).SpawnNewWatchApp();
+            }
+            else new ProcessMonitor(game).SpawnNewAppSkipUpdate();
+        }
 
         public void Info() => mainView.SetViewOnWindow(new GameInfoViewModel(mainView, this));
         public void Install() => game.InstantiateDownload().Start();
