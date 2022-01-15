@@ -27,6 +27,7 @@ namespace LegendaryGUIv2
         {
             if (Args!.Length == 0)
             {
+                Println("Launching gui");
                 LaunchGUI();
                 return;
             }
@@ -47,11 +48,13 @@ namespace LegendaryGUIv2
             }
             else return;
 
+            Println("Logging in");
             new LegendaryAuth().AttemptLogin(OnLogin, x => OnLoginError());
         }
 
         public void OnLogin(LegendaryAuth auth)
         {
+            Println("Logged in");
             LegendaryGameManager manager = new(auth);
             manager.GetGames();
 
@@ -61,10 +64,15 @@ namespace LegendaryGUIv2
                 LaunchGame(manager);
         }
 
-        public void OnLoginError() => LaunchGUIWithLoginView();
+        public void OnLoginError()
+        {
+            Println("Login failed! Booting GUI");
+            LaunchGUIWithLoginView();
+        }
 
         public void LaunchGame(LegendaryGameManager manager)
         {
+            Println("Preparing game launch");
             GameLaunchLog log = GameLaunchLog.Get();
             log.AppName = appName;
             log.Auth = manager.Auth;
@@ -75,6 +83,7 @@ namespace LegendaryGUIv2
             if (game == null)
             {
                 log.State = GameLaunchState.NotInstalled;
+                Println($"Game {appName} not found! Booting GUI");
                 LaunchGUIWithArgLaunchView();
                 return;
             }
@@ -84,6 +93,7 @@ namespace LegendaryGUIv2
             if (game.UpdateAvailable && !skipUpdate)
             {
                 log.State = GameLaunchState.UpdateAvailable;
+                Println($"Game {appName} has an update! Booting GUI");
                 LaunchGUIWithArgLaunchView();
                 return;
             }
@@ -91,6 +101,7 @@ namespace LegendaryGUIv2
             ProcessMonitor monitor = new(game);
             monitor.SetStartTime();
 
+            Println($"Launching game");
             game.LaunchCommand(false, skipUpdate).Then(x =>
             {
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -105,6 +116,7 @@ namespace LegendaryGUIv2
                 log.StdErr = x.Terminal.StdErr;
                 log.StdOut = x.Terminal.StdOut;
                 log.State = GameLaunchState.LegendaryError;
+                Println($"Game {appName} failed to launch! Booting GUI");
                 LaunchGUIWithArgLaunchView();
             }).Start();
         }
@@ -119,5 +131,6 @@ namespace LegendaryGUIv2
         private void LaunchGUI() => Program.BuildAvaloniaApp().StartWithClassicDesktopLifetime(new string[] { CLIState.Passtrough.ToString() });
         public void LaunchGUIWithArgLaunchView() => Program.BuildAvaloniaApp().StartWithClassicDesktopLifetime(new string[] { CLIState.LaunchError.ToString() });
         public void LaunchGUIWithLoginView() => Program.BuildAvaloniaApp().StartWithClassicDesktopLifetime(new string[] { CLIState.NoLogin.ToString() });
+        private void Println(string message) => Console.WriteLine($"[CLI] {message}");
     }
 }
