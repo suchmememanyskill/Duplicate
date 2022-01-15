@@ -14,7 +14,7 @@ namespace LegendaryGUIv2
 {
     public class CLI
     {
-        public static string[] Args { get; private set; }
+        public static string[]? Args { get; private set; }
         private bool skipUpdate = false;
         private bool watchOnly = false;
         private string appName = "";
@@ -25,7 +25,7 @@ namespace LegendaryGUIv2
 
         public void Handle()
         {
-            if (Args.Length == 0)
+            if (Args!.Length == 0)
             {
                 LaunchGUI();
                 return;

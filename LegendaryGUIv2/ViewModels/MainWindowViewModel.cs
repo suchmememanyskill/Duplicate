@@ -49,7 +49,7 @@ namespace LegendaryGUIv2.ViewModels
                         OnLogin(y);
                     else
                     {
-                        ProcessMonitor.SpawnApp(string.Join(" ", CLI.Args));
+                        ProcessMonitor.SpawnApp(string.Join(" ", CLI.Args!));
                         Dispatcher.UIThread.Post(() => App.MainWindow?.Close());
                     }
                 }, loginFailure!.OnFailedSubmit);
