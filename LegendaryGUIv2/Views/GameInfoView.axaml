@@ -8,7 +8,7 @@
 
 		<Panel>
 			<Panel.Styles>
-				<Style Selector="Label">
+				<Style Selector="Label, ToggleSwitch">
 					<Setter Property="FontSize" Value="18"/>
 				</Style>
 				<Style Selector="Button.generic">
@@ -87,7 +87,7 @@
 							<Label>Download Size:</Label>
 							<Label Content="{Binding DownloadSize}">0.69GB</Label>
 						</StackPanel>
-						<StackPanel Orientation="Horizontal" Margin="0,30,0,0">
+						<StackPanel Orientation="Horizontal" Margin="0,20,0,0">
 							<Label>App ID:</Label>
 							<Label Content="{Binding Game.AppName}">AppName</Label>
 						</StackPanel>
@@ -118,6 +118,8 @@
 								<Label>Background image</Label>
 							</Button>
 						</StackPanel>
+							<Label Margin="0,20,0,0" Content="Config" FontWeight="Bold" />
+							<ToggleSwitch Margin="4,0,0,0" VerticalAlignment="Center" OnContent="Always launch offline" OffContent="Always launch offline" IsChecked="{Binding AlwaysOffline}" />
 					</StackPanel>
 				</StackPanel>
 				</Border>

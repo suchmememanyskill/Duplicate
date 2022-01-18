@@ -18,6 +18,7 @@ namespace LegendaryMapperV2.Service
         public List<LegendaryGame> InstalledGames { get => Games.Where(x => x.InstalledData != null).ToList(); }
         public List<LegendaryGame> NotInstalledGames { get => Games.Where(x => x.InstalledData == null).ToList(); }
         public LegendaryGameManagerCallback OnGameRefresh { get; set; }
+        public Config Config { get; private set; } = new();
         private string gameDirectory = "";
         public string GameDirectory
         {
@@ -100,6 +101,9 @@ namespace LegendaryMapperV2.Service
             // Filter out UE stuff
             Games.RemoveAll(x => !x.Metadata.Metadata.Categories.Any(y => y["path"] == "games"));
 
+            if (File.Exists(Path.Join(ConfigDir, "config.json")))
+                Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(Path.Join(ConfigDir, "config.json")));
+
             Games = Games.OrderBy(x => x.AppTitle).ToList();
             OnGameRefresh?.Invoke(this);
         }
@@ -109,6 +113,8 @@ namespace LegendaryMapperV2.Service
             Downloads.Add(download);
             OnGameRefresh?.Invoke(this);
         }
+
+        public void SaveConfig() => File.WriteAllText(Path.Join(ConfigDir, "config.json"), JsonConvert.SerializeObject(Config));
 
         public void DetachDownload(LegendaryDownload download)
         {

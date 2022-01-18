@@ -18,6 +18,7 @@ namespace LegendaryMapperV2.Service
         public LegendaryGameManager Parser { get; private set; }
         public List<LegendaryGame> Dlc { get; private set; } = new();
         public bool IsDlc { get; set; }
+        public bool ConfigAlwaysOffline { get => GetConfigItem().AlwaysOffline; set { ConfigItem item = GetConfigItem(); item.AlwaysOffline = value; SetConfigItem(item); } }
 
         public string AppName { get => Metadata.AppName; }
         public string AppTitle { get => Metadata.AppTitle; }
@@ -70,7 +71,7 @@ namespace LegendaryMapperV2.Service
             if (InstalledData == null)
                 throw new Exception("Game is not installed");
 
-            if (Parser.Auth.OfflineLogin)
+            if (Parser.Auth.OfflineLogin || ConfigAlwaysOffline)
                 offline = true;
 
             string args = "";
@@ -147,6 +148,22 @@ namespace LegendaryMapperV2.Service
                 return null;
             else
                 return Metadata.Metadata.KeyImages.Find(x => x.Type == type);
+        }
+
+        private ConfigItem GetConfigItem()
+        {
+            if (Parser.Config.GameConfigs.TryGetValue(AppName, out ConfigItem item))
+                return item;
+
+            return new();
+        }
+
+        private void SetConfigItem(ConfigItem item)
+        {
+            if (Parser.Config.GameConfigs.ContainsKey(AppName))
+                Parser.Config.GameConfigs[AppName] = item;
+            else
+                Parser.Config.GameConfigs.Add(AppName, item);
         }
     }
 }

@@ -29,6 +29,7 @@ namespace LegendaryGUIv2.ViewModels
             this.mainView = mainView;
             this.gameView = gameView;
             game = gameView.Game;
+            alwaysOffline = game.ConfigAlwaysOffline;
             new Thread(() => DownloadImages()).Start();
             new Thread(() => GameSlug = game.GetProductSlug()).Start();
 
@@ -46,7 +47,12 @@ namespace LegendaryGUIv2.ViewModels
             }
         }
 
-        public void Back() => mainView.SetViewOnWindow(mainView);
+        public void Back()
+        {
+            if (configChanged)
+                game.Parser.SaveConfig();
+            mainView.SetViewOnWindow(mainView);
+        }
 
         public void DownloadImages()
         {
@@ -105,6 +111,9 @@ namespace LegendaryGUIv2.ViewModels
         public Avalonia.Media.Imaging.Bitmap? Icon { get => icon; set => this.RaiseAndSetIfChanged(ref icon, value); }
         private Avalonia.Media.Imaging.Bitmap? cover;
         public Avalonia.Media.Imaging.Bitmap? Cover { get => cover; set => this.RaiseAndSetIfChanged(ref cover, value); }
+        private bool configChanged = false, alwaysOffline;
+        public bool AlwaysOffline { get => alwaysOffline; set { this.RaiseAndSetIfChanged(ref alwaysOffline, value); game.ConfigAlwaysOffline = value; configChanged = true; } }
+        
 
         private string downloadSize = "--", installedSize = "--", gameSlug = "";
         public string DownloadSize { get => downloadSize; set => this.RaiseAndSetIfChanged(ref downloadSize, value); }
