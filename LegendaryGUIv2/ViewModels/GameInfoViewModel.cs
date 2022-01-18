@@ -14,6 +14,7 @@ using MessageBox.Avalonia.Enums;
 using LegendaryMapperV2.Model;
 using LegendaryGUIv2.Models;
 using Newtonsoft.Json;
+using Avalonia.Media;
 
 namespace LegendaryGUIv2.ViewModels
 {
@@ -52,13 +53,13 @@ namespace LegendaryGUIv2.ViewModels
             if (game.GameBannerTall != null)
             {
                 Stream stream = new MemoryStream(game.GameBannerTall.GetImage());
-                Cover = Avalonia.Media.Imaging.Bitmap.DecodeToHeight(stream, 500);
+                Cover = Avalonia.Media.Imaging.Bitmap.DecodeToHeight(stream, 450);
             }
 
             if (game.GameLogo != null)
             {
                 Stream stream = new MemoryStream(game.GameLogo.GetImage());
-                Icon = Avalonia.Media.Imaging.Bitmap.DecodeToWidth(stream, 400);
+                Icon = Avalonia.Media.Imaging.Bitmap.DecodeToWidth(stream, 360);
             }
 
             if (game.GameBanner != null)
@@ -96,7 +97,8 @@ namespace LegendaryGUIv2.ViewModels
 
         public LegendaryGame Game { get => game; }
         public GameViewModel GameView { get => gameView; }
-
+        //public static IBrush ButtonNormal { get; } = new SolidColorBrush(Avalonia.Media.Color.FromArgb(96, 0, 0, 0));
+        //public static IBrush ButtonHover { get; } = new SolidColorBrush(Avalonia.Media.Color.FromArgb(196, 0, 0, 0));
         private Avalonia.Media.Imaging.Bitmap? background;
         public Avalonia.Media.Imaging.Bitmap? Background { get => background; set => this.RaiseAndSetIfChanged(ref background, value); }
         private Avalonia.Media.Imaging.Bitmap? icon;
