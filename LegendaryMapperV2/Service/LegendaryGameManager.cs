@@ -77,7 +77,7 @@ namespace LegendaryMapperV2.Service
             List<LegendaryGame> dlc = new();
             Games.ForEach(currentGame =>
             {
-                if (currentGame.Metadata.Metadata.DlcItemList != null)
+                if (currentGame.Metadata != null && currentGame.Metadata.Metadata != null && currentGame.Metadata.Metadata.DlcItemList != null)
                 {
                     List<LegendaryGame> currentGameDlc = Games.Where(possibleDlc =>
                         currentGame.Metadata.Metadata.DlcItemList.Any(currentGameDlc =>
@@ -99,7 +99,13 @@ namespace LegendaryMapperV2.Service
             Games.RemoveAll(x => dlc.Contains(x));
 
             // Filter out UE stuff
-            Games.RemoveAll(x => !x.Metadata.Metadata.Categories.Any(y => y["path"] == "games"));
+            Games.RemoveAll(x =>
+            {
+                if (x.Metadata != null && x.Metadata.Metadata != null && x.Metadata.Metadata.Categories != null)
+                    return !x.Metadata.Metadata.Categories.Any(y => y["path"] == "games");
+
+                return false;
+            });
 
             if (File.Exists(Path.Join(ConfigDir, "config.json")))
                 Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(Path.Join(ConfigDir, "config.json")));

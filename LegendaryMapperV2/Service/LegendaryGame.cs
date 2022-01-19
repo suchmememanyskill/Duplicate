@@ -33,7 +33,7 @@ namespace LegendaryMapperV2.Service
                 return null;
             }
         }
-        public bool UpdateAvailable { get => InstalledVersion != AvailableVersion; }
+        public bool UpdateAvailable { get { if (AvailableVersion != null) return InstalledVersion != AvailableVersion; else return false; } }
         public long InstallSizeBytes { get => InstalledData.InstallSize; }
         private readonly string[] gameSizes = { "B", "KB", "MB", "GB" };
         public string InstallSizeReadable { get {
@@ -49,7 +49,7 @@ namespace LegendaryMapperV2.Service
             }
         }
 
-        public string Developer { get => Metadata.Metadata.Developer; }
+        public string Developer { get { if (Metadata != null && Metadata.Metadata != null && Metadata.Metadata.Developer != null) return Metadata.Metadata.Developer; else return ""; } }
         
         public string InstallPath { get => InstalledData.InstallPath; }
         public bool IsInstalled { get => InstalledData != null; }
@@ -110,6 +110,9 @@ namespace LegendaryMapperV2.Service
 
         public string GetProductSlug()
         {
+            if (Metadata == null || Metadata.Metadata == null)
+                return "";
+
             try
             {
                 using (WebClient client = new WebClient())
@@ -145,6 +148,9 @@ namespace LegendaryMapperV2.Service
         }
         private MetaImage GetGameImage(string type)
         {
+            if (Metadata == null || Metadata.Metadata == null || Metadata.Metadata.KeyImages == null)
+                return null;
+
             if (!Metadata.Metadata.KeyImages.Any(x => x.Type == type))
                 return null;
             else
