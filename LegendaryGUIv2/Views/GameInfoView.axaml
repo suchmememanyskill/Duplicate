@@ -120,6 +120,7 @@
 						</StackPanel>
 							<Label Margin="0,20,0,0" Content="Config" FontWeight="Bold" />
 							<ToggleSwitch Margin="4,0,0,0" VerticalAlignment="Center" OnContent="Always launch offline" OffContent="Always launch offline" IsChecked="{Binding AlwaysOffline}" />
+						<ToggleSwitch Margin="4,0,0,0" VerticalAlignment="Center" OnContent="Always skip version check" OffContent="Always skip version check" IsChecked="{Binding AlwaysSkipUpdate}" />
 					</StackPanel>
 				</StackPanel>
 				</Border>

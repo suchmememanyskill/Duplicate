@@ -19,6 +19,7 @@ namespace LegendaryMapperV2.Service
         public List<LegendaryGame> Dlc { get; private set; } = new();
         public bool IsDlc { get; set; }
         public bool ConfigAlwaysOffline { get => GetConfigItem().AlwaysOffline; set { ConfigItem item = GetConfigItem(); item.AlwaysOffline = value; SetConfigItem(item); } }
+        public bool ConfigAlwaysSkipUpdateCheck { get => GetConfigItem().AlwaysSkipUpdate; set { ConfigItem item = GetConfigItem(); item.AlwaysSkipUpdate = value; SetConfigItem(item); } }
 
         public string AppName { get => Metadata.AppName; }
         public string AppTitle { get => Metadata.AppTitle; }
@@ -78,7 +79,7 @@ namespace LegendaryMapperV2.Service
             if (offline)
                 args += "--offline";
 
-            if (!offline && skipUpdate)
+            if (!offline && (skipUpdate || ConfigAlwaysSkipUpdateCheck ))
                 args += "--skip-version-check";
 
             return new LegendaryCommand($"launch {InstalledData.AppName} {args}");
