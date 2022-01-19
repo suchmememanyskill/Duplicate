@@ -7,13 +7,16 @@
              x:Class="LegendaryGUIv2.Views.MainView">
 	<DockPanel>
 		<DockPanel DockPanel.Dock="Top" Background="OrangeRed" Height="50">
-			<StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
-				<Label VerticalAlignment="Center" Margin="10,0,0,0" FontSize="24" FontWeight="Bold">Duplicate</Label>
-				<Label VerticalAlignment="Center" Margin="10,0,0,0" Content="{Binding GameCountText}" FontSize="20">Found 6 games, 9 installed</Label>
+			<StackPanel Orientation="Horizontal" DockPanel.Dock="Left" Spacing="10" Margin="10,0,0,0">
+				<Label VerticalAlignment="Center" FontSize="24" FontWeight="Bold">Duplicate</Label>
+				<Label VerticalAlignment="Center" Content="{Binding GameCountText}" FontSize="20">Found 6 games, 9 installed</Label>
+				<Border Background="Black" Margin="0,7,0,7" Padding="2,0,2,0" CornerRadius="5" IsVisible="{Binding Manager.Auth.OfflineLogin}">
+					<Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Foreground="White">Offline mode</Label>
+				</Border>
 			</StackPanel>
 			<StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
-				<TextBox Watermark="Search..." VerticalAlignment="Center" Margin="10,0,10,0" Width="250" Text="{Binding SearchBoxText}" />
-				<Button FontSize="16" Margin="0,0,5,0" Command="{Binding OpenSource}">Source code (report an issue)</Button>
+				<TextBox Watermark="Search..." VerticalAlignment="Center" Margin="10,0,10,0" Width="200" Text="{Binding SearchBoxText}" />
+				<Button FontSize="16" Margin="0,0,5,0" Command="{Binding OpenSource}">Report an issue</Button>
 				<Button FontSize="16" Margin="0,0,5,0" Command="{Binding OpenFreeGame}">Open free game page</Button>
 				<Button FontSize="16" Margin="0,0,5,0" Command="{Binding RefreshLibrary}">Reload games</Button>
 			</StackPanel>
