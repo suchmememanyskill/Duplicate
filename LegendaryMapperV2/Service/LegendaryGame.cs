@@ -8,6 +8,9 @@ using Newtonsoft.Json;
 using System.Net;
 using System.Diagnostics;
 using System.IO;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 
 namespace LegendaryMapperV2.Service
 {
@@ -57,6 +60,34 @@ namespace LegendaryMapperV2.Service
         public MetaImage GameBanner { get => GetGameImage("DieselGameBox"); }
         public MetaImage GameBannerTall { get => GetGameImage("DieselGameBoxTall"); }
         public MetaImage GameLogo { get => GetGameImage("DieselGameBoxLogo"); }
+
+        public Image<Rgba32> GetGameBannerTallWithLogo()
+        {
+            Image<Rgba32> banner = Image.Load<Rgba32>(GameBannerTall.GetImage());
+            if (GameLogo == null)
+                return banner;
+
+            Image<Rgba32> logo = Image.Load<Rgba32>(GameLogo.GetImage());
+            Image<Rgba32> output = new Image<Rgba32>(banner.Width, banner.Height);
+
+             // Steam's horizontal height is about 1.5x the vertical height
+             float newWidth = banner.Height / 1.5f;
+             float newHeight = (newWidth / logo.Width) * logo.Height;
+             logo.Mutate(x => x.Resize(new Size((int)newWidth, (int)newHeight)));
+
+            float centerX = banner.Width / 2;
+            float centerY = banner.Height / 2;
+            float logoPosX = centerX - logo.Width / 2;
+            float logoPosY = centerY - logo.Height / 2;
+            output.Mutate(x => x
+                .DrawImage(banner, new Point(0, 0), 1f)
+                .DrawImage(logo, new Point((int)logoPosX, (int)logoPosY), 1f)
+            );
+
+            banner.Dispose();
+            logo.Dispose();
+            return output;
+        }
 
         public LegendaryGame(GameMetadata meta, LegendaryGameManager parser)
         {

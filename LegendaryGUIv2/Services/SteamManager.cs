@@ -10,6 +10,10 @@ using VDFMapper.ShortcutMap;
 using VDFMapper.VDF;
 using LegendaryMapperV2.Service;
 using LegendaryMapperV2.Model;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.ImageSharp.Formats.Jpeg;
 
 namespace LegendaryGUIv2.Services
 {
@@ -124,12 +128,16 @@ namespace LegendaryGUIv2.Services
                 
                 if (boxTall != null)
                 {
-                    if (!File.Exists(Path.Combine(gridPath, $"{entry.AppId}.{boxTall.UrlExt}"))){
-                        File.WriteAllBytes(Path.Combine(gridPath, $"{entry.AppId}.{boxTall.UrlExt}"), boxTall.GetImage());
+                    if (!File.Exists(Path.Combine(gridPath, $"{entry.AppId}.jpg"))){
+                        Stream outStream = new FileStream(Path.Combine(gridPath, $"{entry.AppId}.jpg"), FileMode.OpenOrCreate);
+                        Image<Rgba32> image = x.GetGameBannerTallWithLogo();
+                        image.Save(outStream, new JpegEncoder());
+                        image.Dispose();
+                        outStream.Dispose();
                     }
 
-                    if (!File.Exists(Path.Combine(gridPath, $"{entry.AppId}p.{boxTall.UrlExt}")))
-                        File.Copy(Path.Combine(gridPath, $"{entry.AppId}.{boxTall.UrlExt}"), Path.Combine(gridPath, $"{entry.AppId}p.{boxTall.UrlExt}"));
+                    if (!File.Exists(Path.Combine(gridPath, $"{entry.AppId}p.jpg")))
+                        File.Copy(Path.Combine(gridPath, $"{entry.AppId}.jpg"), Path.Combine(gridPath, $"{entry.AppId}p.jpg"));
                 }
                     
                 if (box != null)
