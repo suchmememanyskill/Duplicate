@@ -122,6 +122,7 @@ namespace LegendaryGUIv2.Services
                 entry.AppId = ShortcutEntry.GenerateSteamGridAppId(entry.AppName, entry.Exe);
                 UpdateExe(entry, x.AppName);
                 entry.AddTag("EpicGames");
+                entry.Icon = Path.Combine(x.InstalledData.InstallPath, x.InstalledData.Executable);
 
                 MetaImage boxTall = x.GameBannerTall;
                 MetaImage box = x.GameBanner;
