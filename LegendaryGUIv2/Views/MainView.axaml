@@ -23,27 +23,27 @@
 		</DockPanel>
 		<ScrollViewer Margin="10">
 			<StackPanel>
-				<StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
+				<StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center" IsVisible="{Binding Installed.Count}">
 					<Border Background="Green" CornerRadius="10" Padding="5,1,5,1">
 						<Label FontSize="18" VerticalAlignment="Center">Installed</Label>
 					</Border>
 					<Button FontSize="18" Command="{Binding BtnUpdateSteamGames}">Update Steam games</Button>
 					<Button FontSize="18" Command="{Binding BtnRemoveSteamGames}">Remove Steam games</Button>
 				</StackPanel>
-				<ListBox HorizontalAlignment="Center" Items="{Binding Installed}" SelectedItem="{Binding SelectedGameInstalled}" Background="Transparent" Margin="0 20">
+				<ListBox HorizontalAlignment="Center" Items="{Binding Installed}" SelectedItem="{Binding SelectedGameInstalled}" Background="Transparent" Margin="0 20" IsVisible="{Binding Installed.Count}">
 					<ListBox.ItemsPanel>
 						<ItemsPanelTemplate>
 							<WrapPanel />
 						</ItemsPanelTemplate>
 					</ListBox.ItemsPanel>
 				</ListBox>
-				<StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
+				<StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center" IsVisible="{Binding NotInstalled.Count}">
 					<Border Background="Blue" CornerRadius="10" Padding="5,1,5,1">
 						<Label FontSize="18" VerticalAlignment="Center">Not Installed</Label>
 					</Border>
 					<Button FontSize="18" Content="{Binding DownloadLocation}" Command="{Binding OnPathChange}">Download location: ~/Legendary</Button>
 				</StackPanel>
-				<ListBox HorizontalAlignment="Center" Items="{Binding NotInstalled}" SelectedItem="{Binding SelectedGameNotInstalled}" Background="Transparent" Margin="0 20">
+				<ListBox HorizontalAlignment="Center" Items="{Binding NotInstalled}" SelectedItem="{Binding SelectedGameNotInstalled}" Background="Transparent" Margin="0 20" IsVisible="{Binding NotInstalled.Count}">
 					<ListBox.ItemsPanel>
 						<ItemsPanelTemplate>
 							<WrapPanel />
