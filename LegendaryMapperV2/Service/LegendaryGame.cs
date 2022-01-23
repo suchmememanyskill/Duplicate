@@ -23,6 +23,7 @@ namespace LegendaryMapperV2.Service
         public bool IsDlc { get; set; }
         public bool ConfigAlwaysOffline { get => GetConfigItem().AlwaysOffline; set { ConfigItem item = GetConfigItem(); item.AlwaysOffline = value; SetConfigItem(item); } }
         public bool ConfigAlwaysSkipUpdateCheck { get => GetConfigItem().AlwaysSkipUpdate; set { ConfigItem item = GetConfigItem(); item.AlwaysSkipUpdate = value; SetConfigItem(item); } }
+        public string ConfigAdditionalGameArgs { get => GetConfigItem().AdditionalArgs; set { ConfigItem item = GetConfigItem(); item.AdditionalArgs = value; SetConfigItem(item); } }
 
         public string AppName { get => Metadata.AppName; }
         public string AppTitle { get => Metadata.AppTitle; }
@@ -113,7 +114,7 @@ namespace LegendaryMapperV2.Service
             if (!offline && (skipUpdate || ConfigAlwaysSkipUpdateCheck ))
                 args += "--skip-version-check";
 
-            return new LegendaryCommand($"launch {InstalledData.AppName} {args}");
+            return new LegendaryCommand($"launch {InstalledData.AppName} {args} {ConfigAdditionalGameArgs}");
         }
 
         public LegendaryDownload InstantiateDownload() => new LegendaryDownload(this);

@@ -20,5 +20,8 @@ namespace LegendaryMapperV2.Model
 
         [JsonProperty("AlwaysSkipUpdate")]
         public bool AlwaysSkipUpdate { get; set; } = false;
+
+        [JsonProperty("AdditionalArgs")]
+        public string AdditionalArgs { get; set; } = "";
     }
 }
