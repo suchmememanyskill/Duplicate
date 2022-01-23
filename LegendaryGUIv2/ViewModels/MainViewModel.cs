@@ -45,7 +45,7 @@ namespace LegendaryGUIv2.ViewModels
         public void OnPathChange() => SetViewOnWindow(new ChangeGameFolderViewModel(this));
         public void SetViewOnWindow(ViewModelBase view) => window.SetViewModel(view);
 
-        public void RefreshLibrary() => manager.GetGames();
+        public void RefreshLibrary() => new LegendaryCommand("list-games").Then(x => manager.GetGames()).Start();
 
         public void OnLibraryRefresh()
         {
