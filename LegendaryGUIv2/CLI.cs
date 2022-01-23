@@ -102,7 +102,7 @@ namespace LegendaryGUIv2
             monitor.SetStartTime();
 
             Println($"Launching game");
-            game.LaunchCommand(false, skipUpdate).Then(x =>
+            LegendaryCommand command = game.LaunchCommand(false, skipUpdate).Then(x =>
             {
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                     monitor.Monitor();
@@ -118,7 +118,10 @@ namespace LegendaryGUIv2
                 log.State = GameLaunchState.LegendaryError;
                 Println($"Game {appName} failed to launch! Booting GUI");
                 LaunchGUIWithArgLaunchView();
-            }).Start();
+            });
+
+            log.Command = $"legendary {command.Arguments}";
+            command.Start();
         }
 
         public void WatchGame(LegendaryGameManager manager)

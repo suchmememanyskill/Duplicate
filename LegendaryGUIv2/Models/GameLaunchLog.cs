@@ -15,6 +15,7 @@ namespace LegendaryGUIv2.Models
         public LegendaryGame? Game { get; set; }
         public GameLaunchState State { get; set; }
         public LegendaryAuth? Auth { get; set; }
+        public string Command { get; set; } = "";
 
         public string MergeStdOut() => string.Join("\n", StdOut);
         public string MergeStdErr() => string.Join("\n", StdErr);

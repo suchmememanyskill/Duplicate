@@ -87,7 +87,7 @@ namespace LegendaryGUIv2.ViewModels
             {
                 game.LaunchCommand().OnError(x =>
                     Dispatcher.UIThread.Post(() =>
-                    Utils.CreateMessageBox("An error occured!", $"Something went wrong while launching {game.AppTitle}!\n\nStandard out:\n{string.Join('\n', x.Terminal.StdOut)}\n\nStandard error:\n{string.Join('\n', x.Terminal.StdErr)}    ").Show())
+                    Utils.CreateMessageBox("An error occured!", $"Something went wrong while launching {game.AppTitle}!\nCommand: legendary {x.Arguments}\n\nStandard out:\n{string.Join('\n', x.Terminal.StdOut)}\n\nStandard error:\n{string.Join('\n', x.Terminal.StdErr)}    ").Show())
                 ).Start();
                 new ProcessMonitor(game).SpawnNewWatchApp();
             }

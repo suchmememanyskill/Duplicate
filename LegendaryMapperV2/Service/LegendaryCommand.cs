@@ -18,6 +18,7 @@ namespace LegendaryMapperV2.Service
         private bool done = false;
         
         public delegate void CommandCallback(LegendaryCommand action);
+        public string Arguments { get => arguments; }
 
         public int ExitCode { get; private set; }
 

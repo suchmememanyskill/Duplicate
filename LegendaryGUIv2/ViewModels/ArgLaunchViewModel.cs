@@ -19,7 +19,6 @@ namespace LegendaryGUIv2.ViewModels
 {
     public class ArgLaunchViewModel : ViewModelBase
     {
-        private string cliOut = "";
         private GameLaunchLog log = GameLaunchLog.Get();
 
         public ArgLaunchViewModel()
@@ -40,8 +39,8 @@ namespace LegendaryGUIv2.ViewModels
                     break;
                 case GameLaunchState.LegendaryError:
                     ConsoleAvailable = true;
-                    cliOut = $"Standard out:\n{log.MergeStdOut()}\n\nStandard error:\n{log.MergeStdErr()}    ";
-                    Text = $"{log.Game!.AppTitle} failed to launch. See console for errors";
+                    cliOut = $"Command: {log.Command}\n\nStandard out:\n{log.MergeStdOut()}\n\nStandard error:\n{log.MergeStdErr()}";
+                    Text = $"{log.Game!.AppTitle} failed to launch!";
                     break;
             }
         }
@@ -52,12 +51,12 @@ namespace LegendaryGUIv2.ViewModels
             new ProcessMonitor(log.Game!).SpawnNewAppSkipUpdate();
             ExitApplication();
         }
-        public void ViewConsole() => Utils.CreateMessageBox("Console", cliOut).Show();
 
-        private string text = "Launching game...";
+        private string text = "Launching game...", cliOut = "";
         private bool launchAvailable = false, consoleAvailable = false;
         public string Text { get => text; set => this.RaiseAndSetIfChanged(ref text, value); }
         public bool LaunchAvailable { get => launchAvailable; set => this.RaiseAndSetIfChanged(ref launchAvailable, value); }
         public bool ConsoleAvailable { get => consoleAvailable; set => this.RaiseAndSetIfChanged(ref consoleAvailable, value); }
+        public string CliOut { get => cliOut; }
     }
 }
