@@ -118,10 +118,12 @@
 								<Label>Background image</Label>
 							</Button>
 						</StackPanel>
-						<Label Margin="0,20,0,0" Content="Config" FontWeight="Bold" />
-						<ToggleSwitch Margin="4,0,0,0" VerticalAlignment="Center" OnContent="Always launch offline" OffContent="Always launch offline" IsChecked="{Binding AlwaysOffline}" />
-						<ToggleSwitch Margin="4,0,0,0" VerticalAlignment="Center" OnContent="Always skip version check" OffContent="Always skip version check" IsChecked="{Binding AlwaysSkipUpdate}" />
-						<TextBox Margin="4,5,0,0" HorizontalAlignment="Left" Width="300" Watermark="Additional game arguments" Text="{Binding AdditionalArgs}"/>
+						<StackPanel Margin="0,20,0,0" IsVisible="{Binding Game.IsInstalled}">
+							<Label Content="Config" FontWeight="Bold" />
+							<ToggleSwitch Margin="4,0,0,0" VerticalAlignment="Center" OnContent="Always launch offline" OffContent="Always launch offline" IsChecked="{Binding AlwaysOffline}" />
+							<ToggleSwitch Margin="4,0,0,0" VerticalAlignment="Center" OnContent="Always skip version check" OffContent="Always skip version check" IsChecked="{Binding AlwaysSkipUpdate}" />
+							<TextBox Margin="4,5,0,0" HorizontalAlignment="Left" Width="300" Watermark="Additional game arguments" Text="{Binding AdditionalArgs}"/>
+						</StackPanel>
 					</StackPanel>
 				</StackPanel>
 				</Border>
