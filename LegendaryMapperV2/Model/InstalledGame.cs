@@ -46,7 +46,7 @@ namespace LegendaryMapperV2.Model
         public bool NeedsVerification { get; set; }
 
         [JsonProperty("prereq_info")]
-        public string PrereqInfo { get; set; }
+        public PreReqInfo PrereqInfo { get; set; }
 
         [JsonProperty("requires_ot")]
         public bool RequiresOt { get; set; }
@@ -59,5 +59,20 @@ namespace LegendaryMapperV2.Model
 
         [JsonProperty("version")]
         public string Version { get; set; }
+    }
+    
+    public class PreReqInfo
+    {
+        [JsonProperty("args")]
+        public string Args { get; set; }
+
+        [JsonProperty("ids")]
+        public List<string> Ids { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("path")]
+        public string Path { get; set; }
     }
 }
