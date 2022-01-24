@@ -95,7 +95,16 @@ namespace LegendaryGUIv2.ViewModels
         }
 
         public void Info() => mainView.SetViewOnWindow(new GameInfoViewModel(mainView, this));
-        public void Install() => game.InstantiateDownload().Start();
+        public void Install()
+        {
+            LegendaryDownload dl = game.InstantiateDownload();
+            dl.Action.OnError(x =>
+                Dispatcher.UIThread.Post(() =>
+                    Utils.CreateMessageBox($"An error occured during downloading {game.AppTitle}!", $"Command: legendary {x.Arguments}\n\nStandard out:\n{string.Join('\n', x.Terminal.StdOut)}\n\nStandard error:\n{string.Join('\n', x.Terminal.StdErr)}    ").Show()
+                )
+            );
+            dl.Start();
+        }
 
         public void Pause()
         {
