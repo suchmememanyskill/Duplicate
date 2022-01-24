@@ -81,6 +81,8 @@ namespace LegendaryGUIv2.Services
         private void UpdateExe(ShortcutEntry entry, string appName)
         {
             entry.Exe = Utils.GetExecutablePath();
+            if (entry.Exe.Contains(" "))
+                entry.Exe = $"\"{entry.Exe}\"";
             entry.LaunchOptions = $"{appName}";
         }
 
