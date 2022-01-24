@@ -14,6 +14,7 @@ using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Formats.Jpeg;
+using System.Runtime.InteropServices;
 
 namespace LegendaryGUIv2.Services
 {
@@ -122,7 +123,9 @@ namespace LegendaryGUIv2.Services
                 entry.AppId = ShortcutEntry.GenerateSteamGridAppId(entry.AppName, entry.Exe);
                 UpdateExe(entry, x.AppName);
                 entry.AddTag("EpicGames");
-                entry.Icon = Path.Combine(x.InstalledData.InstallPath, x.InstalledData.Executable);
+                string iconPath = Path.Combine(x.InstalledData.InstallPath, x.InstalledData.Executable);
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) // Steam only supports reading an exe's icon on windows, seemingly
+                    entry.Icon = iconPath.Replace("/", "\\");
 
                 MetaImage boxTall = x.GameBannerTall;
                 MetaImage box = x.GameBanner;

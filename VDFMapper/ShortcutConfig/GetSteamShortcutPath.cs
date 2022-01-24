@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Win32;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace VDFMapper
 {
@@ -12,32 +13,30 @@ namespace VDFMapper
     {
         public static string GetUserDataPath()
         {
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 string path = (string)Registry.GetValue("HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\Valve\\Steam", "InstallPath", null);
                 if (path == null)
                     return "";
                 return Path.Combine(path, "userdata");
             }
-            else if (Environment.OSVersion.Platform == PlatformID.Unix)
+            else
             {
                 return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".steam","steam","userdata");
             }
-            else throw new Exception("Unknown OS");
         }
 
         public static int GetCurrentlyLoggedInUser()
         {
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 return (int)Registry.GetValue("HKEY_CURRENT_USER\\SOFTWARE\\Valve\\Steam\\ActiveProcess", "ActiveUser", -1);
             }
-            else if (Environment.OSVersion.Platform == PlatformID.Unix)
+            else
             {
                 int a = -1;
                 return int.Parse(new DirectoryInfo(GetUserDataPath()).GetDirectories().ToList().Where(x => int.TryParse(x.Name, out a)).First().Name);
             }
-            else throw new Exception("Unknown OS");
         }
 
         public static string GetShortcutsPath()
