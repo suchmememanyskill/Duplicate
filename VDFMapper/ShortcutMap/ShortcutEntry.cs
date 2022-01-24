@@ -24,7 +24,7 @@ namespace VDFMapper.ShortcutMap
         public uint AllowOverlay { get => ReadInt("AllowOverlay"); set => WriteInt("AllowOverlay", value); }
         public uint Openvr { get => ReadInt("openvr"); set => WriteInt("openvr", value); }
         public uint Devkit { get => ReadInt("Devkit"); set => WriteInt("Devkit", value); }
-        public uint DevkitGameID { get => ReadInt("DevkitGameID"); set => WriteInt("DevkitGameID", value); }
+        public string DevkitGameID { get => ReadString("DevkitGameID"); set => WriteString("DevkitGameID", value); }
         public uint DevkitOverrideAppID { get => ReadInt("DevkitOverrideAppID"); set => WriteInt("DevkitOverrideAppID", value); }
         public uint LastPlayTime { get => ReadInt("LastPlayTime"); set => WriteInt("LastPlayTime", value); }
 

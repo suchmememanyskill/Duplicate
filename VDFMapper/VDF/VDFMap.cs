@@ -59,7 +59,7 @@ namespace VDFMapper.VDF
             Map.Add("AllowOverlay", new VDFInteger(1));
             Map.Add("openvr", new VDFInteger(0));
             Map.Add("Devkit", new VDFInteger(0));
-            Map.Add("DevkitGameID", new VDFInteger(0));
+            Map.Add("DevkitGameID", new VDFString("0"));
             Map.Add("DevkitOverrideAppID", new VDFInteger(0));
             Map.Add("LastPlayTime", new VDFInteger(0));
             Map.Add("tags", new VDFMap());
