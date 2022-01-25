@@ -142,7 +142,7 @@ namespace LegendaryMapperV2.Service
 
         public string GetProductSlug()
         {
-            if (Metadata == null || Metadata.Metadata == null)
+            if (Metadata == null || Metadata.Metadata == null || Metadata.Metadata.Namespace == null)
                 return "";
 
             try
