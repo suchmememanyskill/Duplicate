@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -52,6 +53,9 @@ namespace LegendaryMapperV2.Service
 
         public void AttemptLogin(LegendaryAuthCallback onLogin = null, LegendaryAuthCallback onFailure = null)
         {
+            if (File.Exists(Path.Join(ConfigDir, "config.json")))
+                Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(Path.Join(ConfigDir, "config.json")));
+
             GetStatus().Then(x =>
             {
                 if (StatusResponse.IsLoggedIn())
@@ -72,5 +76,18 @@ namespace LegendaryMapperV2.Service
                 }).Start();
             }).Start();
         }
+        public Config Config { get; private set; } = new();
+        public static string ConfigDir
+        {
+            get
+            {
+                string path = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".config", "Duplicate");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+
+                return path;
+            }
+        }
+        public void SaveConfig() => File.WriteAllText(Path.Join(LegendaryAuth.ConfigDir, "config.json"), JsonConvert.SerializeObject(Config));
     }
 }

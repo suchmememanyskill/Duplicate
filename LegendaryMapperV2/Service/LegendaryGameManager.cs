@@ -18,7 +18,7 @@ namespace LegendaryMapperV2.Service
         public List<LegendaryGame> InstalledGames { get => Games.Where(x => x.InstalledData != null).ToList(); }
         public List<LegendaryGame> NotInstalledGames { get => Games.Where(x => x.InstalledData == null).ToList(); }
         public LegendaryGameManagerCallback OnGameRefresh { get; set; }
-        public Config Config { get; private set; } = new();
+        public Config Config { get => Auth.Config; }
         private string gameDirectory = "";
         public string GameDirectory
         {
@@ -107,9 +107,6 @@ namespace LegendaryMapperV2.Service
                 return false;
             });
 
-            if (File.Exists(Path.Join(ConfigDir, "config.json")))
-                Config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(Path.Join(ConfigDir, "config.json")));
-
             Games = Games.OrderBy(x => x.AppTitle).ToList();
             OnGameRefresh?.Invoke(this);
         }
@@ -120,7 +117,7 @@ namespace LegendaryMapperV2.Service
             OnGameRefresh?.Invoke(this);
         }
 
-        public void SaveConfig() => File.WriteAllText(Path.Join(ConfigDir, "config.json"), JsonConvert.SerializeObject(Config));
+        public void SaveConfig() => Auth.SaveConfig();
 
         public void DetachDownload(LegendaryDownload download)
         {
@@ -128,18 +125,6 @@ namespace LegendaryMapperV2.Service
             GetGames();
         }
 
-        public static string ConfigDir
-        {
-            get
-            {
-                string path = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".config", "Duplicate");
-                if (!Directory.Exists(path))
-                    Directory.CreateDirectory(path);
-
-                return path;
-            }
-        }
-
-        private static string DlLocFile { get => Path.Join(ConfigDir, "DlLoc.txt"); }
+        private static string DlLocFile { get => Path.Join(LegendaryAuth.ConfigDir, "DlLoc.txt"); }
     }
 }

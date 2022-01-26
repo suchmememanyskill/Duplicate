@@ -40,7 +40,7 @@ namespace LegendaryGUIv2.Services
 
         public void Write()
         {
-            string path = Path.Join(LegendaryGameManager.ConfigDir, $"{game.AppName}.json");
+            string path = Path.Join(LegendaryAuth.ConfigDir, $"{game.AppName}.json");
             ProcessLog? log = null;
             if (!File.Exists(path))
             {

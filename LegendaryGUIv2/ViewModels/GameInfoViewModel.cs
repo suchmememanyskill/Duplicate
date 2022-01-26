@@ -40,7 +40,7 @@ namespace LegendaryGUIv2.ViewModels
             else
                 InstalledSize = game.InstallSizeReadable;
 
-            string playtimePath = Path.Join(LegendaryGameManager.ConfigDir, $"{game.AppName}.json");
+            string playtimePath = Path.Join(LegendaryAuth.ConfigDir, $"{game.AppName}.json");
             if (File.Exists(playtimePath))
             {
                 ProcessLog? log = JsonConvert.DeserializeObject<ProcessLog>(File.ReadAllText(playtimePath));
