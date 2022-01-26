@@ -175,6 +175,8 @@ namespace LegendaryGUIv2.ViewModels
         public void EosOverlayInstall() => consoleView.ExecuteCommand("Installing/Updating EOS Overlay...", misc.EosOverlayInstall(manager.GameDirectory), this);
         public void EosOverlayRemove() => consoleView.ExecuteCommand("Removing EOS Overlay...", misc.EosOverlayRemove(), this);
         public void EosOverlayInfo() => consoleView.ExecuteCommand("EOS Overlay info", misc.EosOverlayInfo(), this);
+        public void EglSync() => consoleView.ExecuteCommand("Syncing epic game games...", misc.EglSyncOneShot(), this);
+        public void EglMigrate() => consoleView.ExecuteCommand("Migrating epic game games...", misc.EglSyncMigrate(), this);
         public void Exit() => App.MainWindow?.Close();
 
         private string gameCountText = "";

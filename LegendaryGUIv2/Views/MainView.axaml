@@ -34,6 +34,9 @@
 						<MenuItem Header="EOS Overlay install/update" IsEnabled="{Binding !Auth.OfflineLogin}" Command="{Binding EosOverlayInstall}"/>
 						<MenuItem Header="EOS Overlay remove" Command="{Binding EosOverlayRemove}"/>
 						<MenuItem Header="EOS Overlay info" Command="{Binding EosOverlayInfo}"/>
+						<Separator />
+						<MenuItem Header="Epic games launcher game sync" Command="{Binding EglSync}"/>
+						<MenuItem Header="Epic games launcher game migration" Command="{Binding EglMigrate}" />
 					</MenuItem>
 				</Menu>
 			</StackPanel>
