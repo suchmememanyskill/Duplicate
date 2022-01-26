@@ -29,6 +29,13 @@
 						<MenuItem Header="Exit" Command="{Binding Exit}" />
 					</MenuItem>
 				</Menu>
+				<Menu>
+					<MenuItem Header="Legendary" Classes="ButtonLike" FontSize="16">
+						<MenuItem Header="EOS Overlay install/update" IsEnabled="{Binding !Auth.OfflineLogin}" Command="{Binding EosOverlayInstall}"/>
+						<MenuItem Header="EOS Overlay remove" Command="{Binding EosOverlayRemove}"/>
+						<MenuItem Header="EOS Overlay info" Command="{Binding EosOverlayInfo}"/>
+					</MenuItem>
+				</Menu>
 			</StackPanel>
 		</DockPanel>
 		<ScrollViewer Margin="10">

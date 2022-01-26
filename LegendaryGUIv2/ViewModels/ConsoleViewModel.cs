@@ -14,7 +14,6 @@ namespace LegendaryGUIv2.ViewModels
         private MainWindowViewModel window;
         private LegendaryCommand? command;
         private ViewModelBase? returnTo;
-        private ConsoleViewCallback? callback;
         private List<string> log = new();
 
         public ConsoleViewModel(MainWindowViewModel window)
@@ -23,14 +22,10 @@ namespace LegendaryGUIv2.ViewModels
         }
 
         public delegate void ConsoleViewCallback();
-        public void ExecuteCommand(string text, LegendaryCommand command, ViewModelBase returnTo, ConsoleViewCallback? callback = null)
+        public void ExecuteCommand(string text, LegendaryCommand command, ViewModelBase returnTo)
         {
             this.command = command;
             this.returnTo = returnTo;
-            if (callback == null)
-                this.callback = () => { };
-            else
-                this.callback = callback;
             backEnabled = false;
             Text = text;
 
@@ -61,7 +56,6 @@ namespace LegendaryGUIv2.ViewModels
 
         private void OnCompletion(LegendaryCommand x)
         {
-            callback!();
             CliOut += $"\n>Process exited with exit code {x.ExitCode}";
             Control!.SetCaretIndex();
             BackEnabled = true;
