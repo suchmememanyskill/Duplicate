@@ -14,11 +14,17 @@
 					<Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Foreground="White">Offline mode</Label>
 				</Border>
 			</StackPanel>
-			<StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
-				<TextBox Watermark="Search..." VerticalAlignment="Center" Margin="10,0,10,0" Width="200" Text="{Binding SearchBoxText}" />
-				<Button FontSize="16" Margin="0,0,5,0" Command="{Binding OpenSource}">Report an issue</Button>
-				<Button FontSize="16" Margin="0,0,5,0" Command="{Binding OpenFreeGame}">Open free game page</Button>
-				<Button FontSize="16" Margin="0,0,5,0" Command="{Binding RefreshLibrary}">Reload games</Button>
+			<StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" Spacing="10" Margin="0,0,10,0">
+				<TextBox Watermark="Search..." VerticalAlignment="Center" Width="200" Text="{Binding SearchBoxText}" />
+				<Menu>
+					<MenuItem Header="Utilities" Classes="ButtonLike" FontSize="16">
+						<MenuItem Header="Report an issue" Command="{Binding OpenSource}"/>
+						<MenuItem Header="Open free games page" Command="{Binding OpenFreeGame}"/>
+						<MenuItem Header="Reload games" Command="{Binding RefreshLibrary}"/>
+						<Separator />
+						<MenuItem Header="Exit" Command="{Binding Exit}" />
+					</MenuItem>
+				</Menu>
 			</StackPanel>
 		</DockPanel>
 		<ScrollViewer Margin="10">
