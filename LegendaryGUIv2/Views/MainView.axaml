@@ -22,6 +22,10 @@
 						<MenuItem Header="Open free games page" Command="{Binding OpenFreeGame}"/>
 						<MenuItem Header="Reload games" Command="{Binding RefreshLibrary}"/>
 						<Separator />
+						<MenuItem Header="Open Legendary configuration folder" Command="{Binding OpenLegendaryConfigDir}"/>
+						<MenuItem Header="Open Duplicate configuration folder" Command="{Binding OpenDuplicateConfigDir}"/>
+						<MenuItem Header="Open Legendary configuration" Command="{Binding OpenLegendaryConfig}"/>
+						<Separator />
 						<MenuItem Header="Exit" Command="{Binding Exit}" />
 					</MenuItem>
 				</Menu>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +16,7 @@ using Avalonia.Threading;
 using System.Reactive;
 using System.Reactive.Linq;
 using LegendaryGUIv2.Views;
+using System.IO;
 
 namespace LegendaryGUIv2.ViewModels
 {
@@ -163,7 +164,10 @@ namespace LegendaryGUIv2.ViewModels
 
         public void OpenFreeGame() => Utils.OpenUrl("https://www.epicgames.com/store/en-US/free-games");
         public void OpenSource() => Utils.OpenUrl("https://github.com/suchmememanyskill/Duplicate");
-        public void Exit() => App.MainWindow?.Close();
+        public void OpenLegendaryConfig() => Utils.OpenFolder(Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".config", "legendary", "config.ini"));
+        public void OpenLegendaryConfigDir() => Utils.OpenFolder(Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".config", "legendary"));
+        public void OpenDuplicateConfigDir() => Utils.OpenFolder(Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".config", "Duplicate"));
+        public void Exit() => new ConsoleViewModel(window).ExecuteCommand("Test", new LegendaryCommand("list-games"), this);
 
         private string gameCountText = "";
         public string GameCountText { get => gameCountText; set => this.RaiseAndSetIfChanged(ref gameCountText, value); }
