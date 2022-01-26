@@ -124,13 +124,21 @@ namespace LegendaryGUIv2.ViewModels
 
         private void UpdateDownloadData()
         {
-            DownloadPaused = false;
-            DownloadNotPaused = true;
-            DownloadProgress = download!.Progress;
-            DownloadSize = $"Download: {download!.DownloadSize}";
-            TimeSpan t = TimeSpan.FromSeconds(download!.SecondsETA);
-            DownloadRemainingTime = $"Remaining: {t:hh\\:mm\\:ss}";
-            DownloadUnpackedSize = download!.GameSize;
+            if (download!.IsDownloading)
+            {
+                DownloadPaused = false;
+                DownloadNotPaused = true;
+                DownloadProgress = download!.Progress;
+                DownloadSize = $"Download: {download!.DownloadSize}";
+                TimeSpan t = TimeSpan.FromSeconds(download!.SecondsETA);
+                DownloadRemainingTime = $"Remaining: {t:hh\\:mm\\:ss}";
+                DownloadUnpackedSize = download!.GameSize;
+            }
+            else
+            {
+                DownloadPaused = true;
+                DownloadNotPaused = false;
+            }
         }
 
         public LegendaryGame Game { get => game; }

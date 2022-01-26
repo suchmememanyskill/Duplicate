@@ -78,6 +78,9 @@ namespace LegendaryMapperV2.Service
 
             if (!IsDownloading)
                 Action.Start();
+
+            Game.Parser.StopOtherDownloads(this);
+            OnUpdate?.Invoke(this);
         }
 
         public void NotifyCompletion()
@@ -86,7 +89,11 @@ namespace LegendaryMapperV2.Service
             OnCompletionOrCancel?.Invoke(this);
         }
 
-        public void Pause() => Action.Stop();
+        public void Pause() 
+        { 
+            if (IsDownloading) Action.Stop();
+            OnUpdate?.Invoke(this);
+        }
 
         public void Stop()
         {

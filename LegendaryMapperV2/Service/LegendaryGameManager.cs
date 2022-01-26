@@ -117,11 +117,19 @@ namespace LegendaryMapperV2.Service
             OnGameRefresh?.Invoke(this);
         }
 
+        public void StopOtherDownloads(LegendaryDownload download) => Downloads.Where(x => x != download).ToList().ForEach(x => x.Pause());
+        public void StartNewDownload()
+        {
+            if (Downloads.Count(x => x.IsDownloading) < 1)
+                Downloads.FirstOrDefault()?.Start();
+        }
+
         public void SaveConfig() => Auth.SaveConfig();
 
         public void DetachDownload(LegendaryDownload download)
         {
             Downloads.Remove(download);
+            StartNewDownload();
             GetGames();
         }
 
