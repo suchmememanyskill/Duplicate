@@ -14,7 +14,14 @@ namespace LegendaryGUIv2
 
             if (type != null)
             {
-                return (Control)Activator.CreateInstance(type)!;
+                Control c = (Control)Activator.CreateInstance(type)!;
+                if (data is ViewModelBase)
+                {
+                    ViewModelBase d = data as ViewModelBase;
+                    d.Control = c;
+                    d.SetControl();
+                }
+                return c;
             }
             else
             {

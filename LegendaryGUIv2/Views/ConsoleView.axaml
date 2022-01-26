@@ -1,0 +1,12 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="LegendaryGUIv2.Views.ConsoleView">
+	<DockPanel LastChildFill="True">
+		<Label DockPanel.Dock="Top" Content="{Binding Text}" HorizontalAlignment="Center" Margin="20" FontSize="20">This is a test message</Label>
+		<Button FontSize="20" DockPanel.Dock="Bottom" Content="Back" HorizontalAlignment="Center" Margin="20" Command="{Binding Back}" IsEnabled="{Binding BackEnabled}" />
+		<TextBox Name="CLI" IsReadOnly="True" TextWrapping="Wrap" Text="{Binding CliOut}" Margin="40,0,40,0" />
+	</DockPanel>
+</UserControl>

@@ -6,7 +6,7 @@
              x:Class="LegendaryGUIv2.Views.ArgLaunchView">
 	<StackPanel VerticalAlignment="Center">
 		<Label Content="{Binding Text}" HorizontalAlignment="Center" Margin="10" FontSize="20">This is a test message</Label>
-		<TextBox TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding CliOut}" IsVisible="{Binding CliOut, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Width="600" Height="300" />
+		<TextBox IsReadOnly="True" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding CliOut}" IsVisible="{Binding CliOut, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Width="600" Height="300" />
 		<StackPanel Orientation="Horizontal" Margin="5" Spacing="5" HorizontalAlignment="Center">
 			<Button Content="Open LegendaryGUI" Command="{Binding $parent[Window].DataContext.SetMainViewModel}" />
 			<Button IsVisible="{Binding LaunchAvailable}" Content="Launch Anyway" Command="{Binding ForceLaunch}" />
