@@ -78,12 +78,16 @@ namespace LegendaryGUIv2.Services
             return count;
         }
 
-        private void UpdateExe(ShortcutEntry entry, string appName)
+        private void UpdateExe(ShortcutEntry entry, LegendaryGame game)
         {
             entry.Exe = Utils.GetExecutablePath();
             if (entry.Exe.Contains(" "))
                 entry.Exe = $"\"{entry.Exe}\"";
-            entry.LaunchOptions = $"{appName}";
+            entry.LaunchOptions = $"{game.AppName}";
+
+            string iconPath = Path.Combine(game.InstalledData.InstallPath, game.InstalledData.Executable);
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) // Steam only supports reading an exe's icon on windows, seemingly
+                entry.Icon = iconPath.Replace("/", "\\");
         }
 
         public Tuple<int, int> UpdateWithLegendaryGameList(List<LegendaryGame> legendaryGames)
@@ -106,7 +110,7 @@ namespace LegendaryGUIv2.Services
                         if (game != null)
                         {
                             copy.Remove(game);
-                            UpdateExe(entry, game.AppName);
+                            UpdateExe(entry, game);
                         }
                     }
                     else // Game that doesn't seem to be in the list. lets remove it
@@ -123,11 +127,8 @@ namespace LegendaryGUIv2.Services
                 ShortcutEntry entry = ShortcutRoot.AddEntry();
                 entry.AppName = $"{x.AppTitle} (Epic)";
                 entry.AppId = ShortcutEntry.GenerateSteamGridAppId(entry.AppName, entry.Exe);
-                UpdateExe(entry, x.AppName);
+                UpdateExe(entry, x);
                 entry.AddTag("EpicGames");
-                string iconPath = Path.Combine(x.InstalledData.InstallPath, x.InstalledData.Executable);
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) // Steam only supports reading an exe's icon on windows, seemingly
-                    entry.Icon = iconPath.Replace("/", "\\");
 
                 MetaImage boxTall = x.GameBannerTall;
                 MetaImage box = x.GameBanner;
