@@ -17,11 +17,11 @@ namespace LegendaryMapperV2.Model
     {
         [JsonProperty("AlwaysOffline")]
         public bool AlwaysOffline { get; set; } = false;
-
         [JsonProperty("AlwaysSkipUpdate")]
         public bool AlwaysSkipUpdate { get; set; } = false;
-
         [JsonProperty("AdditionalArgs")]
         public string AdditionalArgs { get; set; } = "";
+        [JsonProperty("SyncSave")]
+        public bool SyncSave { get; set; } = false;
     }
 }

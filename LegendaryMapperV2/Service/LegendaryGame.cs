@@ -24,6 +24,7 @@ namespace LegendaryMapperV2.Service
         public bool ConfigAlwaysOffline { get => GetConfigItem().AlwaysOffline; set { ConfigItem item = GetConfigItem(); item.AlwaysOffline = value; SetConfigItem(item); } }
         public bool ConfigAlwaysSkipUpdateCheck { get => GetConfigItem().AlwaysSkipUpdate; set { ConfigItem item = GetConfigItem(); item.AlwaysSkipUpdate = value; SetConfigItem(item); } }
         public string ConfigAdditionalGameArgs { get => GetConfigItem().AdditionalArgs; set { ConfigItem item = GetConfigItem(); item.AdditionalArgs = value; SetConfigItem(item); } }
+        public bool ConfigSyncSave { get => GetConfigItem().SyncSave; set { ConfigItem item = GetConfigItem(); item.SyncSave = value; SetConfigItem(item); } }
 
         public string AppName { get => Metadata.AppName; }
         public string AppTitle { get => Metadata.AppTitle; }
@@ -57,6 +58,7 @@ namespace LegendaryMapperV2.Service
         
         public string InstallPath { get => InstalledData.InstallPath; }
         public bool IsInstalled { get => InstalledData != null; }
+        public bool HasCloudSave { get { if (Metadata != null && Metadata.Metadata != null && Metadata.Metadata.CustomAttributes != null) return Metadata.Metadata.CustomAttributes.ContainsKey("CloudSaveFolder"); return false; } }
 
         public MetaImage GameBanner { get => GetGameImage("DieselGameBox"); }
         public MetaImage GameBannerTall { get => GetGameImage("DieselGameBoxTall"); }
@@ -164,6 +166,18 @@ namespace LegendaryMapperV2.Service
             {
                 return "";
             }
+        }
+
+        // I don't see a nice way to do this, and i do not understand linux shenans enough to figure this out
+        // Will silently fail if offline
+        public LegendaryCommand ForceSyncSave()
+        {
+            if (Parser.Auth.OfflineLogin)
+                return null;
+
+            LegendaryCommand cmd = new($"sync-saves {AppName}");
+            cmd.Terminal.Yes = true;
+            return cmd;
         }
 
         public Process GetGameProcess()

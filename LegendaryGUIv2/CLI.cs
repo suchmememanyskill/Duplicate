@@ -111,6 +111,9 @@ namespace LegendaryGUIv2
                     monitor.SetEndTime();
                     monitor.Write();
                 }
+
+                if (game.ConfigSyncSave)
+                    game.ForceSyncSave().Start();
             }).OnError(x =>
             {
                 log.StdErr = x.Terminal.StdErr;
@@ -128,7 +131,12 @@ namespace LegendaryGUIv2
         {
             LegendaryGame? game = manager.InstalledGames.FirstOrDefault(x => x.AppName == appName);
             if (game != null)
+            {
                 new ProcessMonitor(game).Monitor();
+                if (game.ConfigSyncSave)
+                    game.ForceSyncSave().Start();
+            }
+                
         }
 
         private void LaunchGUI() => Program.BuildAvaloniaApp().StartWithClassicDesktopLifetime(new string[] { CLIState.Passtrough.ToString() });

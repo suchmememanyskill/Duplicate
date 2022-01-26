@@ -32,6 +32,7 @@ namespace LegendaryGUIv2.ViewModels
             alwaysOffline = game.ConfigAlwaysOffline;
             alwaysSkipUpdate = game.ConfigAlwaysSkipUpdateCheck;
             additionalArgs = game.ConfigAdditionalGameArgs;
+            syncSaves = game.ConfigSyncSave;
             new Thread(() => DownloadImages()).Start();
             new Thread(() => GameSlug = game.GetProductSlug()).Start();
 
@@ -111,6 +112,8 @@ namespace LegendaryGUIv2.ViewModels
             GameView.Play();
         }
 
+        public void SyncNow() => mainView.ConsoleView.ExecuteCommand($"Manually syncing {game.AppName}", game.ForceSyncSave(), this);
+
         public LegendaryGame Game { get => game; }
         public GameViewModel GameView { get => gameView; }
         private Avalonia.Media.Imaging.Bitmap? background;
@@ -119,11 +122,12 @@ namespace LegendaryGUIv2.ViewModels
         public Avalonia.Media.Imaging.Bitmap? Icon { get => icon; set => this.RaiseAndSetIfChanged(ref icon, value); }
         private Avalonia.Media.Imaging.Bitmap? cover;
         public Avalonia.Media.Imaging.Bitmap? Cover { get => cover; set => this.RaiseAndSetIfChanged(ref cover, value); }
-        private bool configChanged = false, alwaysOffline, alwaysSkipUpdate;
+        private bool configChanged = false, alwaysOffline, alwaysSkipUpdate, syncSaves;
         private string additionalArgs = "";
         public bool AlwaysOffline { get => alwaysOffline; set { this.RaiseAndSetIfChanged(ref alwaysOffline, value); game.ConfigAlwaysOffline = value; configChanged = true; } }
         public bool AlwaysSkipUpdate { get => alwaysSkipUpdate; set { this.RaiseAndSetIfChanged(ref alwaysSkipUpdate, value); game.ConfigAlwaysSkipUpdateCheck = value; configChanged = true; } }
         public string AdditionalArgs { get => additionalArgs; set { this.RaiseAndSetIfChanged(ref additionalArgs, value); game.ConfigAdditionalGameArgs = value; configChanged = true; } }
+        public bool SyncSaves { get => syncSaves; set { this.RaiseAndSetIfChanged(ref syncSaves, value); game.ConfigSyncSave = value; configChanged = true; } }
 
         private string downloadSize = "--", installedSize = "--", gameSlug = "";
         public string DownloadSize { get => downloadSize; set => this.RaiseAndSetIfChanged(ref downloadSize, value); }

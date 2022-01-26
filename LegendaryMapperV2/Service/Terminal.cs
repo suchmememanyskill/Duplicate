@@ -12,15 +12,11 @@ namespace LegendaryMapperV2.Service
         public List<string> StdOut { get; private set; }
         public List<string> StdErr { get; private set; }
         public int ExitCode { get; private set; }
-        public bool IsActive { get; private set; }
+        public bool IsActive { get; private set; } = false;
+        public bool Yes { get; set; } = false;
         public delegate void TerminalCallback(Terminal ret);
         private Process proc;
         private bool killed = false;
-
-        public Terminal()
-        {
-            IsActive = false;
-        }
 
         private TerminalCallback callback;
         private TerminalCallback newLineOutCallback;
@@ -101,15 +97,30 @@ namespace LegendaryMapperV2.Service
             }
         }
 
+        private void SpamStdIn()
+        {
+            while (!proc.HasExited)
+            {
+                proc.StandardInput.WriteLine("y");
+            }
+        }
+
         private void TrackProc()
         {
             Thread stdOut = new Thread(CaptureStdOutOutput);
             Thread stdErr = new Thread(CaptureStdErrOutput);
+            Thread stdIn = new Thread(SpamStdIn);
 
             stdOut.Start();
             stdErr.Start();
+            if (Yes)
+            {
+                stdIn.Start();
+                stdIn.Join();
+            }
             stdOut.Join();
             stdErr.Join();
+            
 
             proc.WaitForExit();
 

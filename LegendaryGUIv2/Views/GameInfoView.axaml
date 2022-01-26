@@ -122,6 +122,11 @@
 							<Label Content="Config" FontWeight="Bold" />
 							<ToggleSwitch Margin="4,0,0,0" VerticalAlignment="Center" OnContent="Always launch offline" OffContent="Always launch offline" IsChecked="{Binding AlwaysOffline}" />
 							<ToggleSwitch Margin="4,0,0,0" VerticalAlignment="Center" OnContent="Always skip version check" OffContent="Always skip version check" IsChecked="{Binding AlwaysSkipUpdate}" />
+							<StackPanel Orientation="Horizontal" Margin="4,0,0,0" IsVisible="{Binding Game.HasCloudSave}" Spacing="5">
+								<ToggleSwitch  VerticalAlignment="Center" OnContent="Sync save to cloud" OffContent="Sync save to cloud" IsChecked="{Binding SyncSaves}" />
+								<Button IsVisible="{Binding SyncSaves}" Command="{Binding SyncNow}" VerticalAlignment="Center" Padding="3" Content="Sync now" />
+							</StackPanel>
+							
 							<TextBox Margin="4,5,0,0" HorizontalAlignment="Left" Width="300" Watermark="Additional game arguments" Text="{Binding AdditionalArgs}"/>
 						</StackPanel>
 					</StackPanel>

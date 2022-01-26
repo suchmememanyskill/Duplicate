@@ -25,6 +25,7 @@ namespace LegendaryMapperV2.Service
         public LegendaryCommand(string arguments)
         {
             this.arguments = arguments;
+            Terminal = new Terminal();
         }
 
         public LegendaryCommand Block()
@@ -77,7 +78,6 @@ namespace LegendaryMapperV2.Service
 
         public void Start()
         {
-            Terminal = new Terminal();
             if (Terminal.IsActive)
                 throw new Exception("Terminal already active");
 

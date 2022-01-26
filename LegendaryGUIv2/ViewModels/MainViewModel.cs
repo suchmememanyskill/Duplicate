@@ -25,9 +25,9 @@ namespace LegendaryGUIv2.ViewModels
         private LegendaryAuth auth;
         private LegendaryGameManager manager;
         private MainWindowViewModel window;
-        private ConsoleViewModel consoleView;
         private LegendaryMisc misc;
         public LegendaryGameManager Manager { get => manager; }
+        public ConsoleViewModel ConsoleView { get; private set; }
         public LegendaryAuth Auth { get => auth; }
         private Thread? imageDownloadThread;
         private bool stopImageDownloadThread = false;
@@ -39,7 +39,7 @@ namespace LegendaryGUIv2.ViewModels
             manager = new(auth, x => OnLibraryRefresh());
             manager.GetGames();
             SetDownloadLocationText();
-            consoleView = new(window);
+            ConsoleView = new(window);
             misc = new(auth);
 
             this.WhenAnyValue(x => x.SearchBoxText)
@@ -172,11 +172,11 @@ namespace LegendaryGUIv2.ViewModels
         public void OpenLegendaryConfig() => Utils.OpenFolder(Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".config", "legendary", "config.ini"));
         public void OpenLegendaryConfigDir() => Utils.OpenFolder(Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".config", "legendary"));
         public void OpenDuplicateConfigDir() => Utils.OpenFolder(Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".config", "Duplicate"));
-        public void EosOverlayInstall() => consoleView.ExecuteCommand("Installing/Updating EOS Overlay...", misc.EosOverlayInstall(manager.GameDirectory), this);
-        public void EosOverlayRemove() => consoleView.ExecuteCommand("Removing EOS Overlay...", misc.EosOverlayRemove(), this);
-        public void EosOverlayInfo() => consoleView.ExecuteCommand("EOS Overlay info", misc.EosOverlayInfo(), this);
-        public void EglSync() => consoleView.ExecuteCommand("Syncing epic game games...", misc.EglSyncOneShot(), this);
-        public void EglMigrate() => consoleView.ExecuteCommand("Migrating epic game games...", misc.EglSyncMigrate(), this);
+        public void EosOverlayInstall() => ConsoleView.ExecuteCommand("Installing/Updating EOS Overlay...", misc.EosOverlayInstall(manager.GameDirectory), this);
+        public void EosOverlayRemove() => ConsoleView.ExecuteCommand("Removing EOS Overlay...", misc.EosOverlayRemove(), this);
+        public void EosOverlayInfo() => ConsoleView.ExecuteCommand("EOS Overlay info", misc.EosOverlayInfo(), this);
+        public void EglSync() => ConsoleView.ExecuteCommand("Syncing epic game games...", misc.EglSyncOneShot(), this);
+        public void EglMigrate() => ConsoleView.ExecuteCommand("Migrating epic game games...", misc.EglSyncMigrate(), this);
         public void Exit() => App.MainWindow?.Close();
 
         private string gameCountText = "";
