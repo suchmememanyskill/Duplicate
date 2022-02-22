@@ -8,7 +8,7 @@ namespace LegendaryMapperV2.Services
 {
     public class ProtonManager
     {
-        public bool CanUseProton => !RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+        public bool CanUseProton => !RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && GetProtonPaths().Count > 0;
 
         public Dictionary<string, string> GetProtonPaths()
         {
