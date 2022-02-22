@@ -23,5 +23,11 @@ namespace LegendaryMapperV2.Model
         public string AdditionalArgs { get; set; } = "";
         [JsonProperty("SyncSave")]
         public bool SyncSave { get; set; } = false;
+
+        [JsonProperty("UseProton")]
+        public bool UseProton { get; set; } = false;
+
+        [JsonProperty("ProtonVersion")]
+        public string ProtonVersion { get; set; } = "-";
     }
 }

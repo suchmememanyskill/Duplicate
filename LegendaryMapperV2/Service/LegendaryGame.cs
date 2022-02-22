@@ -11,6 +11,7 @@ using System.IO;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
+using LegendaryMapperV2.Services;
 
 namespace LegendaryMapperV2.Service
 {
@@ -25,6 +26,8 @@ namespace LegendaryMapperV2.Service
         public bool ConfigAlwaysSkipUpdateCheck { get => GetConfigItem().AlwaysSkipUpdate; set { ConfigItem item = GetConfigItem(); item.AlwaysSkipUpdate = value; SetConfigItem(item); } }
         public string ConfigAdditionalGameArgs { get => GetConfigItem().AdditionalArgs; set { ConfigItem item = GetConfigItem(); item.AdditionalArgs = value; SetConfigItem(item); } }
         public bool ConfigSyncSave { get => GetConfigItem().SyncSave; set { ConfigItem item = GetConfigItem(); item.SyncSave = value; SetConfigItem(item); } }
+        public bool ConfigUseProton { get => GetConfigItem().UseProton; set { ConfigItem item = GetConfigItem(); item.UseProton = value; SetConfigItem(item); } }
+        public string ConfigProtonVersion { get => GetConfigItem().ProtonVersion; set { ConfigItem item = GetConfigItem(); item.ProtonVersion = value; SetConfigItem(item); } }
 
         public string AppName { get => Metadata.AppName; }
         public string AppTitle { get => Metadata.AppTitle; }
@@ -106,17 +109,39 @@ namespace LegendaryMapperV2.Service
             if (InstalledData == null)
                 throw new Exception("Game is not installed");
 
+            List<string> args = new();
+
             if (Parser.Auth.OfflineLogin || ConfigAlwaysOffline)
                 offline = true;
 
-            string args = "";
             if (offline)
-                args += "--offline";
+                args.Add("--offline");
 
             if (!offline && (skipUpdate || ConfigAlwaysSkipUpdateCheck ))
-                args += "--skip-version-check";
+                args.Add("--skip-version-check");
 
-            return new LegendaryCommand($"launch {InstalledData.AppName} {args} {ConfigAdditionalGameArgs}");
+            ProtonManager protonManager = new();
+
+            if (protonManager.CanUseProton && ConfigUseProton)
+            {
+                Dictionary<string, string> protonVersion = protonManager.GetProtonPaths();
+                if (!protonVersion.ContainsKey(ConfigProtonVersion))
+                    throw new Exception("Invalid proton configuration");
+
+                args.Add($"--wrapper \"{protonVersion[ConfigProtonVersion].Replace(" ", "\\ ")}/proton run\"");
+                args.Add("--no-wine");
+            }
+
+            LegendaryCommand cmd = new LegendaryCommand($"launch {InstalledData.AppName} {string.Join(" ", args)} {ConfigAdditionalGameArgs}");
+
+            if (protonManager.CanUseProton && ConfigUseProton)
+            {
+                string homeFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                cmd.Env("STEAM_COMPAT_DATA_PATH", Path.Join(homeFolder, ".local/share/Steam/steamapps/compatdata"));
+                cmd.Env("STEAM_COMPAT_CLIENT_INSTALL_PATH", Path.Join(homeFolder, ".local/share/Steam"));
+            }
+
+            return cmd;
         }
 
         public LegendaryDownload InstantiateDownload() => new LegendaryDownload(this);
@@ -156,7 +181,7 @@ namespace LegendaryMapperV2.Service
                     Debug.WriteLine(request);
                     string response = client.UploadString("https://www.epicgames.com/graphql", request);
                     EpicProductSlugResponse parsedResponse = JsonConvert.DeserializeObject<EpicProductSlugResponse>(response);
-                    Element slug = parsedResponse.Data.Catalog.CatalogOffers.Elements.FirstOrDefault(x => x.ProductSlug != null);
+                    Element slug = parsedResponse?.Data?.Catalog?.CatalogOffers?.Elements?.FirstOrDefault(x => x?.ProductSlug != null);
                     if (slug == null)
                         return "";
                     return slug.ProductSlug.Split("/").First();

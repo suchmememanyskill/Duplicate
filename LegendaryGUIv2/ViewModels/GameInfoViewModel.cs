@@ -15,6 +15,7 @@ using LegendaryMapperV2.Model;
 using LegendaryGUIv2.Models;
 using Newtonsoft.Json;
 using Avalonia.Media;
+using LegendaryMapperV2.Services;
 
 namespace LegendaryGUIv2.ViewModels
 {
@@ -23,6 +24,8 @@ namespace LegendaryGUIv2.ViewModels
         private LegendaryGame game;
         private GameViewModel gameView;
         private MainViewModel mainView;
+        public ProtonManager ProtonManager { get; } = new();
+        private Dictionary<string, string> availableProtonVersions = new();
 
         public GameInfoViewModel(MainViewModel mainView, GameViewModel gameView)
         {
@@ -48,6 +51,20 @@ namespace LegendaryGUIv2.ViewModels
                 TimeSpan total = TimeSpan.FromSeconds(log!.Sessions.Sum(x => x.TimeSpent.TotalSeconds));
                 Playtime = $"{total:hh\\h\\ mm\\m}";
             }
+
+            if (ProtonManager.CanUseProton)
+            {
+                availableProtonVersions = ProtonManager.GetProtonPaths();
+                ProtonItems = availableProtonVersions.Keys.ToList();
+                useWithProton = game.ConfigUseProton;
+                protonConfigIndex = ProtonItems.FindIndex(x => x == game.ConfigProtonVersion);
+                if (protonConfigIndex < 0)
+                {
+                    protonConfigIndex = 0;
+                    game.ConfigProtonVersion = protonItems.First();
+                }
+                    
+            }
         }
 
         public void Back()
@@ -62,7 +79,7 @@ namespace LegendaryGUIv2.ViewModels
             if (game.GameBannerTall != null)
             {
                 Stream stream = new MemoryStream(game.GameBannerTall.GetImage());
-                Cover = Avalonia.Media.Imaging.Bitmap.DecodeToHeight(stream, 450);
+                Cover = Avalonia.Media.Imaging.Bitmap.DecodeToHeight(stream, 450, Avalonia.Visuals.Media.Imaging.BitmapInterpolationMode.LowQuality);
             }
 
             if (game.GameLogo != null)
@@ -163,5 +180,18 @@ namespace LegendaryGUIv2.ViewModels
                 return "";
             }
         }
+
+        private List<string> protonItems = new();
+        public List<string> ProtonItems { get => protonItems; set => this.RaiseAndSetIfChanged(ref protonItems, value); }
+        private int protonConfigIndex = -1;
+        public int ProtonConfigIndex { get => protonConfigIndex; set 
+            { 
+                this.RaiseAndSetIfChanged(ref protonConfigIndex, value);
+                game.ConfigProtonVersion = protonItems[value];
+                configChanged = true;
+            } 
+        }
+        private bool useWithProton = false;
+        public bool UseWithProton { get => useWithProton; set { this.RaiseAndSetIfChanged(ref useWithProton, value); game.ConfigUseProton = value; configChanged = true; } }
     }
 }

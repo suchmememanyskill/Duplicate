@@ -13,6 +13,7 @@ namespace LegendaryMapperV2.Service
         public List<string> StdErr { get; private set; }
         public int ExitCode { get; private set; }
         public bool IsActive { get; private set; } = false;
+        public Dictionary<string, string> Env { get; set; } = new();
         public bool Yes { get; set; } = false;
         public delegate void TerminalCallback(Terminal ret);
         private Process proc;
@@ -50,6 +51,16 @@ namespace LegendaryMapperV2.Service
 
             proc = new();
             proc.StartInfo = start;
+
+            List<string> args = new();
+            foreach (var x in Env)
+            {
+                proc.StartInfo.EnvironmentVariables[x.Key] = x.Value;
+                proc.StartInfo.Environment[x.Key] = x.Value;
+                args.Add($"{x.Key} = {x.Value}");
+            }
+
+            Console.WriteLine($"[Comamnd] Launching command:\n{fileName} {arguments}\n\nEnv:\n{string.Join("\n", args)}");
 
             try
             {

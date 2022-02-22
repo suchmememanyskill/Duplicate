@@ -126,6 +126,10 @@
 								<ToggleSwitch  VerticalAlignment="Center" OnContent="Sync save to cloud" OffContent="Sync save to cloud" IsChecked="{Binding SyncSaves}" />
 								<Button IsVisible="{Binding SyncSaves}" Command="{Binding SyncNow}" VerticalAlignment="Center" Padding="3" Content="Sync now" />
 							</StackPanel>
+							<StackPanel Orientation="Horizontal" Margin="4,0,0,0" Spacing="8" IsVisible="{Binding ProtonManager.CanUseProton}">
+								<ToggleSwitch  VerticalAlignment="Center" OnContent="Use with Proton" OffContent="Use with Proton" IsChecked="{Binding UseWithProton}" />
+								<ComboBox IsVisible="{Binding UseWithProton}" Items="{Binding ProtonItems}" SelectedIndex="{Binding ProtonConfigIndex}" />
+							</StackPanel>
 							
 							<TextBox Margin="4,5,0,0" HorizontalAlignment="Left" Width="300" Watermark="Additional game arguments" Text="{Binding AdditionalArgs}"/>
 						</StackPanel>

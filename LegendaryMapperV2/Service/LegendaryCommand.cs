@@ -18,7 +18,7 @@ namespace LegendaryMapperV2.Service
         private bool done = false;
         
         public delegate void CommandCallback(LegendaryCommand action);
-        public string Arguments { get => arguments; }
+        public string Arguments { get => arguments; set => arguments = value; }
 
         public int ExitCode { get; private set; }
 
@@ -55,6 +55,20 @@ namespace LegendaryMapperV2.Service
         public LegendaryCommand OnErrLine(CommandCallback callback)
         {
             stdErrCallbacks.Add(callback);
+            return this;
+        }
+
+        public LegendaryCommand Filename(string filename)
+        {
+            fileName = filename;
+            return this;
+        }
+
+
+        public LegendaryCommand Env(string key, string value)
+        {
+            Terminal.Env.Add(key, value);
+            Environment.SetEnvironmentVariable(key, value);
             return this;
         }
 
