@@ -57,29 +57,38 @@ namespace SimpleSteamShortcutAdder
                 return false;
 
             name = name.Split(".").First();
+            ShortcutEntry entry = null;
             
             for (int i = 0; i < ShortcutRoot.GetSize(); i++)
             {
                 ShortcutEntry existingEntry = ShortcutRoot!.GetEntry(i);
                 if (existingEntry.AppName == name)
                 {
-                    Console.WriteLine($"Updating entry {name}");
-                    existingEntry.Exe = path;
-                    if (existingEntry.Exe.Contains(" "))
-                        existingEntry.Exe = $"\"{existingEntry.Exe}\"";
-
-                    return true;
+                    entry = existingEntry;
+                    break;
                 }
             }
+
+            if (entry != null)
+            {
+                Console.WriteLine($"Updating entry {name}");
+            }
+            else
+            {
+                Console.WriteLine($"Adding {name}");
+                entry = ShortcutRoot!.AddEntry();
+            }
             
-            Console.WriteLine($"Adding {name}");
-            ShortcutEntry entry = ShortcutRoot!.AddEntry();
             entry.AppName = name;
-            entry.AppId = ShortcutEntry.GenerateSteamGridAppId(entry.AppName, entry.Exe);
+            entry.AppId = ShortcutEntry.GenerateSteamGridAppId(entry.AppName, "");
+            entry.StartDir = Path.GetDirectoryName(path);
             entry.Exe = path;
             
             if (entry.Exe.Contains(" "))
                 entry.Exe = $"\"{entry.Exe}\"";
+
+            if (entry.StartDir.Contains(" "))
+                entry.StartDir = $"\"{entry.StartDir}\"";
 
             return true;
         }
