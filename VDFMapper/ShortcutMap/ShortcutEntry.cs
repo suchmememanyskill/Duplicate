@@ -31,6 +31,9 @@ namespace VDFMapper.ShortcutMap
         public ShortcutEntry(VDFMap raw)
         {
             Raw = raw;
+
+            if (raw == null)
+                throw new Exception("Shortcut entry is null!");
         }
 
         public int GetTagsSize() => Raw.GetValue("tags").ToMap().GetSize();
