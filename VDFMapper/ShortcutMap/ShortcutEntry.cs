@@ -52,7 +52,7 @@ namespace VDFMapper.ShortcutMap
         private uint ReadInt(string key) => Raw.GetValue(key).Integer;
         private void WriteInt(string key, uint value) => Raw.GetValue(key).Integer = value;
 
-        private string ReadString(string key) => Raw.GetValue(key).Text;
+        private string ReadString(string key) => Raw.GetValue(key)?.Text ?? null;
         private void WriteString(string key, string value) => Raw.GetValue(key).Text = value;
 
         public static uint GenerateSteamGridAppId(string appName, string appTarget)
