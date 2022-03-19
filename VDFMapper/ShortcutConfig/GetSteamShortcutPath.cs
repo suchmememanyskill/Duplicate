@@ -35,7 +35,10 @@ namespace VDFMapper
             else
             {
                 int a = -1;
-                return int.Parse(new DirectoryInfo(GetUserDataPath()).GetDirectories().ToList().Where(x => int.TryParse(x.Name, out a)).First().Name);
+
+                List<DirectoryInfo> directories = new DirectoryInfo(GetUserDataPath()).GetDirectories().ToList();
+                List<DirectoryInfo> validDirectories = directories.Where(x => int.TryParse(x.Name, out a) && File.Exists(Path.Join(x.FullName, "config", "localconfig.vdf"))).ToList();
+                return int.Parse(validDirectories.OrderByDescending(x => File.GetLastWriteTime(Path.Join(x.FullName, "config", "localconfig.vdf"))).First().Name);
             }
         }
 
