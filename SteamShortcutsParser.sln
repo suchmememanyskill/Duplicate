@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LegendaryMapperV2", "Legend
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Duplicate", "LegendaryGUIv2\Duplicate.csproj", "{B66513B2-12A7-4E9B-8308-C9209CE0D8B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleSteamShortcutAdder", "SimpleSteamShortcutAdder\SimpleSteamShortcutAdder.csproj", "{22BAEE7C-2DEF-458C-BCAE-836504095257}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
