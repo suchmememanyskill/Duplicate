@@ -122,6 +122,20 @@ namespace LegendaryMapperV2.Service
 
             ProtonManager protonManager = new();
 
+            if (protonManager.CanUseProton)
+            {
+                try
+                {
+                    Process.Start("wine", "--version"); // Checks if wine is not installed
+                }
+                catch (Exception e)
+                {
+                    // Wine seems to not be installed. Switching over to proton instead
+                    ConfigUseProton = true;
+                    ConfigProtonVersion = protonManager.GetProtonPaths().First().Key;
+                }
+            }
+
             if (protonManager.CanUseProton && ConfigUseProton)
             {
                 Dictionary<string, string> protonVersion = protonManager.GetProtonPaths();

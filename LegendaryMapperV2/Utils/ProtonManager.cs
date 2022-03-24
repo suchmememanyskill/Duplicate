@@ -10,8 +10,13 @@ namespace LegendaryMapperV2.Services
     {
         public bool CanUseProton => !RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && GetProtonPaths().Count > 0;
 
+        private Dictionary<string, string> cache;
+
         public Dictionary<string, string> GetProtonPaths()
         {
+            if (cache != null)
+                return cache;
+
             string steamApps = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
                 ".local/share/Steam/steamapps/common");
 
@@ -29,7 +34,16 @@ namespace LegendaryMapperV2.Services
                 }
             }
 
-            return entries;
+            cache = entries.OrderByDescending(x =>
+            {
+                if ("0123456789".Contains(x.Key[0]))
+                {
+                    return x.Key;
+                }
+
+                return "_" + x.Key;
+            }).ToDictionary(g => g.Key, g => g.Value);
+            return cache;
         }
     }
 }
