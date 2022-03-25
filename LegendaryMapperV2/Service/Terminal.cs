@@ -112,7 +112,15 @@ namespace LegendaryMapperV2.Service
         {
             while (!proc.HasExited)
             {
-                proc.StandardInput.WriteLine("y");
+                try
+                {
+                    proc.StandardInput.WriteLine("y");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("During writing of STDIN, an exception occured: " + e.Message);
+                }
+                
             }
         }
 
