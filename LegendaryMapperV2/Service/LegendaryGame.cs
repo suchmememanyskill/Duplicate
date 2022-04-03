@@ -151,7 +151,32 @@ namespace LegendaryMapperV2.Service
             if (protonManager.CanUseProton && ConfigUseProton)
             {
                 string homeFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                cmd.Env("STEAM_COMPAT_DATA_PATH", Path.Join(homeFolder, ".local/share/Steam/steamapps/compatdata"));
+                string protonPrefix = Path.Join(homeFolder, ".proton_duplicate", "default");
+
+                if (!Directory.Exists(protonPrefix))
+                    Directory.CreateDirectory(protonPrefix);
+
+                // Move the old proton prefix folder
+                string oldProtonPrefix = Path.Join(homeFolder, ".local/share/Steam/steamapps/compatdata");
+
+                new List<string>()
+                {
+                    "config_info",
+                    "pfx.lock",
+                    "tracked_files",
+                    "version",
+                    "pfx"
+                }.ForEach(x =>
+                {
+                    string path = Path.Join(oldProtonPrefix, x);
+
+                    if (File.Exists(path))
+                        File.Move(path, Path.Join(protonPrefix, x));
+                    else if (Directory.Exists(path))
+                        Directory.Move(path, Path.Join(protonPrefix, x));
+                });
+
+                cmd.Env("STEAM_COMPAT_DATA_PATH", protonPrefix);
                 cmd.Env("STEAM_COMPAT_CLIENT_INSTALL_PATH", Path.Join(homeFolder, ".local/share/Steam"));
             }
 

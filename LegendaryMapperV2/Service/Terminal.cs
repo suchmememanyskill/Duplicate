@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using System.Linq;
+using LegendaryMapperV2.Services;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace LegendaryMapperV2.Service
 {
@@ -42,6 +44,14 @@ namespace LegendaryMapperV2.Service
             ProcessStartInfo start = new();
             start.Arguments = arguments;
             start.FileName = fileName;
+            /*
+            if (ProtonManager.IsLinux)
+            {
+                start.FileName = $"bash";
+                start.Arguments = $"-c \"{string.Join(" ", Env.Select(x => $"{x.Key}={x.Value}"))} {fileName} {arguments}\"";
+            }
+            */
+
             start.RedirectStandardOutput = true;
             start.RedirectStandardError = true;
             start.RedirectStandardInput = true;
@@ -60,7 +70,7 @@ namespace LegendaryMapperV2.Service
                 args.Add($"{x.Key} = {x.Value}");
             }
 
-            Console.WriteLine($"[Comamnd] Launching command:\n{fileName} {arguments}\n\nEnv:\n{string.Join("\n", args)}");
+            Console.WriteLine($"[Comamnd] Launching command:\n{start.FileName} {start.Arguments}\n\nEnv:\n{string.Join("\n", args)}");
 
             try
             {
