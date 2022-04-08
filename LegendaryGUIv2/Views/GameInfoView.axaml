@@ -130,6 +130,8 @@
 								<ToggleSwitch  VerticalAlignment="Center" OnContent="Use with Proton" OffContent="Use with Proton" IsChecked="{Binding UseWithProton}" />
 								<ComboBox IsVisible="{Binding UseWithProton}" Items="{Binding ProtonItems}" SelectedIndex="{Binding ProtonConfigIndex}" />
 							</StackPanel>
+
+							<ToggleSwitch Margin="4,0,0,0" VerticalAlignment="Center" OnContent="Seperate Proton path" OffContent="Seperate Proton path" IsChecked="{Binding SeperateProtonPath}" IsVisible="{Binding UseWithProton}" />
 							
 							<TextBox Margin="4,5,0,0" HorizontalAlignment="Left" Width="300" Watermark="Additional game arguments" Text="{Binding AdditionalArgs}"/>
 						</StackPanel>

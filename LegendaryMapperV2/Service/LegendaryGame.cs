@@ -28,6 +28,7 @@ namespace LegendaryMapperV2.Service
         public bool ConfigSyncSave { get => GetConfigItem().SyncSave; set { ConfigItem item = GetConfigItem(); item.SyncSave = value; SetConfigItem(item); } }
         public bool ConfigUseProton { get => GetConfigItem().UseProton; set { ConfigItem item = GetConfigItem(); item.UseProton = value; SetConfigItem(item); } }
         public string ConfigProtonVersion { get => GetConfigItem().ProtonVersion; set { ConfigItem item = GetConfigItem(); item.ProtonVersion = value; SetConfigItem(item); } }
+        public bool ConfigSeperateProtonPath { get => GetConfigItem().SeperateProtonPath; set { ConfigItem item = GetConfigItem(); item.SeperateProtonPath = value; SetConfigItem(item); } }
 
         public string AppName { get => Metadata.AppName; }
         public string AppTitle { get => Metadata.AppTitle; }
@@ -152,6 +153,9 @@ namespace LegendaryMapperV2.Service
             {
                 string homeFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
                 string protonPrefix = Path.Join(homeFolder, ".proton_duplicate", "default");
+
+                if (ConfigSeperateProtonPath)
+                    protonPrefix = Path.Join(homeFolder, ".proton_duplicate", AppName);
 
                 if (!Directory.Exists(protonPrefix))
                     Directory.CreateDirectory(protonPrefix);

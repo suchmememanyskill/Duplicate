@@ -29,5 +29,8 @@ namespace LegendaryMapperV2.Model
 
         [JsonProperty("ProtonVersion")]
         public string ProtonVersion { get; set; } = "-";
+
+        [JsonProperty("SeperateProtonPath")]
+        public bool SeperateProtonPath { get; set; } = false;
     }
 }

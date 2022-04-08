@@ -36,6 +36,7 @@ namespace LegendaryGUIv2.ViewModels
             alwaysSkipUpdate = game.ConfigAlwaysSkipUpdateCheck;
             additionalArgs = game.ConfigAdditionalGameArgs;
             syncSaves = game.ConfigSyncSave;
+            seperateProtonPath = game.ConfigSeperateProtonPath;
             new Thread(() => DownloadImages()).Start();
             new Thread(() => GameSlug = game.GetProductSlug()).Start();
 
@@ -193,5 +194,8 @@ namespace LegendaryGUIv2.ViewModels
         }
         private bool useWithProton = false;
         public bool UseWithProton { get => useWithProton; set { this.RaiseAndSetIfChanged(ref useWithProton, value); game.ConfigUseProton = value; configChanged = true; } }
+
+        private bool seperateProtonPath = false;
+        public bool SeperateProtonPath { get => seperateProtonPath; set { this.RaiseAndSetIfChanged(ref seperateProtonPath, value); game.ConfigSeperateProtonPath = value; configChanged = true; } }
     }
 }
