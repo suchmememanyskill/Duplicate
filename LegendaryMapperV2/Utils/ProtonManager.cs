@@ -19,7 +19,7 @@ namespace LegendaryMapperV2.Services
                 return cache;
 
             string steamApps = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                ".local/share/Steam/steamapps/common");
+                ".steam/steam/steamapps/common");
 
             if (!Directory.Exists(steamApps))
                 return new();

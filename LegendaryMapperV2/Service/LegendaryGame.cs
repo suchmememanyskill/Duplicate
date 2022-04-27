@@ -161,7 +161,7 @@ namespace LegendaryMapperV2.Service
                     Directory.CreateDirectory(protonPrefix);
 
                 // Move the old proton prefix folder
-                string oldProtonPrefix = Path.Join(homeFolder, ".local/share/Steam/steamapps/compatdata");
+                string oldProtonPrefix = Path.Join(homeFolder, ".steam/steam/steamapps/compatdata");
 
                 new List<string>()
                 {
@@ -181,7 +181,7 @@ namespace LegendaryMapperV2.Service
                 });
 
                 cmd.Env("STEAM_COMPAT_DATA_PATH", protonPrefix);
-                cmd.Env("STEAM_COMPAT_CLIENT_INSTALL_PATH", Path.Join(homeFolder, ".local/share/Steam"));
+                cmd.Env("STEAM_COMPAT_CLIENT_INSTALL_PATH", Path.Join(homeFolder, ".steam/steam"));
             }
 
             return cmd;
