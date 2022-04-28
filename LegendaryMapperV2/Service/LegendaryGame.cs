@@ -1,4 +1,4 @@
-﻿using LegendaryMapperV2.Model;
+using LegendaryMapperV2.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,11 +70,21 @@ namespace LegendaryMapperV2.Service
 
         public Image<Rgba32> GetGameBannerTallWithLogo()
         {
-            Image<Rgba32> banner = Image.Load<Rgba32>(GameBannerTall.GetImage());
+            byte[] rawBanner = GameBannerTall.GetImage();
+
+            if (rawBanner == null)
+                return null;
+            
+            Image<Rgba32> banner = Image.Load<Rgba32>(rawBanner);
             if (GameLogo == null)
                 return banner;
 
-            Image<Rgba32> logo = Image.Load<Rgba32>(GameLogo.GetImage());
+            byte[] rawLogo = GameLogo.GetImage();
+
+            if (rawLogo == null)
+                return null;
+
+            Image<Rgba32> logo = Image.Load<Rgba32>(rawLogo);
             Image<Rgba32> output = new Image<Rgba32>(banner.Width, banner.Height);
 
              // Steam's horizontal height is about 1.5x the vertical height

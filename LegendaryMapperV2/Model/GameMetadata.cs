@@ -110,16 +110,24 @@ namespace LegendaryMapperV2.Model
 
             using (WebClient client = new WebClient())
             {
-                byte[] bytes = client.DownloadData(Url);
-                if (cache)
+                try
                 {
-                    if (!Directory.Exists(cachePathFolder))
-                        Directory.CreateDirectory(cachePathFolder);
+                    byte[] bytes = client.DownloadData(Url);
 
-                    File.WriteAllBytes(cachePath, bytes);
+                    if (cache)
+                    {
+                        if (!Directory.Exists(cachePathFolder))
+                            Directory.CreateDirectory(cachePathFolder);
+
+                        File.WriteAllBytes(cachePath, bytes);
+                    }
+
+                    return bytes;
                 }
-
-                return bytes;
+                catch
+                {
+                    return null;
+                }
             }
         }
     }

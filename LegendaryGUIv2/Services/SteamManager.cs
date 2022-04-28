@@ -136,21 +136,27 @@ namespace LegendaryGUIv2.Services
                 if (boxTall != null)
                 {
                     if (!File.Exists(Path.Combine(gridPath, $"{entry.AppId}.jpg"))){
-                        Stream outStream = new FileStream(Path.Combine(gridPath, $"{entry.AppId}.jpg"), FileMode.OpenOrCreate);
+                        
                         Image<Rgba32> image = x.GetGameBannerTallWithLogo();
-                        image.Save(outStream, new JpegEncoder());
-                        image.Dispose();
-                        outStream.Dispose();
+                        if (image != null)
+                        {
+                            Stream outStream = new FileStream(Path.Combine(gridPath, $"{entry.AppId}.jpg"), FileMode.OpenOrCreate);
+                            image.Save(outStream, new JpegEncoder());
+                            image.Dispose();
+                            outStream.Dispose();
+                        }
                     }
 
-                    if (!File.Exists(Path.Combine(gridPath, $"{entry.AppId}p.jpg")))
+                    if (!File.Exists(Path.Combine(gridPath, $"{entry.AppId}p.jpg")) && File.Exists(Path.Combine(gridPath, $"{entry.AppId}.jpg")))
                         File.Copy(Path.Combine(gridPath, $"{entry.AppId}.jpg"), Path.Combine(gridPath, $"{entry.AppId}p.jpg"));
                 }
                     
                 if (box != null)
                 {
-                    if (!File.Exists(Path.Combine(gridPath, $"{entry.AppId}_hero.{box.UrlExt}")))
-                        File.WriteAllBytes(Path.Combine(gridPath, $"{entry.AppId}_hero.{box.UrlExt}"), box.GetImage());
+                    byte[] rawBox = box.GetImage();
+
+                    if (!File.Exists(Path.Combine(gridPath, $"{entry.AppId}_hero.{box.UrlExt}")) && rawBox != null)
+                        File.WriteAllBytes(Path.Combine(gridPath, $"{entry.AppId}_hero.{box.UrlExt}"), rawBox);
                 }
 
                 addedCount++;
