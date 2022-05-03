@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System.Net;
 using System.Diagnostics;
 using System.IO;
+using System.Net.Http;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
@@ -139,7 +140,7 @@ namespace LegendaryMapperV2.Service
                 {
                     Process.Start("wine", "--version"); // Checks if wine is not installed
                 }
-                catch (Exception e)
+                catch
                 {
                     // Wine seems to not be installed. Switching over to proton instead
                     ConfigUseProton = true;
@@ -227,6 +228,23 @@ namespace LegendaryMapperV2.Service
 
             try
             {
+                using (HttpClient client = new HttpClient())
+                {
+                    HttpContent content = new StringContent("{\"query\":\"{Catalog{catalogOffers( namespace:\\\"" +
+                                                            Metadata.Metadata.Namespace +
+                                                            "\\\"){elements {productSlug}}}}\"}", Encoding.Default, "application/json");
+                    HttpResponseMessage response = client.PostAsync(new Uri("https://www.epicgames.com/graphql"), content).GetAwaiter().GetResult();
+                    response.EnsureSuccessStatusCode();
+                    string textResponse = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    
+                    EpicProductSlugResponse parsedResponse = JsonConvert.DeserializeObject<EpicProductSlugResponse>(textResponse);
+                    Element slug = parsedResponse?.Data?.Catalog?.CatalogOffers?.Elements?.FirstOrDefault(x => x?.ProductSlug != null);
+                    if (slug == null)
+                        return "";
+                    return slug.ProductSlug.Split("/").First();
+                    
+                }
+                
                 using (WebClient client = new WebClient())
                 {
                     client.Headers.Add(HttpRequestHeader.ContentType, "application/json");

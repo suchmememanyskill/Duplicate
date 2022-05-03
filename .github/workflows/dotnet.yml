@@ -26,7 +26,7 @@ jobs:
     - name: Linux build
       run: |
         cd LegendaryGUIv2
-        dotnet publish -o Linux -r linux-x64 -p:PublishSingleFile=true
+        dotnet publish -o Linux -r linux-x64 --self-contained -p:PublishSingleFile=true
         wget -O Linux/legendary https://github.com/derrod/legendary/releases/latest/download/legendary
         chmod a+x Linux/legendary
         chmod a+x Linux/Duplicate
@@ -34,7 +34,7 @@ jobs:
     - name: Windows build
       run: |
         cd LegendaryGUIv2
-        dotnet publish -o Windows -r win-x64 -p:PublishSingleFile=true
+        dotnet publish -o Windows -r win-x64 --self-contained -p:PublishSingleFile=true
         wget -O Windows/legendary.exe https://github.com/derrod/legendary/releases/latest/download/legendary.exe
 
     - name: Zip Linux Build

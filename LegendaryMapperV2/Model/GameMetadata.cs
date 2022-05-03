@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Net;
 using System.IO;
+using System.Net.Http;
 
 namespace LegendaryMapperV2.Model
 {
@@ -90,15 +91,6 @@ namespace LegendaryMapperV2.Model
             }
         }
 
-
-        public void SaveImageAs(string path)
-        {
-            using (WebClient client = new WebClient())
-            {
-                client.DownloadFile(Url, $"{path}.{UrlExt}");
-            }
-        }
-
         public byte[] GetImage(bool cache = true)
         {
             string cachePath = Path.Join(Path.GetTempPath(), "LegendaryImageCache", FileName);
@@ -108,11 +100,11 @@ namespace LegendaryMapperV2.Model
                 if (File.Exists(cachePath))
                     return File.ReadAllBytes(cachePath);
 
-            using (WebClient client = new WebClient())
+            using (HttpClient client = new())
             {
                 try
                 {
-                    byte[] bytes = client.DownloadData(Url);
+                    byte[] bytes = client.GetByteArrayAsync(Url).GetAwaiter().GetResult();
 
                     if (cache)
                     {

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,11 +17,13 @@ namespace LegendaryMapperV2.Service
         {
             try
             {
-                using (var client = new WebClient())
-                using (var stream = client.OpenRead("http://www.google.com"))
+                using (var client = new HttpClient())
                 {
-                    return true;
+                    client.GetAsync(new Uri("http://www.google.com")).GetAwaiter().GetResult()
+                        .EnsureSuccessStatusCode();
                 }
+
+                return true;
             }
             catch
             {
