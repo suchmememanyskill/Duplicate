@@ -244,19 +244,6 @@ namespace LegendaryMapperV2.Service
                     return slug.ProductSlug.Split("/").First();
                     
                 }
-                
-                using (WebClient client = new WebClient())
-                {
-                    client.Headers.Add(HttpRequestHeader.ContentType, "application/json");
-                    string request = "{\"query\":\"{Catalog{catalogOffers( namespace:\\\"" + Metadata.Metadata.Namespace + "\\\"){elements {productSlug}}}}\"}";
-                    Debug.WriteLine(request);
-                    string response = client.UploadString("https://www.epicgames.com/graphql", request);
-                    EpicProductSlugResponse parsedResponse = JsonConvert.DeserializeObject<EpicProductSlugResponse>(response);
-                    Element slug = parsedResponse?.Data?.Catalog?.CatalogOffers?.Elements?.FirstOrDefault(x => x?.ProductSlug != null);
-                    if (slug == null)
-                        return "";
-                    return slug.ProductSlug.Split("/").First();
-                }
             }
             catch
             {
