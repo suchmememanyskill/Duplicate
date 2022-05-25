@@ -134,7 +134,7 @@ namespace LegendaryMapperV2.Service
 
             ProtonManager protonManager = new();
 
-            if (protonManager.CanUseProton)
+            if (protonManager.CanUseProton && !ConfigUseProton)
             {
                 try
                 {
