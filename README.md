@@ -1,3 +1,7 @@
+# Notice
+[Alfae](https://github.com/suchmememanyskill/Alfae) supersedes Duplicate in every way now, and thus i am depricating Duplicate.
+
+
 # Duplicate
 A cross-platform gui for legendary. Basically a game launcher that launches games from [Epic Games](https://www.epicgames.com)
 
